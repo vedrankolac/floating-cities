@@ -12,10 +12,6 @@ import { VrControls } from './system/VrControls.js'
 import { createHandsPhysicsController } from "./system/handsPhysicsController.js"
 import { room as roomPhysicsComposition } from './components/bodies/room.js'
 import { walls } from './components/meshes/walls.js'
-import { pendulum } from "./components/bodies/pendulum/pendulum.js"
-import { spheres } from "./components/sceneFragments/spheres.js"
-import { cubes } from "./components/sceneFragments/cubes.js"
-import { pedestals } from './components/sceneFragments/pedestals'
 import { colorComposer } from './components/bodies/pendulum/colorComposer.js'
 import { RoomEnvironment } from './components/stage/RoomEnv'
 import { setPrintTools } from './utils/setPrintTools'
@@ -24,8 +20,7 @@ import { materialTester } from './utils/materialTester'
 import { lightTester } from './utils/lightTester'
 import { Resizer } from './system/Resizer'
 import { planetsConfig } from "./components/bodies/planetsConfig";
-
-import { pachinko } from './components/bodies/pachinko'
+import { Structure } from './components/bodies/Structure.js';
 
 class World {
   constructor() {
@@ -64,7 +59,7 @@ class World {
     this.vrControls = this.xrEnabled ? new VrControls(this.renderer, this.dolly, this.camera) : null;
     this.xrEnabled ? this.loop.updatableBodies.push(this.vrControls) : null;
 
-    this.floorSize = 300;
+    this.floorSize = 600;
     this.printTools = this.printToolsEnabled ? setPrintTools(this.renderer, this.composer, this.postprocessingEnabled, this.scene, this.camera) : null;
 
     this.resizer = new Resizer(this.camera, this.renderer);
@@ -104,18 +99,11 @@ class World {
     // this.materialTester      = materialTester(this.scene, envMap);
     // this.lightTester         = lightTester(this.scene, envMap);
 
-
-    this.pachinko = pachinko(this.scene, this.loop, this.physicsWorld, envMap, this.colorComposition)
-    
+    this.structure = new Structure(this.scene, this.loop, this.physicsWorld, envMap);    
     this.walls               = walls    (this.scene, this.floorSize, this.bgHSL, this.bgColor);
-    // this.pendulum            = pendulum (this.scene, this.loop, this.physicsWorld, envMap, this.colorComposition, this.gravity);
-    // this.spheresFragment     = spheres  (this.scene, this.loop, this.physicsWorld, envMap, this.bgHSL, {min: 0.02,  sizeRange: $fx.rand()/20, n: 8, y: 0.2, yRange: 3});
-    // this.cubesFragment       = cubes    (this.scene, this.loop, this.physicsWorld, envMap, this.bgHSL, {min: 0.05,  sizeRange: 0.10, n: 10 , y: 0.2,  yRange: 2});
-    // this.miniCubesFragment   = cubes    (this.scene, this.loop, this.physicsWorld, envMap, this.bgHSL, {min: 0.006, sizeRange: 0.04, n: 48, y: 0.06, yRange: 2});
-    // this.pedestals           = pedestals(this.scene, this.loop, this.physicsWorld, envMap, this.colorComposition, {min: 0.006, sizeRange: 0.04, n: 48, y: 0.06, yRange: 2});
     
     // this.orbitControls.target = this.pendulum.handleB.mesh.position;
-    this.orbitControls.target = this.pachinko.position;
+    // this.orbitControls.target = this.pachinko.position;
   }
 
   start() {

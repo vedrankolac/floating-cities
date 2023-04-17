@@ -16,8 +16,8 @@ const ssgi = (
   composer.addPass(velocityDepthNormalPass)
 
   const options = {
-		distance: 2.0,
-		thickness: 1.3,
+		distance: 0.33,
+		thickness: 0.5,
 		autoThickness: false,
 		maxRoughness: 1,
 		blend: 0.95,
