@@ -1,0 +1,36 @@
+body {
+  margin: 0px;
+  background-color: black;
+
+  .headline {
+    // display: none;
+    position: absolute;
+    font-family: 'Roboto';
+    font-size: 174px;
+    margin: auto;
+    padding: 10px 10px;
+    color: #ffffff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  h1 {
+    color: blue;
+    font-family: monospace;
+    font-weight: 100;
+    margin: 20px;
+  }
+
+  .preloader {
+    position: absolute;
+
+    p {
+      font-family: monospace;
+      font-size: 14px;
+      margin: 0px;
+      padding: 10px 10px;
+      color: #e7e5e5;
+    }
+  }
+}
