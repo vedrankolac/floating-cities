@@ -31,16 +31,16 @@ const ssao = (
     depthAwareUpsampling: false,
     samples: 16,
     rings: 3,
-    worldDistanceThreshold: 120,
-    worldDistanceFalloff: 20,
-    // worldProximityThreshold: 1,
-		// worldProximityFalloff: 0.01,
+    worldDistanceThreshold: 7.3,
+    worldDistanceFalloff: 22,
+    worldProximityThreshold: 1.2,
+		worldProximityFalloff: 1.2,
     luminanceInfluence: 0.18,
     minRadiusScale: 0.1,
-    radius: 0.04,
-    intensity: 10.0,
-    bias: 0.01,
-    fade: 0.2,
+    radius: 0.075,
+    intensity: 8.0,
+    bias: 0.0,
+    fade: 0.24,
     color: null,
     resolutionScale: 1.0,
   });
@@ -49,12 +49,6 @@ const ssao = (
   composer.addPass(effectPass_1);
 
   const showGui = false;
-
-  // const gui = new GUI();
-  // gui.close();
-  // gui.add(edgeDetectionMaterial, 'edgeDetectionThreshold', 0.001, 0.04 );
-  // gui.add(edgeDetectionMaterial, 'predicationThreshold', 0.0, 1.0 );
-  // gui.add(edgeDetectionMaterial, 'predicationScale', 0.0, 1.0 );
 
   if (showGui) {
     const blendMode = ssaoEffect.blendMode;
@@ -83,6 +77,12 @@ const ssao = (
       "intensity": uniforms.intensity.value,
       "bias": uniforms.bias.value,
       "fade": uniforms.fade.value,
+
+      "wDThreshold": ssaoEffect.ssaoMaterial.worldDistanceThreshold,
+      "wDFalloff": ssaoEffect.ssaoMaterial.worldDistanceFalloff,
+      "wPThreshold": ssaoEffect.ssaoMaterial.worldProximityThreshold,
+      "wPFalloff": ssaoEffect.ssaoMaterial.worldProximityFalloff,
+
       // "render mode": RenderMode.DEFAULT,
       "resolution": ssaoEffect.resolution.scale,
       "color": 0x000000,
@@ -97,54 +97,60 @@ const ssao = (
     gui.add(ssaoEffect, "rings", 1, 16, 1);
     gui.add(ssaoEffect, "radius", 1e-6, 0.4, 0.001);
     gui.add(params, "bias", 0.0, 0.2, 0.001).onChange((value) => {uniforms.bias.value = value;});
-    gui.add(params, "fade", 0.0, 0.2, 0.001).onChange((value) => {uniforms.fade.value = value;});
-    gui.add(params, "lum influence", 0.0, 1.0, 0.001).onChange((value) => {
-      ssaoEffect.uniforms.get("luminanceInfluence").value = value;
-    });
+    gui.add(params, "fade", 0.0, 0.4, 0.001).onChange((value) => {uniforms.fade.value = value;});
 
-    const f = gui.addFolder("Distance Cutoff");
-    f.add(params.distance, "threshold", 0.0, 1.0, 0.0001).onChange((value) => {
-      ssaoEffect.setDistanceCutoff(value, params.distance.falloff);
-    });
+    gui.add(params, "wDThreshold", 0.0, 20, 0.001).onChange((value) => {ssaoEffect.ssaoMaterial.worldDistanceThreshold = value;});
+    gui.add(params, "wDFalloff", 0.0, 40, 0.001).onChange((value) => {ssaoEffect.ssaoMaterial.worldDistanceFalloff = value;});
+    gui.add(params, "wPThreshold", 0.0, 4, 0.001).onChange((value) => {ssaoEffect.ssaoMaterial.worldProximityThreshold = value;});
+    gui.add(params, "wPFalloff", 0.0, 4, 0.001).onChange((value) => {ssaoEffect.ssaoMaterial.worldProximityFalloff = value;});
 
-    f.add(params.distance, "falloff", 0.0, 1.0, 0.0001).onChange((value) => {
-      ssaoEffect.setDistanceCutoff(params.distance.threshold, value);
-    });
+    // gui.add(params, "lum influence", 0.0, 1.0, 0.001).onChange((value) => {
+    //   ssaoEffect.uniforms.get("luminanceInfluence").value = value;
+    // });
 
-    const f2 = gui.addFolder("Proximity Cutoff");
+    // const f = gui.addFolder("Distance Cutoff");
+    // f.add(params.distance, "threshold", 0.0, 1.0, 0.0001).onChange((value) => {
+    //   ssaoEffect.setDistanceCutoff(value, params.distance.falloff);
+    // });
 
-    f2.add(params.proximity, "threshold", 0.0, 0.01, 0.0001)
-      .onChange((value) => {
-        ssaoEffect.setProximityCutoff(value, params.proximity.falloff);
-      });
+    // f.add(params.distance, "falloff", 0.0, 1.0, 0.0001).onChange((value) => {
+    //   ssaoEffect.setDistanceCutoff(params.distance.threshold, value);
+    // });
 
-      f2.add(params.proximity, "falloff", 0.0, 0.01, 0.0001).onChange((value) => {
-      ssaoEffect.setProximityCutoff(params.proximity.threshold, value);
-    });
+    // const f2 = gui.addFolder("Proximity Cutoff");
 
-    const f3 = gui.addFolder("Distance Scaling");
-    f3.add(params.distanceScaling, "enabled").onChange((value) => {
-      ssaoEffect.distanceScaling = value;
-    });
+    // f2.add(params.proximity, "threshold", 0.0, 0.01, 0.0001)
+    //   .onChange((value) => {
+    //     ssaoEffect.setProximityCutoff(value, params.proximity.falloff);
+    //   });
 
-    f3.add(params.distanceScaling, "min scale", 0.0, 1.0, 0.001)
-      .onChange((value) => {
-        uniforms.minRadiusScale.value = value;
-      });
+    //   f2.add(params.proximity, "falloff", 0.0, 0.01, 0.0001).onChange((value) => {
+    //   ssaoEffect.setProximityCutoff(params.proximity.threshold, value);
+    // });
 
-    if(capabilities.isWebGL2) {
-      const f4 = gui.addFolder("Depth-Aware Upsampling");
-      f4.add(params.upsampling, "enabled").onChange((value) => {
-        ssaoEffect.depthAwareUpsampling = value;
-      });
+    // const f3 = gui.addFolder("Distance Scaling");
+    // f3.add(params.distanceScaling, "enabled").onChange((value) => {
+    //   ssaoEffect.distanceScaling = value;
+    // });
 
-      f4.add(params.upsampling, "threshold", 0.0, 1.0, 0.001)
-        .onChange((value) => {
-          // Note: This threshold is not really supposed to be changed.
-          ssaoEffect.defines.set("THRESHOLD", value.toFixed(3));
-          effectPass.recompile();
-        });
-    }
+    // f3.add(params.distanceScaling, "min scale", 0.0, 1.0, 0.001)
+    //   .onChange((value) => {
+    //     uniforms.minRadiusScale.value = value;
+    //   });
+
+    // if(capabilities.isWebGL2) {
+    //   const f4 = gui.addFolder("Depth-Aware Upsampling");
+    //   f4.add(params.upsampling, "enabled").onChange((value) => {
+    //     ssaoEffect.depthAwareUpsampling = value;
+    //   });
+
+    //   f4.add(params.upsampling, "threshold", 0.0, 1.0, 0.001)
+    //     .onChange((value) => {
+    //       // Note: This threshold is not really supposed to be changed.
+    //       ssaoEffect.defines.set("THRESHOLD", value.toFixed(3));
+    //       effectPass.recompile();
+    //     });
+    // }
   }
   
   return composer;
