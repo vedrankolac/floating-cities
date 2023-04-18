@@ -100,7 +100,7 @@ class World {
     // this.lightTester         = lightTester(this.scene, envMap);
 
     this.structure = new Structure(this.scene, this.loop, this.physicsWorld, envMap);    
-    this.walls               = walls    (this.scene, this.floorSize, this.bgHSL, this.bgColor);
+    this.walls     = walls    (this.scene, this.floorSize, this.bgHSL, this.bgColor);
     
     // this.orbitControls.target = this.pendulum.handleB.mesh.position;
     // this.orbitControls.target = this.pachinko.position;

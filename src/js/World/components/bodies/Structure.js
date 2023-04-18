@@ -1,5 +1,5 @@
 import { Rectangle } from "../../utils/Rectangle";
-import { Tower } from "./Tower";
+import { Parcel } from "./Parcel";
 
 export class Structure {
   constructor(
@@ -29,10 +29,16 @@ export class Structure {
     const roadWidth = Math.random() * 0.3 + 0.1;
 
     const hue = Math.random();
+    // const hue = 0.6;
+
+    // make islands
 
     const rectangleBase1 = new Rectangle(-strWidth, -strDepth, -roadWidth/2, strDepth);
-    const base1 = new Tower(
+    const densityBase1 = Math.round(Math.random() * 10 + 2);
+    console.log('densityBase1', densityBase1);
+    const base1 = new Parcel(
       rectangleBase1,
+      densityBase1,
       hue,
       this.scene,
       this.loop,
@@ -43,8 +49,11 @@ export class Structure {
     base1.split(0, 8, base1Area);
 
     const rectangleBase2 = new Rectangle(roadWidth/2, -strDepth, strWidth, strDepth);
-    const base2 = new Tower(
+    const densityBase2 = Math.round(Math.random() * 10 + 2);
+    console.log('densityBase2', densityBase2);
+    const base2 = new Parcel(
       rectangleBase2,
+      densityBase2,
       hue + 0.1,
       this.scene,
       this.loop,
