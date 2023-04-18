@@ -18,6 +18,11 @@ export class Structure {
   start = () => {
     console.log('Structure::start');
 
+    const hue = $fx.rand();
+    // const hue = 0.5;
+
+    // DEFINE SPLIT AND DENSITY
+
     // const strWidth = 0.6;
     // const strDepth = 0.2;
     // const strWidth = 2.0;
@@ -28,21 +33,26 @@ export class Structure {
     // const roadWidth = 0.4;
     const roadWidth = $fx.rand() * 0.2 + 0.2;
 
-    // const hue = $fx.rand();
-    const hue = 0.5;
-
-    // MAKE PARCELS
-
     const splitIndex = $fx.rand() * 0.7 + 0.15;
     const split_x = -strWidth + splitIndex * strWidth;
+    console.log('splitIndex',splitIndex);
 
     const rectangleBase1 = new Rectangle(-strWidth, -strDepth, split_x - roadWidth/2, strDepth);
     const rectangleBase2 = new Rectangle(split_x + roadWidth/2, -strDepth, strWidth, strDepth);
 
-    const densityBase1 = Math.round($fx.rand() * 60 + 2);
-    const densityBase2 = Math.round($fx.rand() * 60 + 2);
+    const densityIndex1 = (1-splitIndex) * 40;
+    const densityIndex2 = splitIndex * 40;
+
+    console.log('densityIndex1', densityIndex1);
+    console.log('densityIndex2', densityIndex2);
+
+    const densityBase1 = Math.round($fx.rand() * densityIndex1 + 2);
+    const densityBase2 = Math.round($fx.rand() * densityIndex2 + 2);
+
     console.log('densityBase1', densityBase1);
     console.log('densityBase2', densityBase2);
+
+    // DEFINE LEVELS
 
     const b1 = 1.52;
     const b2 = Math.random() * (1.52-0.8) +  0.8;
@@ -59,6 +69,8 @@ export class Structure {
       yDownShiftBase1 = b2;
       yDownShiftBase2 = b1;
     }
+
+    // MAKE PARCELS
 
     const base1 = new Parcel(
       rectangleBase1,
