@@ -31,19 +31,34 @@ export class Structure {
     // const hue = $fx.rand();
     const hue = 0.5;
 
-    // make islands
+    // MAKE PARCELS
 
-    const rectangleBase1 = new Rectangle(-strWidth, -strDepth, -roadWidth/2, strDepth);
-    const rectangleBase2 = new Rectangle(roadWidth/2, -strDepth, strWidth, strDepth);
+    const splitIndex = $fx.rand() * 0.7 + 0.15;
+    const split_x = -strWidth + splitIndex * strWidth;
+
+    const rectangleBase1 = new Rectangle(-strWidth, -strDepth, split_x - roadWidth/2, strDepth);
+    const rectangleBase2 = new Rectangle(split_x + roadWidth/2, -strDepth, strWidth, strDepth);
 
     const densityBase1 = Math.round($fx.rand() * 60 + 2);
-    // const densityBase1 = 60;
     const densityBase2 = Math.round($fx.rand() * 60 + 2);
     console.log('densityBase1', densityBase1);
+    console.log('densityBase2', densityBase2);
 
-    const yDownShiftBase1 = 1.52;
-    const yDownShiftBase2 = Math.random() * (1.52-0.8) +  0.8;
-    // const yDownShiftBase2 = 0.8;
+    const b1 = 1.52;
+    const b2 = Math.random() * (1.52-0.8) +  0.8;
+
+    const bIndex = $fx.rand();
+
+    let yDownShiftBase1 = null;
+    let yDownShiftBase2 = null;
+
+    if (bIndex > 0.5) {
+      yDownShiftBase1 = b1;
+      yDownShiftBase2 = b2;
+    } else {
+      yDownShiftBase1 = b2;
+      yDownShiftBase2 = b1;
+    }
 
     const base1 = new Parcel(
       rectangleBase1,
@@ -58,7 +73,6 @@ export class Structure {
     const base1Area = rectangleBase1.width() * rectangleBase1.height();
     base1.split(0, 8, base1Area, 1.2);
     
-    console.log('densityBase2', densityBase2);
     const base2 = new Parcel(
       rectangleBase2,
       densityBase2,

@@ -22,8 +22,6 @@ export class Parcel {
     this.loop = loop;
     this.physicsWorld = physicsWorld;
     this.envMap = envMap;
-
-    console.log('yDownShift',yDownShift);
   }
 
   split = (depth, limit, baseArea) => {
@@ -34,7 +32,7 @@ export class Parcel {
         new Rectangle(this.rectangle.x1, this.rectangle.y1, this.rectangle.x2, this.rectangle.y2),
         this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap
       );
-      tower.drawTower();
+      tower.draw();
       return;
     }
 
@@ -69,13 +67,13 @@ export class Parcel {
     if (tower_1.rectangle.area() * this.density > baseArea) {
       tower_1.split(depth + 1, limit, baseArea);
     } else {
-      tower_1.drawTower();
+      tower_1.draw();
     }
 
     if (tower_2.rectangle.area() * this.density > baseArea) {
       tower_2.split(depth + 1, limit, baseArea);
     } else {
-      tower_2.drawTower();
+      tower_2.draw();
     }
   }
 
@@ -83,8 +81,18 @@ export class Parcel {
     return this.rectangle;
   }
 
+  draw = () => {
+    const dIndex = $fx.rand();
+    if (dIndex < 0.6) {
+      this.drawTower(); 
+    } else {
+      // empty space
+    }
+  }
+
   drawTower = () => {
     // console.log(' - draw');
+
     const cIndex = $fx.rand();
     let color;
 
@@ -112,7 +120,8 @@ export class Parcel {
       },
       {
         x: this.rectangle.center().x,
-        y: height/2 - this.yDownShift + Math.random()*(height/6),
+        // y: height/2 - this.yDownShift + Math.random()*(height/6),
+        y: height/2 - this.yDownShift ,
         z: this.rectangle.center().y
       },
       {
