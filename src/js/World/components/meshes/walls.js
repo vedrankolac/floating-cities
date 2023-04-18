@@ -13,11 +13,11 @@ const walls = (scene, size, bgHSL, color) => {
     n: 'plastic'
   }
 
-  const materialFloor = canvasTextureMaterial(
-    {envMap: null },
-    {...plastic, c},
-    1
-  )
+  // const materialFloor = canvasTextureMaterial(
+  //   {envMap: null },
+  //   {...plastic, c},
+  //   1
+  // )
 
   const materialDome = new MeshStandardMaterial({
     // map: maps.colorMap,

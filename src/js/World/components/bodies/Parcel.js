@@ -120,8 +120,8 @@ export class Parcel {
       },
       {
         x: this.rectangle.center().x,
-        // y: height/2 - this.yDownShift + Math.random()*(height/6),
-        y: height/2 - this.yDownShift ,
+        y: height/2 - this.yDownShift - Math.random()*(height/6),
+        // y: height/2 - this.yDownShift ,
         z: this.rectangle.center().y
       },
       {
