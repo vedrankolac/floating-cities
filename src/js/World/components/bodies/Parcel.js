@@ -26,11 +26,11 @@ export class Parcel {
     // console.log(' - split');
 
     if (depth === limit) {
-      // const tower = new Parcel(
-      //   new Rectangle(this.rectangle.x1, this.rectangle.y1, this.rectangle.x2, this.rectangle.y2),
-      //   this.hue, this.scene, this.loop, this.physicsWorld, this.envMap
-      // );
-      // tower.drawTower();
+      const tower = new Parcel(
+        new Rectangle(this.rectangle.x1, this.rectangle.y1, this.rectangle.x2, this.rectangle.y2),
+        this.density, this.hue, this.scene, this.loop, this.physicsWorld, this.envMap
+      );
+      tower.drawTower();
       return;
     }
 
@@ -84,15 +84,16 @@ export class Parcel {
     const r = $fx.rand();
     let color;
 
-    if (r < 0.4) {
-      color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
+    if (r < 0.2) {
+      
       // color = hslToHex(this.hue, 0.9, 0.2); // color
+      // white
+      color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(this.hue, 0.3, 0.4);
     } else if (r > 0.80){
       // black
       color = hslToHex(0, 0.0, 0.02);
     } else {
-      // white
-      color = hslToHex(0, 0.0, 0.5);
+      color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
     }
     
     const material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});

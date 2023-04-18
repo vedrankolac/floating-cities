@@ -34,8 +34,13 @@ export class Structure {
     // make islands
 
     const rectangleBase1 = new Rectangle(-strWidth, -strDepth, -roadWidth/2, strDepth);
-    const densityBase1 = Math.round($fx.rand() * 10 + 2);
+    const rectangleBase2 = new Rectangle(roadWidth/2, -strDepth, strWidth, strDepth);
+
+    const densityBase1 = Math.round($fx.rand() * 60 + 2);
+    // const densityBase1 = 60;
+    const densityBase2 = Math.round($fx.rand() * 60 + 2);
     console.log('densityBase1', densityBase1);
+
     const base1 = new Parcel(
       rectangleBase1,
       densityBase1,
@@ -48,8 +53,7 @@ export class Structure {
     const base1Area = rectangleBase1.width() * rectangleBase1.height();
     base1.split(0, 8, base1Area);
 
-    const rectangleBase2 = new Rectangle(roadWidth/2, -strDepth, strWidth, strDepth);
-    const densityBase2 = Math.round($fx.rand() * 10 + 2);
+    
     console.log('densityBase2', densityBase2);
     const base2 = new Parcel(
       rectangleBase2,
