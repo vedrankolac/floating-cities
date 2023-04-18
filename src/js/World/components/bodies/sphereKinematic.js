@@ -26,13 +26,13 @@ const sphereKinematic = (material, size, translation, rotation, physicsWorld) =>
   physicsWorld.createCollider(collider, rigidBody);
 
   // rigidBody.tick = (delta) => {
-  //   const treshold = Math.random();
+  //   const treshold = $fx.rand();
   //   const impulseRange = 0.01;
   //   if (treshold < 0.02 && ((mesh.position.y - size.radius) < 0.01)) {
   //     rigidBody.applyImpulse({
-  //       x: Math.random() * impulseRange - impulseRange/2,
-  //       y: Math.random() * impulseRange/2,
-  //       z: Math.random() * impulseRange - impulseRange/2
+  //       x: $fx.rand() * impulseRange - impulseRange/2,
+  //       y: $fx.rand() * impulseRange/2,
+  //       z: $fx.rand() * impulseRange - impulseRange/2
   //     }, true);
   //   }
   // };

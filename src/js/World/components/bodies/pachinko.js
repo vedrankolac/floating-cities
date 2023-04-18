@@ -20,12 +20,12 @@ const pachinko = (
   // cylinders
 
   const cylinderRadius = 0.0034;
-  // const cylinderRadius = Math.random() * 0.008 + 0.004;
+  // const cylinderRadius = $fx.rand() * 0.008 + 0.004;
   const cylinderHeight = borderDepth + 0.06;
   const cylinderMargin = 0.048;
-  const cylinderHue = Math.random();
+  const cylinderHue = $fx.rand();
 
-  // const nc = Math.round(Math.random()*4) + 12;
+  // const nc = Math.round($fx.rand()*4) + 12;
   const nc = 24;
   console.log('grid:     ', nc);
 
@@ -79,18 +79,18 @@ const pachinko = (
   // ball
 
   
-  // const ballHue = Math.random();
-  const ballHue = cylinderHue + 0.1 + Math.random()*0.1;
+  // const ballHue = $fx.rand();
+  const ballHue = cylinderHue + 0.1 + $fx.rand()*0.1;
   // const ballHue = cylinderHue + 0.7;
   
-  // const nOfBalls = Math.round(Math.random()*40) + 1;
+  // const nOfBalls = Math.round($fx.rand()*40) + 1;
   const nOfBalls = 60;
   console.log('balls:    ', nOfBalls);
 
   for (let i = 0; i < nOfBalls; i++) {
     const colorBall = hslToHex(0, 0.0, 0.02);
     const ballMaterial = canvasTextureMaterial({ envMap }, { color: colorBall, roughness: 0.2, metalness: 0.02});
-    const sphereRadius = Math.random()*0.006 + 0.006;
+    const sphereRadius = $fx.rand()*0.006 + 0.006;
     // const sphereRadius = 0.006;
     const sphereItem = sphere(
       ballMaterial,
@@ -98,7 +98,7 @@ const pachinko = (
         radius: sphereRadius
       },
       {
-        x: Math.random() * (1 - borderDepth*2 - sphereRadius*2) + (-0.5 + borderDepth + sphereRadius),
+        x: $fx.rand() * (1 - borderDepth*2 - sphereRadius*2) + (-0.5 + borderDepth + sphereRadius),
         y: 1 - borderDepth - sphereRadius,
         z: sphereRadius/2
       },

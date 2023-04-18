@@ -28,7 +28,7 @@ class World {
 
     // this.planetsConfig = planetsConfig();
     // this.gravity = this.planetsConfig.gravity;
-    this.gravity = Math.random() * 6 + 1.4;
+    this.gravity = $fx.rand() * 6 + 1.4;
     this.dt = 1/120;
 
     this.xrEnabled = false;

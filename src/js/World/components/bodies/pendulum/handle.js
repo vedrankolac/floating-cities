@@ -52,13 +52,13 @@ const handle = (
 
   // add in loop.updatableBodies to trigger
   // rigidBody.tick = (delta) => {
-  //   const treshold = Math.random();
+  //   const treshold = $fx.rand();
   //   const impulseRange = 1.4;
   //   if (treshold < 0.02) {
   //     rigidBody.applyTorqueImpulse({
   //       x: 0,
   //       y: 0,
-  //       z: Math.random() * impulseRange - impulseRange/2,
+  //       z: $fx.rand() * impulseRange - impulseRange/2,
   //     }, true);
   //   }
   // };

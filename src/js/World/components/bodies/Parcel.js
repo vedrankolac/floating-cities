@@ -26,11 +26,11 @@ export class Parcel {
     // console.log(' - split');
 
     if (depth === limit) {
-      const tower = new Parcel(
-        new Rectangle(this.rectangle.x1, this.rectangle.y1, this.rectangle.x2, this.rectangle.y2),
-        this.hue, this.scene, this.loop, this.physicsWorld, this.envMap
-      );
-      tower.drawTower();
+      // const tower = new Parcel(
+      //   new Rectangle(this.rectangle.x1, this.rectangle.y1, this.rectangle.x2, this.rectangle.y2),
+      //   this.hue, this.scene, this.loop, this.physicsWorld, this.envMap
+      // );
+      // tower.drawTower();
       return;
     }
 
@@ -38,7 +38,7 @@ export class Parcel {
     let tower_2;
 
     // split on at least 10% of the length/width of the space
-    const splitIndex = Math.random() * 0.8 + 0.1;
+    const splitIndex = $fx.rand() * 0.8 + 0.1;
 
     if (this.rectangle.width() > this.rectangle.height()) {
       const split_x = this.rectangle.x1 + splitIndex * this.rectangle.width();
@@ -81,11 +81,11 @@ export class Parcel {
 
   drawTower = () => {
     // console.log(' - draw');
-    const r = Math.random();
+    const r = $fx.rand();
     let color;
 
     if (r < 0.4) {
-      color = hslToHex(0, 0.0, Math.random()*0.6); // gray
+      color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
       // color = hslToHex(this.hue, 0.9, 0.2); // color
     } else if (r > 0.80){
       // black
@@ -98,7 +98,7 @@ export class Parcel {
     const material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
     const maxHeight = 3.2;
     const yDownShift = 1.2;
-    const height = Math.random() * maxHeight + 0.04;
+    const height = $fx.rand() * maxHeight + 0.04;
 
     const item = cube(
       material,

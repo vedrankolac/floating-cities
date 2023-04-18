@@ -1,5 +1,5 @@
 import { GUI } from 'dat.gui';
-import { BlendFunction, NormalPass, SSAOEffect, SMAAEffect, SMAAPreset, EdgeDetectionMode, EffectComposer, EffectPass, RenderPass, TextureEffect, DepthDownsamplingPass } from "postprocessing";
+import { BlendFunction, NormalPass, SSAOEffect, SMAAEffect, SMAAPreset, EdgeDetectionMode, EffectComposer, EffectPass, RenderPass, TextureEffect, DepthDownsamplingPass, PredicationMode } from "postprocessing";
 import { SSGIEffect, TRAAEffect, MotionBlurEffect, VelocityDepthNormalPass } from "realism-effects"
 
 const ssao = (
@@ -12,27 +12,29 @@ const ssao = (
   composer.addPass(new RenderPass(scene, camera));
   
   const normalPass = new NormalPass(scene, camera);
-  const depthDownsamplingPass = new DepthDownsamplingPass({
-    normalBuffer: normalPass.texture,
-    resolutionScale: 1.0
-  });
+  composer.addPass(normalPass);
 
-  const normalDepthBuffer = capabilities.isWebGL2 ? depthDownsamplingPass.texture : null;
-
-  const smaaEffect = new SMAAEffect();
-  smaaEffect.preset = SMAAPreset.ULTRA;
-  smaaEffect.edgeDetectionMode = EdgeDetectionMode.DEPTH;
-  smaaEffect.edgeDetectionMaterial.edgeDetectionThreshold = 0.01;
+  // POSTPROCESS SMAA
+	const smaaEffect = new SMAAEffect({
+		preset: SMAAPreset.HIGH,
+		edgeDetectionMode: EdgeDetectionMode.COLOR,
+		predicationMode: PredicationMode.DEPTH
+	});
+	const edgeDetectionMaterial = smaaEffect.edgeDetectionMaterial; 
+	edgeDetectionMaterial.edgeDetectionThreshold = 0.01; 
+	edgeDetectionMaterial.predicationThreshold = 0.002; 
+	edgeDetectionMaterial.predicationScale = 1;
 
   const ssaoEffect = new SSAOEffect(camera, normalPass.texture, {
     blendFunction: BlendFunction.MULTIPLY,
     distanceScaling: false,
     depthAwareUpsampling: false,
-    normalDepthBuffer,
     samples: 16,
     rings: 3,
     worldDistanceThreshold: 120,
     worldDistanceFalloff: 20,
+    // worldProximityThreshold: 1,
+		// worldProximityFalloff: 0.01,
     luminanceInfluence: 0.18,
     minRadiusScale: 0.1,
     radius: 0.04,
@@ -43,23 +45,16 @@ const ssao = (
     resolutionScale: 1.0,
   });
 
-  const textureEffect = new TextureEffect({
-    blendFunction: BlendFunction.SKIP,
-    texture: depthDownsamplingPass.texture
-  });
-
-  const effectPass = new EffectPass(camera, smaaEffect, ssaoEffect, textureEffect);
-  composer.addPass(normalPass);
-
-  if(capabilities.isWebGL2) {
-    composer.addPass(depthDownsamplingPass);
-  } else {
-    console.log("WebGL 2 not supported, falling back to naive depth downsampling");
-  }
-
-  composer.addPass(effectPass);
+  const effectPass_1 = new EffectPass(camera, smaaEffect, ssaoEffect);
+  composer.addPass(effectPass_1);
 
   const showGui = false;
+
+  // const gui = new GUI();
+  // gui.close();
+  // gui.add(edgeDetectionMaterial, 'edgeDetectionThreshold', 0.001, 0.04 );
+  // gui.add(edgeDetectionMaterial, 'predicationThreshold', 0.0, 1.0 );
+  // gui.add(edgeDetectionMaterial, 'predicationScale', 0.0, 1.0 );
 
   if (showGui) {
     const blendMode = ssaoEffect.blendMode;
