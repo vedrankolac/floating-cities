@@ -8,6 +8,7 @@ export class Parcel {
     rectangle,
     density,
     hue,
+    yDownShift,
     scene,
     loop,
     physicsWorld,
@@ -16,10 +17,13 @@ export class Parcel {
     this.rectangle = rectangle;
     this.density = density;
     this.hue = hue;
+    this.yDownShift = yDownShift;
     this.scene = scene;
     this.loop = loop;
     this.physicsWorld = physicsWorld;
     this.envMap = envMap;
+
+    console.log('yDownShift',yDownShift);
   }
 
   split = (depth, limit, baseArea) => {
@@ -28,7 +32,7 @@ export class Parcel {
     if (depth === limit) {
       const tower = new Parcel(
         new Rectangle(this.rectangle.x1, this.rectangle.y1, this.rectangle.x2, this.rectangle.y2),
-        this.density, this.hue, this.scene, this.loop, this.physicsWorld, this.envMap
+        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap
       );
       tower.drawTower();
       return;
@@ -44,21 +48,21 @@ export class Parcel {
       const split_x = this.rectangle.x1 + splitIndex * this.rectangle.width();
       tower_1 = new Parcel(
         new Rectangle(this.rectangle.x1, this.rectangle.y1, split_x, this.rectangle.y2),
-        this.density, this.hue, this.scene, this.loop, this.physicsWorld, this.envMap
+        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap
       );
       tower_2 = new Parcel(
         new Rectangle(split_x, this.rectangle.y1, this.rectangle.x2, this.rectangle.y2),
-        this.density, this.hue, this.scene, this.loop, this.physicsWorld, this.envMap
+        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap
       );
     } else {
       const split_y = this.rectangle.y1 + splitIndex * this.rectangle.height();
       tower_1 = new Parcel(
         new Rectangle(this.rectangle.x1, this.rectangle.y1, this.rectangle.x2, split_y),
-        this.density, this.hue, this.scene, this.loop, this.physicsWorld, this.envMap
+        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap
       );
       tower_2 = new Parcel(
         new Rectangle(this.rectangle.x1, split_y, this.rectangle.x2, this.rectangle.y2),
-        this.density, this.hue, this.scene, this.loop, this.physicsWorld, this.envMap
+        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap
       );
     }
 
@@ -81,15 +85,13 @@ export class Parcel {
 
   drawTower = () => {
     // console.log(' - draw');
-    const r = $fx.rand();
+    const cIndex = $fx.rand();
     let color;
 
-    if (r < 0.2) {
-      
-      // color = hslToHex(this.hue, 0.9, 0.2); // color
-      // white
+    if (cIndex < 0.4) {
+      // white or color
       color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(this.hue, 0.3, 0.4);
-    } else if (r > 0.80){
+    } else if (cIndex > 0.80){
       // black
       color = hslToHex(0, 0.0, 0.02);
     } else {
@@ -98,7 +100,7 @@ export class Parcel {
     
     const material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
     const maxHeight = 3.2;
-    const yDownShift = 1.2;
+    // const yDownShift = 1.2;
     const height = $fx.rand() * maxHeight + 0.04;
 
     const item = cube(
@@ -110,7 +112,7 @@ export class Parcel {
       },
       {
         x: this.rectangle.center().x,
-        y: height/2 - yDownShift,
+        y: height/2 - this.yDownShift + Math.random()*(height/6),
         z: this.rectangle.center().y
       },
       {

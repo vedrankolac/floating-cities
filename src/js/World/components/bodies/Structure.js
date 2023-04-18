@@ -26,10 +26,10 @@ export class Structure {
     const strDepth = $fx.rand() * 0.6 + 0.6;
     
     // const roadWidth = 0.4;
-    const roadWidth = $fx.rand() * 0.3 + 0.1;
+    const roadWidth = $fx.rand() * 0.2 + 0.2;
 
-    const hue = $fx.rand();
-    // const hue = 0.6;
+    // const hue = $fx.rand();
+    const hue = 0.5;
 
     // make islands
 
@@ -41,30 +41,35 @@ export class Structure {
     const densityBase2 = Math.round($fx.rand() * 60 + 2);
     console.log('densityBase1', densityBase1);
 
+    const yDownShiftBase1 = 1.52;
+    const yDownShiftBase2 = Math.random() * (1.52-0.8) +  0.8;
+    // const yDownShiftBase2 = 0.8;
+
     const base1 = new Parcel(
       rectangleBase1,
       densityBase1,
       hue,
+      yDownShiftBase1,
       this.scene,
       this.loop,
       this.physicsWorld,
       this.envMap
     );
     const base1Area = rectangleBase1.width() * rectangleBase1.height();
-    base1.split(0, 8, base1Area);
-
+    base1.split(0, 8, base1Area, 1.2);
     
     console.log('densityBase2', densityBase2);
     const base2 = new Parcel(
       rectangleBase2,
       densityBase2,
-      hue + 0.1,
+      hue + 0.7,
+      yDownShiftBase2,
       this.scene,
       this.loop,
       this.physicsWorld,
       this.envMap
     );
     const base2Area = rectangleBase2.width() * rectangleBase2.height();
-    base2.split(0, 8, base2Area);
+    base2.split(0, 8, base2Area, 1.2);
   }
 }
