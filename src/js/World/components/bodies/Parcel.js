@@ -2,6 +2,7 @@ import { hslToHex } from "../../utils/colorUtils";
 import { canvasTextureMaterial } from "../materials/canvasTextureMaterial";
 import { cube } from "./cube";
 import { Rectangle } from "../../utils/Rectangle";
+import { BuildingFacade } from "../canvasMaps/BuildingFacade";
 
 export class Parcel {
   constructor(
@@ -105,18 +106,50 @@ export class Parcel {
     } else {
       color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
     }
-    
-    const material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
+
+    const width = this.rectangle.width() - 0.02;
+    const depth = this.rectangle.height() - 0.02;
+
     const maxHeight = 3.2;
-    // const yDownShift = 1.2;
-    const height = $fx.rand() * maxHeight + 0.04;
+    const hIndex = $fx.rand();
+    const height = (hIndex>0.5)
+      ? $fx.rand() * maxHeight + 0.04
+      : width * Math.round($fx.rand() * 5);
+    // const height = width * Math.round($fx.rand() * 5);
+    
+    //--
+
+    let material = null;
+    const txIndex = $fx.rand();
+    if (txIndex > 0.5) {
+      material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
+    } else {
+      const whRatio = height/width;
+      const wdRatio = height/depth;
+
+      const tI = Math.round(Math.random() * 8 + 4);
+      // const tI = 12;
+      // const mapsFrontBack = new BuildingFacade(color, tI, tI * whRatio);
+      // const mapsLeftRight = new BuildingFacade(color, tI, tI * whRatio);
+      const mapsFrontBack = null;
+      const mapsLeftRight = null;
+
+      material = [
+        canvasTextureMaterial({ ...mapsLeftRight, envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}), // Right
+        canvasTextureMaterial({ ...mapsLeftRight, envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}), // Left
+        canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}), // Top
+        canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}), // Bottom
+        canvasTextureMaterial({ ...mapsFrontBack, envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}), // Front
+        canvasTextureMaterial({ ...mapsFrontBack, envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}) // Back
+      ];
+    }
 
     const item = cube(
       material,
       {
-        width:  this.rectangle.width() - 0.02,
-        height: height,
-        depth:  this.rectangle.height() - 0.02
+        width,
+        height,
+        depth
       },
       {
         x: this.rectangle.center().x,

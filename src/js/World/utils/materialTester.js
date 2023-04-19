@@ -2,10 +2,13 @@ import { PlaneGeometry, MathUtils, Mesh, Color } from 'three';
 import { canvasTextureMaterial } from "../components/materials/canvasTextureMaterial";
 import { GUI } from 'dat.gui';
 import { PerlinNoise } from '../components/canvasMaps/PerlinNoise';
+import { hslToHex } from './colorUtils';
+import { BuildingFacade } from '../components/canvasMaps/BuildingFacade';
 
 export const materialTester = scene => {
   let normalMap = null;
-  let maps = new PerlinNoise();
+  // let maps = new PerlinNoise();
+  let maps = new BuildingFacade(hslToHex(0, 0.8, 0.5), 1, 1);
 
   const material = canvasTextureMaterial({...maps}, {roughness: 1, metalness: 0}, 1);
 
