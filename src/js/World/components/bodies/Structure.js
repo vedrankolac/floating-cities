@@ -37,9 +37,8 @@ export class Structure {
     // const roadWidth = 0.4;
     const roadWidth = $fx.rand() * 0.3 + 0.1;
 
-    const splitIndex = $fx.rand() * 0.7 + 0.15;
-    const split_x = -strWidth + splitIndex * strWidth;
-    console.log('splitIndex',splitIndex);
+    const splitIndex = $fx.rand() * 0.6 + 0.20;
+    const split_x = -strWidth + splitIndex * strWidth * 2;
 
     const rectangleBase1 = new Rectangle(-strWidth, -strDepth, split_x - roadWidth/2, strDepth);
     const rectangleBase2 = new Rectangle(split_x + roadWidth/2, -strDepth, strWidth, strDepth);
