@@ -10,19 +10,21 @@ export class Structure {
     scene,
     loop,
     physicsWorld,
-    envMap
+    envMap,
+    hue
   ) {
     this.scene = scene;
     this.loop = loop;
     this.physicsWorld = physicsWorld;
     this.envMap = envMap;
+    this.hue = hue;
     this.start();
   }
 
   start = () => {
     console.log('Structure::start');
 
-    const hue = $fx.rand();
+    
     // const hue = 0.5;
 
     // DEFINE SPLIT AND DENSITY
@@ -37,7 +39,9 @@ export class Structure {
     // const roadWidth = 0.4;
     const roadWidth = $fx.rand() * 0.3 + 0.1;
 
-    const splitIndex = $fx.rand() * 0.6 + 0.20;
+    // split on no less than 20% of width
+    const splitIndex = $fx.rand() * 0.7 + 0.15;
+    // const splitIndex = 0.10;
     const split_x = -strWidth + splitIndex * strWidth * 2;
 
     const rectangleBase1 = new Rectangle(-strWidth, -strDepth, split_x - roadWidth/2, strDepth);
@@ -78,7 +82,7 @@ export class Structure {
     const base1 = new Parcel(
       rectangleBase1,
       densityBase1,
-      hue,
+      this.hue,
       yDownShiftBase1,
       this.scene,
       this.loop,
@@ -91,7 +95,7 @@ export class Structure {
     const base2 = new Parcel(
       rectangleBase2,
       densityBase2,
-      hue + 0.7,
+      this.hue + 0.7,
       yDownShiftBase2,
       this.scene,
       this.loop,

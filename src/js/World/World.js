@@ -99,8 +99,9 @@ class World {
     // this.materialTester      = materialTester(this.scene, envMap);
     // this.lightTester         = lightTester(this.scene, envMap);
 
-    this.structure = new Structure(this.scene, this.loop, this.physicsWorld, envMap);    
-    this.walls     = walls    (this.scene, this.floorSize, this.bgHSL, this.bgColor);
+    const hue = $fx.rand();
+    this.structure = new Structure(this.scene, this.loop, this.physicsWorld, envMap, hue);    
+    this.walls     = walls    (this.scene, hue, this.floorSize, this.bgHSL, this.bgColor);
     
     // this.orbitControls.target = this.pendulum.handleB.mesh.position;
     // this.orbitControls.target = this.pachinko.position;

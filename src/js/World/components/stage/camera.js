@@ -5,8 +5,13 @@ const createCamera = () => {
   const camera = new PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 0.1, 660 );
 
   const radius  = 10;
+
+  // const polar   = MathUtils.degToRad(90-30);
+  // const equator = MathUtils.degToRad(45);
+
   const polar   = MathUtils.degToRad(90-30);
   const equator = MathUtils.degToRad(45);
+
   // const radius  = $fx.rand()*0.2 + 1;
   // const polar   = MathUtils.degToRad($fx.rand()*45 + (90-45/2));
   // const equator = MathUtils.degToRad($fx.rand()*45 + ( 0-45/2));
