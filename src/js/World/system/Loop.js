@@ -108,6 +108,21 @@ class Loop {
       object.tick(this.dt);
     }
 
+    // boundary crossing impulse that kicks body back to the direction of center
+    this.bodies.forEach(body => {
+      if (body.mesh.name === 'train') {
+        const position = body.rigidBody.translation();
+        if (body.rigidBody.translation().z > 20) {
+          body.rigidBody.setTranslation({ x: position.x, y: position.y, z: -20 }, true);
+          body.rigidBody.setLinvel({
+            x: 0,
+            y: 0,
+            z: $fx.rand()*50 + 4
+          }, true);
+        }
+      }
+    });
+
     if (!this.engineInitStepDone) {
       const preloader = document.getElementById("preloader");
       preloader.style.display = "none";
@@ -138,35 +153,7 @@ class Loop {
       while (this.accumulator >= this.dt) {
         // before making step in engine, run all the code that deals with updates to ensure we have a deterministic simulation
         this.updatePhysicsObjects();
-        
-        let eventQueue = new EventQueue(true);
-        this.physicsWorld.step(eventQueue);
-        eventQueue.drainCollisionEvents((handle1, handle2, started) => {
-          if (started) {
-            const rbs = [];
-            rbs.push(this.physicsWorld.getRigidBody(handle1));
-            rbs.push(this.physicsWorld.getRigidBody(handle2));
-
-            for (let i = 0; i < rbs.length; i++) {
-              const rb = rbs[i];
-              // console.log(rb);
-              if (rb.iname === 'cylinder') {
-                rb.mesh.collisionCounter -= 0.1;
-                let l = rb.mesh.collisionCounter;
-                const newColor = hslToHex(rb.mesh.hue, 1, l);
-                rb.mesh.material.color.set(newColor);
-              }
-              if (rb.iname === 'sphere') {
-                // console.log('sphere', rb.mesh);
-                rb.mesh.collisionCounter += 0.012;
-                let l = rb.mesh.collisionCounter;
-                const newColor = hslToHex(rb.mesh.hue, 0.98, l);
-                rb.mesh.material.color.set(newColor);
-              }
-            }
-          }
-        });
-
+        this.physicsWorld.step();
         this.accumulator -= this.dt;
       }
 
@@ -187,21 +174,6 @@ class Loop {
             rotation.w
           ));
       });
-
-      // no kinematics since we are running a deterministic simulation
-      // this.kinematicPositionBasedBodies.forEach(body => {
-      //   const position = body.mesh.position;
-      //   const rotation = body.mesh.rotation;
-
-      //   const quaternion = new Quaternion();
-      //   quaternion.setFromEuler(rotation);
-
-      //   body.rigidBody.setNextKinematicTranslation(position);
-      //   body.rigidBody.setNextKinematicRotation(quaternion);
-      //   // body.rigidBody.setTranslation(position, true);
-      //   // body.rigidBody.setRotation(quaternion, true);
-      // });
-
     }
   }
 }

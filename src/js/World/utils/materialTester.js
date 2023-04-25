@@ -4,11 +4,12 @@ import { GUI } from 'dat.gui';
 import { PerlinNoise } from '../components/canvasMaps/PerlinNoise';
 import { hslToHex } from './colorUtils';
 import { BuildingFacade } from '../components/canvasMaps/BuildingFacade';
+import { TrainWindows } from '../components/canvasMaps/TrainWindows';
 
 export const materialTester = scene => {
   let normalMap = null;
   // let maps = new PerlinNoise();
-  let maps = new BuildingFacade(hslToHex(0, 0.8, 0.5), 1, 1);
+  let maps = new TrainWindows();
 
   const material = canvasTextureMaterial({...maps}, {roughness: 1, metalness: 0}, 1);
 

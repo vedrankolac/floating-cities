@@ -11,6 +11,7 @@ const cube = (
     rotation,
     physicsWorld,
     rigidType = 'dynamic',
+    name = '',
     widthSegments = 1,
     heightSegments = 1,
     depthSegments = 1
@@ -27,6 +28,9 @@ const cube = (
   const mesh = new Mesh( geometry, material );
   mesh.castShadow = true;
   mesh.receiveShadow = true;
+  if (name !=='')  {
+    mesh.name  = name;
+  }
 
   let rigidBodyDesc = null;
   if (rigidType === 'dynamic') {

@@ -34,7 +34,7 @@ const canvasTextureMaterial = (
     // bumpScale:
 
     // emissive:
-    // emissiveMap: emissiveMap,
+    emissiveMap: maps.emissiveMap ? maps.emissiveMap : null,
 
     // displacementMap
     // displacementScale

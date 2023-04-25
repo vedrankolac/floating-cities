@@ -1,5 +1,6 @@
 import { Rectangle } from "../../utils/Rectangle";
 import { Parcel } from "./Parcel";
+import { Train } from "./Train";
 
 import { cube } from "./cube";
 import { hslToHex } from "../../utils/colorUtils";
@@ -33,8 +34,8 @@ export class Structure {
     const strWidth = $fx.rand() * 1.4 + 0.6;
     const strDepth = $fx.rand() * 0.6 + 0.6;
     
-    // const roadWidth = 0.4;
-    const roadWidth = $fx.rand() * 0.3 + 0.1;
+    const roadWidth = 0.16;
+    // const roadWidth = $fx.rand() * 0.3 + 0.16;
 
     // split on no less than 20% of width
     const splitIndex = $fx.rand() * 0.7 + 0.15;
@@ -102,32 +103,15 @@ export class Structure {
     const base2Area = rectangleBase2.width() * rectangleBase2.height();
     base2.split(0, 8, base2Area, 1.2);
 
-    // MAKE ROAD AND TRAIN
-
-    const color = hslToHex(0, 0.0, 0.02);
-    const material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
-    const item = cube(
-      material,
-      {
-        width:  roadWidth + 0.02,
-        height: 0.01,
-        depth:  4
-      },
-      {
-        x: split_x,
-        y: -b2,
-        z: 0
-      },
-      {
-        x: 0,
-        y: 0,
-        z: 0
-      },
+    const train = new Train(
+      roadWidth,
+      split_x,
+      b2,
+      this.hue,
+      this.scene,
+      this.loop,
       this.physicsWorld,
-      'fixed'
-    );
-    this.scene.add(item.mesh);
-    this.loop.bodies.push(item);
-
+      this.envMap
+      );
   }
 }

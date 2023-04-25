@@ -26,9 +26,7 @@ class World {
   constructor() {
     console.log('fxhash:   ', fxhash);
 
-    // this.planetsConfig = planetsConfig();
-    // this.gravity = this.planetsConfig.gravity;
-    this.gravity = $fx.rand() * 6 + 1.4;
+    this.gravity = 0;
     this.dt = 1/120;
 
     this.xrEnabled = false;
