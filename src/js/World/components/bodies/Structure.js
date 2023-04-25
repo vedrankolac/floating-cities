@@ -24,9 +24,6 @@ export class Structure {
   start = () => {
     console.log('Structure::start');
 
-    
-    // const hue = 0.5;
-
     // DEFINE SPLIT AND DENSITY
 
     // const strWidth = 0.6;

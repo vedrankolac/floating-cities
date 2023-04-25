@@ -44,9 +44,10 @@ class World {
     this.bgColor = this.colorComposition.bg.color;
     this.bgHSL = {};
     this.bgColor.getHSL(this.bgHSL);
+    this.hue = $fx.rand();
 
     this.renderer = createRenderer(this.postprocessingEnabled, this.xrEnabled);
-    this.scene    = createScene();
+    this.scene    = createScene(this.hue);
     this.camera   = createCamera();
     this.lights   = createLights(this.scene);
 
@@ -99,9 +100,8 @@ class World {
     // this.materialTester      = materialTester(this.scene, envMap);
     // this.lightTester         = lightTester(this.scene, envMap);
 
-    const hue = $fx.rand();
-    this.structure = new Structure(this.scene, this.loop, this.physicsWorld, envMap, hue);    
-    this.walls     = walls    (this.scene, hue, this.floorSize, this.bgHSL, this.bgColor);
+    this.structure = new Structure(this.scene, this.loop, this.physicsWorld, envMap, this.hue);    
+    this.walls     = walls    (this.scene, this.hue, this.floorSize, this.bgHSL, this.bgColor);
     
     // this.orbitControls.target = this.pendulum.handleB.mesh.position;
     // this.orbitControls.target = this.pachinko.position;
