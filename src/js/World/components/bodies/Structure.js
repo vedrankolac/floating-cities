@@ -34,8 +34,8 @@ export class Structure {
     const strWidth = $fx.rand() * 1.4 + 0.6;
     const strDepth = $fx.rand() * 0.6 + 0.6;
     
-    const roadWidth = 0.16;
-    // const roadWidth = $fx.rand() * 0.3 + 0.16;
+    // const roadWidth = 0.16;
+    const roadWidth = $fx.rand() * 0.04 + 0.16;
 
     // split on no less than 20% of width
     const splitIndex = $fx.rand() * 0.7 + 0.15;
@@ -103,15 +103,48 @@ export class Structure {
     const base2Area = rectangleBase2.width() * rectangleBase2.height();
     base2.split(0, 8, base2Area, 1.2);
 
-    const train = new Train(
+    const trainA = new Train(
       roadWidth,
       split_x,
+      0,
       b2,
+      'z',
       this.hue,
       this.scene,
       this.loop,
       this.physicsWorld,
       this.envMap
-      );
+    );
+
+    let yLevel = b1;
+    if ((b2 - b1) < (0.14 + 0.02 * 2)) {
+      yLevel = b2 + 0.14 + 0.02 * 2;
+    }
+
+    const trainB = new Train(
+      roadWidth,
+      0,
+      -strDepth - roadWidth/2,
+      yLevel,
+      'x',
+      this.hue,
+      this.scene,
+      this.loop,
+      this.physicsWorld,
+      this.envMap
+    );
+
+    // const trainC = new Train(
+    //   roadWidth,
+    //   0,
+    //   strDepth + roadWidth/2,
+    //   yLevel,
+    //   'x',
+    //   this.hue,
+    //   this.scene,
+    //   this.loop,
+    //   this.physicsWorld,
+    //   this.envMap
+    // );
   }
 }

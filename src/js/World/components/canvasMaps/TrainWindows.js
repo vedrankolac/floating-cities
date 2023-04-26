@@ -32,8 +32,7 @@ export class TrainWindows {
         const rx = xm + i * ww;
         const rw = ww/4;
         const ry = ym;
-        const rh = height - ym * 2;
-        // const rh = height/3;
+        const rh = (height - ym * 2) / 2 ;
         ccContext.fillRect(rx, ry, rw, rh);
       }
     }

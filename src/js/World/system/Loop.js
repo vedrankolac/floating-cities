@@ -110,14 +110,41 @@ class Loop {
 
     // boundary crossing impulse that kicks body back to the direction of center
     this.bodies.forEach(body => {
-      if (body.mesh.name === 'train') {
+      if (body.mesh.name === 'trainZ') {
         const position = body.rigidBody.translation();
         if (body.rigidBody.translation().z > 20) {
           body.rigidBody.setTranslation({ x: position.x, y: position.y, z: -20 }, true);
           body.rigidBody.setLinvel({
             x: 0,
             y: 0,
-            z: $fx.rand()*50 + 4
+            z: $fx.rand() * 20 + 4
+          }, true);
+        }
+        if (body.rigidBody.translation().z < -20) {
+          body.rigidBody.setTranslation({ x: position.x, y: position.y, z: 20 }, true);
+          body.rigidBody.setLinvel({
+            x: 0,
+            y: 0,
+            z: -$fx.rand() * 20 + 4
+          }, true);
+        }
+      }
+      if (body.mesh.name === 'trainX') {
+        const position = body.rigidBody.translation();
+        if (body.rigidBody.translation().x > 20) {
+          body.rigidBody.setTranslation({ x: -20, y: position.y, z: position.z }, true);
+          body.rigidBody.setLinvel({
+            x: $fx.rand() * 20 + 4,
+            y: 0,
+            z: 0,
+          }, true);
+        }
+        if (body.rigidBody.translation().x < -20) {
+          body.rigidBody.setTranslation({ x: 20, y: position.y, z: position.z }, true);
+          body.rigidBody.setLinvel({
+            x: -$fx.rand() * 20 + 4,
+            y: 0,
+            z: 0,
           }, true);
         }
       }
