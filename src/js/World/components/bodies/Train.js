@@ -85,7 +85,7 @@ export class Train {
 
   makeTrains = () => {
     const trainColor = hslToHex(0, 0.0, $fx.rand()*0.08 + 0.02); // gray
-    const windowsColor = hslToHex(this.hue, 0.1, 0.6);
+    const windowsColor = hslToHex(this.hue, 0.1, 0.00);
     const maps = new TrainWindows(trainColor, windowsColor);
     // const maps = null;
 

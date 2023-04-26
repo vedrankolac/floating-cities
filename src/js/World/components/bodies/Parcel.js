@@ -3,6 +3,12 @@ import { canvasTextureMaterial } from "../materials/canvasTextureMaterial";
 import { cube } from "./cube";
 import { Rectangle } from "../../utils/Rectangle";
 import { BuildingFacade } from "../canvasMaps/BuildingFacade";
+import {
+  LineBasicMaterial,
+  Vector3,
+  BufferGeometry,
+  Line
+} from 'three';
 
 export class Parcel {
   constructor(
@@ -23,6 +29,7 @@ export class Parcel {
     this.loop = loop;
     this.physicsWorld = physicsWorld;
     this.envMap = envMap;
+    this.tree = false;
   }
 
   split = (depth, limit, baseArea) => {
@@ -41,7 +48,7 @@ export class Parcel {
     let tower_2;
 
     // split on at least 10% of the length/width of the space
-    const splitIndex = $fx.rand() * 0.8 + 0.1;
+    const splitIndex = $fx.rand() * 0.7 + 0.15;
 
     if (this.rectangle.width() > this.rectangle.height()) {
       const split_x = this.rectangle.x1 + splitIndex * this.rectangle.width();
@@ -84,11 +91,67 @@ export class Parcel {
 
   draw = () => {
     const dIndex = $fx.rand();
-    if (dIndex < 0.6) {
-      this.drawTower(); 
+    if (dIndex < 0.66) {
+      this.drawTower();
+
+      // if (dIndex < 0.1) {
+      //   this.drawTree();
+      // } else {
+      //   this.drawTower();
+      // }
     } else {
       // empty space
     }
+  }
+
+  drawTree = () => {
+    console.log('+++ drawTree');
+    const color = hslToHex(this.hue, 0.0, 0.0)
+    const material = new LineBasicMaterial({color: color});
+
+    const width = this.rectangle.width() - 0.02;
+    const depth = this.rectangle.height() - 0.02;
+
+    const maxHeight = 3.2;
+    const hIndex = $fx.rand();
+    const height = (hIndex>0.5)
+      ? $fx.rand() * maxHeight + 0.04
+      : width * Math.round($fx.rand() * 4.6);
+
+      console.log(this.rectangle.center().x, this.rectangle.center().y);
+
+      const points = [];
+      let yCount = -this.yDownShift;
+
+      for (let i = 0; i < 32; i++) {
+        const point = new Vector3(
+          this.rectangle.center().x + $fx.rand() * this.rectangle.width() - this.rectangle.width()/2,
+          yCount,
+          this.rectangle.center().y + $fx.rand() * this.rectangle.height() - this.rectangle.height()/2,
+        )
+        points.push(point);
+        yCount += 0.02;
+      }
+
+    // const points = [
+    //   new Vector3(
+    //     this.rectangle.center().x,
+    //     -this.yDownShift,
+    //     this.rectangle.center().y
+    //   ),
+    //   new Vector3(
+    //     this.rectangle.center().x, 
+    //     -this.yDownShift + height,
+    //     this.rectangle.center().y
+    //   )
+    // ];
+
+    const geometry = new BufferGeometry().setFromPoints(points);
+    const mesh = new Line(geometry, material);
+    // mesh.castShadow = true;
+    // mesh.receiveShadow = true;
+
+    this.scene.add(mesh);
   }
 
   drawTower = () => {

@@ -37,7 +37,7 @@ export class Structure {
     // const roadWidth = 0.16;
     const roadWidth = $fx.rand() * 0.04 + 0.16;
 
-    // split on no less than 20% of width
+    // split on no less than 30% of width
     const splitIndex = $fx.rand() * 0.7 + 0.15;
     // const splitIndex = 0.10;
     const split_x = -strWidth + splitIndex * strWidth * 2;
@@ -102,6 +102,8 @@ export class Structure {
     );
     const base2Area = rectangleBase2.width() * rectangleBase2.height();
     base2.split(0, 8, base2Area, 1.2);
+
+    // MAKE TRAINS
 
     const trainA = new Train(
       roadWidth,

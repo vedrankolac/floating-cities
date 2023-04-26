@@ -9,8 +9,8 @@ const createCamera = () => {
   // const polar   = MathUtils.degToRad(90-30);
   // const equator = MathUtils.degToRad(45);
 
-  const polar   = MathUtils.degToRad(90-30);
-  const equator = MathUtils.degToRad(45);
+  const polar   = MathUtils.degToRad(90 - $fx.rand()*30);
+  const equator = MathUtils.degToRad($fx.rand()*360);
 
   // const radius  = $fx.rand()*0.2 + 1;
   // const polar   = MathUtils.degToRad($fx.rand()*45 + (90-45/2));
