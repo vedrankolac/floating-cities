@@ -56,7 +56,7 @@ export class Structure {
     // DEFINE LEVELS
 
     const b1 = 1.52;
-    const b2 = Math.random() * (1.52-0.8) +  0.8;
+    const b2 = $fx.rand() * (1.52-0.8) +  0.8;
 
     const bIndex = $fx.rand();
 

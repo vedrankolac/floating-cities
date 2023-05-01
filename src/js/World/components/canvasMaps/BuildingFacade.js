@@ -28,14 +28,19 @@ export class BuildingFacade {
       const h = cc.height;
     
       const ccContext = cc.getContext("2d");
-      ccContext.fillStyle = '#FFFFFF';
+      ccContext.fillStyle = '#ffffff';
       const rx = 0;
-      const ry = 1;
+      const ry = 0;
       // const rw = width - rx * 2;
       // const rh = width - ry * 2;
+
       const rw = width - rx * 2;
-      const rh = width - ry * 2;
-      // ccContext.fillRect(rx, ry, rw, rh);
+      const rh = 8;
+
+      // const rw = 4;
+      // const rh = width;
+
+      ccContext.fillRect(rx, ry, rw, rh);
 
       const ncContext = nc.getContext("2d");
       ncContext.fillStyle = '#000000';
@@ -62,7 +67,7 @@ export class BuildingFacade {
     colorCanvas = null;
 
 		return {
-			normalMap,
+			// normalMap,
       colorMap
     };
 	}

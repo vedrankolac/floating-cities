@@ -91,16 +91,13 @@ export class Parcel {
 
   draw = () => {
     const dIndex = $fx.rand();
-    if (dIndex < 0.66) {
-      this.drawTower();
 
-      // if (dIndex < 0.1) {
-      //   this.drawTree();
-      // } else {
-      //   this.drawTower();
-      // }
-    } else {
-      // empty space
+    if (dIndex < 0.45) {
+      this.drawTowerPlain();
+    } else if (dIndex >= 0.45 && dIndex < 0.6) {
+      this.drawTowerStackedVertically();
+    } else if (dIndex >= 0.6 && dIndex < 1.0) {
+     // empty space
     }
   }
 
@@ -154,7 +151,71 @@ export class Parcel {
     this.scene.add(mesh);
   }
 
-  drawTower = () => {
+  drawTowerStackedVertically = () => {
+    // console.log(' - draw');
+
+    const cIndex = $fx.rand();
+    let color;
+
+    if (cIndex < 0.4) {
+      // white or color
+      color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(this.hue, 0.3, 0.4);
+    } else if (cIndex > 0.80){
+      // black
+      color = hslToHex(0, 0.0, 0.02);
+    } else {
+      color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
+    }
+
+    const width = this.rectangle.width() - 0.02;
+    const depth = this.rectangle.height() - 0.02;
+
+    const maxHeight = 3.2;
+    const hIndex = $fx.rand();
+    const height = (hIndex>0.5)
+      ? $fx.rand() * maxHeight + 0.04
+      : width * Math.round($fx.rand() * 5);
+    // const height = width * Math.round($fx.rand() * 5);
+
+    const nBlocks = $fx.rand()*10 + 12;
+    const blockHeight = height/nBlocks;
+    
+    let material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
+
+    // const blockHI = $fx.rand()*0.8 + 0.2;
+    const blockHI = $fx.rand()*0.5 + 0.1;
+    const initY = -this.yDownShift + blockHeight/2*blockHI - $fx.rand()*(height/6);
+
+    for (let i = 0; i < nBlocks; i++) {
+      const item = cube(
+        material,
+        {
+          width,
+          height: blockHeight * blockHI,
+          depth
+        },
+        {
+          x: this.rectangle.center().x,
+          y: initY + i * blockHeight,
+          z: this.rectangle.center().y
+        },
+        {
+          x: 0,
+          y: 0,
+          z: 0
+        },
+        'none',
+        this.physicsWorld
+      );
+  
+      this.scene.add(item.mesh);
+      // this.loop.bodies.push(item);
+    }
+
+    
+  }
+
+  drawTowerPlain = () => {
     // console.log(' - draw');
 
     const cIndex = $fx.rand();
@@ -182,30 +243,7 @@ export class Parcel {
     
     //--
 
-    let material = null;
-    const txIndex = $fx.rand();
-    if (txIndex > 0.5) {
-      material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
-    } else {
-      const whRatio = height/width;
-      const wdRatio = height/depth;
-
-      const tI = Math.round(Math.random() * 8 + 4);
-      // const tI = 12;
-      // const mapsFrontBack = new BuildingFacade(color, tI, tI * whRatio);
-      // const mapsLeftRight = new BuildingFacade(color, tI, tI * whRatio);
-      const mapsFrontBack = null;
-      const mapsLeftRight = null;
-
-      material = [
-        canvasTextureMaterial({ ...mapsLeftRight, envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}), // Right
-        canvasTextureMaterial({ ...mapsLeftRight, envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}), // Left
-        canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}), // Top
-        canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}), // Bottom
-        canvasTextureMaterial({ ...mapsFrontBack, envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}), // Front
-        canvasTextureMaterial({ ...mapsFrontBack, envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02}) // Back
-      ];
-    }
+    let material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
 
     const item = cube(
       material,
@@ -216,7 +254,8 @@ export class Parcel {
       },
       {
         x: this.rectangle.center().x,
-        y: height/2 - this.yDownShift - Math.random()*(height/6),
+        y: height/2 - this.yDownShift,
+        // y: height/2 - this.yDownShift - $fx.rand()*(height/6),
         // y: height/2 - this.yDownShift ,
         z: this.rectangle.center().y
       },
@@ -228,6 +267,7 @@ export class Parcel {
       'none',
       this.physicsWorld
     );
+
     this.scene.add(item.mesh);
     // this.loop.bodies.push(item);
   }
