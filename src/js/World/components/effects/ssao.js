@@ -36,7 +36,14 @@ const ssao = (
 
   let motionBlurEffect = null;
   if (motionBlur) {
-    motionBlurEffect = new MotionBlurEffect(velocityDepthNormalPass);
+    motionBlurEffect = new MotionBlurEffect(
+      velocityDepthNormalPass,
+      {
+        intensity: 1,
+        jitter: 1,
+        samples: 4
+      }
+      );
   }
 
   const ssaoEffect = new SSAOEffect(camera, normalPass.texture, {
