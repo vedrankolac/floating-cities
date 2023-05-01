@@ -1,5 +1,5 @@
 import { GUI } from 'dat.gui';
-import { BlendFunction, NormalPass, SSAOEffect, SMAAEffect, SMAAPreset, EdgeDetectionMode, EffectComposer, EffectPass, RenderPass, TextureEffect, DepthDownsamplingPass, PredicationMode } from "postprocessing";
+import { BlendFunction, NormalPass, SSAOEffect, SMAAEffect, SMAAPreset, EdgeDetectionMode, EffectComposer, EffectPass, RenderPass, PredicationMode } from "postprocessing";
 import { SSGIEffect, TRAAEffect, MotionBlurEffect, VelocityDepthNormalPass } from "realism-effects"
 
 const ssao = (
@@ -14,6 +14,9 @@ const ssao = (
   const normalPass = new NormalPass(scene, camera);
   composer.addPass(normalPass);
 
+  const velocityDepthNormalPass = new VelocityDepthNormalPass(scene, camera)
+  composer.addPass(velocityDepthNormalPass)
+
   // POSTPROCESS SMAA
 	const smaaEffect = new SMAAEffect({
 		preset: SMAAPreset.HIGH,
@@ -24,6 +27,8 @@ const ssao = (
 	edgeDetectionMaterial.edgeDetectionThreshold = 0.01; 
 	edgeDetectionMaterial.predicationThreshold = 0.002; 
 	edgeDetectionMaterial.predicationScale = 1;
+
+  const motionBlurEffect = new MotionBlurEffect(velocityDepthNormalPass);
 
   const ssaoEffect = new SSAOEffect(camera, normalPass.texture, {
     blendFunction: BlendFunction.MULTIPLY,
@@ -46,7 +51,9 @@ const ssao = (
   });
 
   const effectPass_1 = new EffectPass(camera, smaaEffect, ssaoEffect);
+  const effectPass_2 = new EffectPass(camera, motionBlurEffect);
   composer.addPass(effectPass_1);
+  composer.addPass(effectPass_2);
 
   const showGui = false;
 
