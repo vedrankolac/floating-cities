@@ -33,10 +33,11 @@ class World {
     this.postprocessingEnabled = true;
     this.printToolsEnabled = true;
     this.ppM = {
-      ssao: 'SSAO',
-      ssgi: 'SSGI'
+      ssao:   'SSAO',
+      ssgi:   'SSGI',
+      ssaogi: 'SSAOGI'
     }
-    this.ppMA = this.ppM.ssgi;
+    this.ppMA = this.ppM.ssao;
 
     this.colorComposition = colorComposer();
     this.bgColor = this.colorComposition.bg.color;

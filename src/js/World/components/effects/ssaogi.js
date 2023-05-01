@@ -1,15 +1,14 @@
 import { GUI } from 'dat.gui';
 import { BlendFunction, NormalPass, SSAOEffect, SMAAEffect, SMAAPreset, EdgeDetectionMode, EffectComposer, EffectPass, RenderPass, PredicationMode } from "postprocessing";
 import { SSGIEffect, TRAAEffect, MotionBlurEffect, VelocityDepthNormalPass } from "realism-effects"
+import { SSGIDebugGUI } from '../../utils/SSGIDebugGUI';
 
-const ssao = (
+export const ssaogi = (
   camera,
   scene,
-  renderer,
-  params
+  renderer
 ) => {
-  const { motionBlur } = params;
-
+  console.log('ssaogi');
   const capabilities = renderer.capabilities;
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
@@ -17,11 +16,33 @@ const ssao = (
   const normalPass = new NormalPass(scene, camera);
   composer.addPass(normalPass);
 
-  let velocityDepthNormalPass = null;
-  if (motionBlur) {
-    velocityDepthNormalPass = new VelocityDepthNormalPass(scene, camera)
-    composer.addPass(velocityDepthNormalPass) 
-  }
+  const velocityDepthNormalPass = new VelocityDepthNormalPass(scene, camera)
+  composer.addPass(velocityDepthNormalPass)
+
+  const ssgiOptions = {
+		distance: 1.2,
+		thickness: 0.5,
+		autoThickness: true,
+		maxRoughness: 1,
+		blend: 0.95,
+		denoiseIterations: 4,
+		denoiseKernel: 3,
+		denoiseDiffuse: 25,
+		denoiseSpecular: 25.5,
+		depthPhi: 5,
+		normalPhi: 28,
+		roughnessPhi: 18.75,
+		envBlur: 0.5,
+		importanceSampling: false,
+		directLightMultiplier: 1,
+		steps: 20,
+		refineSteps: 4,
+		spp: 1,
+		resolutionScale: 1,
+		missedRays: false
+	}
+
+  const ssgiEffect = new SSGIEffect(scene, camera, velocityDepthNormalPass, ssgiOptions);
 
   // POSTPROCESS SMAA
 	const smaaEffect = new SMAAEffect({
@@ -34,10 +55,7 @@ const ssao = (
 	edgeDetectionMaterial.predicationThreshold = 0.002; 
 	edgeDetectionMaterial.predicationScale = 1;
 
-  let motionBlurEffect = null;
-  if (motionBlur) {
-    motionBlurEffect = new MotionBlurEffect(velocityDepthNormalPass);
-  }
+  const motionBlurEffect = new MotionBlurEffect(velocityDepthNormalPass);
 
   const ssaoEffect = new SSAOEffect(camera, normalPass.texture, {
     blendFunction: BlendFunction.MULTIPLY,
@@ -59,15 +77,13 @@ const ssao = (
     resolutionScale: 1.0,
   });
 
-  const effectPass_1 = new EffectPass(camera, smaaEffect, ssaoEffect);
-  let effectPass_2 = null;
-  if (motionBlur) {
-    effectPass_2 = new EffectPass(camera, motionBlurEffect); 
-  }
+  const effectPass_0 = new EffectPass(camera, smaaEffect, ssaoEffect);
+  const effectPass_1 = new EffectPass(camera, ssgiEffect)
+  const effectPass_2 = new EffectPass(camera, motionBlurEffect);
+
+  composer.addPass(effectPass_0);
   composer.addPass(effectPass_1);
-  if (motionBlur) {
-    composer.addPass(effectPass_2);
-  }
+  composer.addPass(effectPass_2);
 
   const showGui = false;
 
@@ -173,8 +189,8 @@ const ssao = (
     //     });
     // }
   }
+
+  const gui = new SSGIDebugGUI(ssgiEffect, ssgiOptions)
   
   return composer;
 }
-
-export { ssao };
