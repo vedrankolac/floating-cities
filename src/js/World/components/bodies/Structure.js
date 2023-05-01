@@ -2,10 +2,6 @@ import { Rectangle } from "../../utils/Rectangle";
 import { Parcel } from "./Parcel";
 import { Train } from "./Train";
 
-import { cube } from "./cube";
-import { hslToHex } from "../../utils/colorUtils";
-import { canvasTextureMaterial } from "../materials/canvasTextureMaterial";
-
 export class Structure {
   constructor(
     scene,

@@ -76,11 +76,11 @@ export class Train {
       size,
       translation,
       rotation,
-      this.physicsWorld,
-      'fixed'
+      'none',
+      this.physicsWorld
     );
     this.scene.add(road.mesh);
-    this.loop.bodies.push(road);
+    // this.loop.bodies.push(road);
   }
 
   makeTrains = () => {
@@ -161,8 +161,8 @@ export class Train {
       size,
       translation,
       rotation,
-      this.physicsWorld,
       'dynamic',
+      this.physicsWorld,
       trainName
     );
     this.scene.add(trainA.mesh);
@@ -199,8 +199,8 @@ export class Train {
       size,
       translation,
       rotation,
-      this.physicsWorld,
       'dynamic',
+      this.physicsWorld,
       trainName
     );
     this.scene.add(trainB.mesh);

@@ -225,10 +225,10 @@ export class Parcel {
         y: 0,
         z: 0
       },
-      this.physicsWorld,
-      'fixed'
+      'none',
+      this.physicsWorld
     );
     this.scene.add(item.mesh);
-    this.loop.bodies.push(item);
+    // this.loop.bodies.push(item);
   }
 }

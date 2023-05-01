@@ -36,7 +36,7 @@ class World {
       ssao: 'SSAO',
       ssgi: 'SSGI'
     }
-    this.ppMA = this.ppM.ssao;
+    this.ppMA = this.ppM.ssgi;
 
     this.colorComposition = colorComposer();
     this.bgColor = this.colorComposition.bg.color;

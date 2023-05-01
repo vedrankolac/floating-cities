@@ -9,8 +9,8 @@ const cube = (
     size,
     translation,
     rotation,
-    physicsWorld,
     rigidType = 'dynamic',
+    physicsWorld,
     name = '',
     widthSegments = 1,
     heightSegments = 1,
@@ -26,6 +26,9 @@ const cube = (
     depthSegments
   );
   const mesh = new Mesh( geometry, material );
+  mesh.position.x = translation.x;
+  mesh.position.y = translation.y;
+  mesh.position.z = translation.z;
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   if (name !=='')  {
@@ -39,16 +42,21 @@ const cube = (
     rigidBodyDesc = RigidBodyDesc.fixed();
   }
 
-  rigidBodyDesc.setTranslation(translation.x, translation.y, translation.z);
-  const q = new Quaternion().setFromEuler(
-    new Euler( rotation.x, rotation.y, rotation.z, 'XYZ' )
-  )
-  rigidBodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
+  let rigidBody = null;
+  let collider = null;
 
-  const rigidBody = physicsWorld.createRigidBody(rigidBodyDesc);
-  const collider = ColliderDesc.cuboid(size.width / 2, size.height / 2, size.depth / 2);
+  if (rigidType !== 'none') {
+    rigidBodyDesc.setTranslation(translation.x, translation.y, translation.z);
+    const q = new Quaternion().setFromEuler(
+      new Euler( rotation.x, rotation.y, rotation.z, 'XYZ' )
+    )
+    rigidBodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
 
-  physicsWorld.createCollider(collider, rigidBody);
+    rigidBody = physicsWorld.createRigidBody(rigidBodyDesc);
+    collider = ColliderDesc.cuboid(size.width / 2, size.height / 2, size.depth / 2);
+
+    physicsWorld.createCollider(collider, rigidBody);
+  }
 
   return {
     mesh: mesh,
