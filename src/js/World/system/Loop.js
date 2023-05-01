@@ -117,7 +117,7 @@ class Loop {
           body.rigidBody.setLinvel({
             x: 0,
             y: 0,
-            z: $fx.rand() * 10 + 4
+            z: $fx.rand() * 8 + 6
           }, true);
         }
         if (body.rigidBody.translation().z < -20) {
@@ -125,7 +125,7 @@ class Loop {
           body.rigidBody.setLinvel({
             x: 0,
             y: 0,
-            z: -$fx.rand() * 10 + 4
+            z: -$fx.rand() * 8 + 6
           }, true);
         }
       }
@@ -134,7 +134,7 @@ class Loop {
         if (body.rigidBody.translation().x > 20) {
           body.rigidBody.setTranslation({ x: -20, y: position.y, z: position.z }, true);
           body.rigidBody.setLinvel({
-            x: $fx.rand() * 10 + 4,
+            x: $fx.rand() * 8 + 6,
             y: 0,
             z: 0,
           }, true);
@@ -142,7 +142,7 @@ class Loop {
         if (body.rigidBody.translation().x < -20) {
           body.rigidBody.setTranslation({ x: 20, y: position.y, z: position.z }, true);
           body.rigidBody.setLinvel({
-            x: -$fx.rand() * 10 + 4,
+            x: -$fx.rand() * 8 + 6,
             y: 0,
             z: 0,
           }, true);

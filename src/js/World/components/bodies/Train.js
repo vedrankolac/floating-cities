@@ -208,8 +208,8 @@ export class Train {
 
     // -- velocity
 
-    const velocityA = $fx.rand() * 10 + 4;
-    const velocityB = $fx.rand() * 10 + 4;
+    const velocityA = $fx.rand() * 8 + 6;
+    const velocityB = $fx.rand() * 8 + 6;
 
     if (this.orientation === 'z') {
       trainB.rigidBody.setLinvel({
