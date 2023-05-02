@@ -99,15 +99,21 @@ export class Parcel {
     ]
 
     let t = null;
-    const dIndex = $fx.rand();
-    if (dIndex < 0.45) {
-      t = new TowerPlain(...tParams);
-    } else if (dIndex >= 0.45 && dIndex < 0.6) {
-      t = new TowerStackVertically(...tParams);
-    } else if (dIndex >= 0.6 && dIndex < 0.7) {
-      t = new TowerStackHorizontally(...tParams);
-    } else if (dIndex >= 0.7 && dIndex < 1.0) {
-      // empty space
+
+    // if small area and great hight - draw plain tower
+    if ((height > maxHeight/3) && (this.rectangle.area() < 0.04)) {
+       t = new TowerPlain(...tParams);
+    } else {
+      const dIndex = $fx.rand();
+      if (dIndex < 0.45) {
+        t = new TowerPlain(...tParams);
+      } else if (dIndex >= 0.45 && dIndex < 0.6) {
+        t = new TowerStackVertically(...tParams);
+      } else if (dIndex >= 0.6 && dIndex < 0.7) {
+        t = new TowerStackHorizontally(...tParams);
+      } else if (dIndex >= 0.7 && dIndex < 1.0) {
+        // leave empty space
+      }
     }
   }
 }

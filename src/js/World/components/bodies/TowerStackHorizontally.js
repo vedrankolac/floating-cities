@@ -40,7 +40,7 @@ export class TowerStackHorizontally {
     
     let material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
 
-    const nBlocks = Math.floor($fx.rand() * 4 + 3);
+    const nBlocks = Math.floor($fx.rand() * 6 + 3);
     const blockWidth = width/nBlocks;
 
     const cw = width + blockWidth/4 + 0.02/2;
