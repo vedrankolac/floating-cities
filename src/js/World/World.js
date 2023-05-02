@@ -19,7 +19,6 @@ import { postprocessing } from './components/effects/postprocessing'
 import { materialTester } from './utils/materialTester'
 import { lightTester } from './utils/lightTester'
 import { Resizer } from './system/Resizer'
-import { planetsConfig } from "./components/bodies/planetsConfig";
 import { Structure } from './components/bodies/Structure.js';
 
 class World {

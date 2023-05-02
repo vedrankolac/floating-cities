@@ -1,14 +1,7 @@
-import { hslToHex } from "../../utils/colorUtils";
-import { canvasTextureMaterial } from "../materials/canvasTextureMaterial";
-import { cube } from "./cube";
 import { Rectangle } from "../../utils/Rectangle";
-import { BuildingFacade } from "../canvasMaps/BuildingFacade";
-import {
-  LineBasicMaterial,
-  Vector3,
-  BufferGeometry,
-  Line
-} from 'three';
+import { TowerPlain } from "./TowerPlain";
+import { TowerStackVertically } from "./TowerStackVertically";
+import { TowerStackHorizontally } from "./TowerStackHorizontally";
 
 export class Parcel {
   constructor(
@@ -33,8 +26,6 @@ export class Parcel {
   }
 
   split = (depth, limit, baseArea) => {
-    // console.log(' - split');
-
     if (depth === limit) {
       const tower = new Parcel(
         new Rectangle(this.rectangle.x1, this.rectangle.y1, this.rectangle.x2, this.rectangle.y2),
@@ -95,240 +86,28 @@ export class Parcel {
     let height = (hIndex>0.5)
       ? $fx.rand() * maxHeight + 0.04
       : this.rectangle.width() * Math.round($fx.rand() * 5);
+    if (height > maxHeight) height = maxHeight;
 
-    // console.log('height', height);
-    if (height > maxHeight) {
-      height = maxHeight;
-    }
+    const tParams = [
+      height,
+      this.yDownShift,
+      this.hue,
+      this.rectangle,
+      this.envMap,
+      this.physicsWorld,
+      this.scene
+    ]
 
+    let t = null;
     const dIndex = $fx.rand();
     if (dIndex < 0.45) {
-      this.drawTowerPlain(height);
+      t = new TowerPlain(...tParams);
     } else if (dIndex >= 0.45 && dIndex < 0.6) {
-      this.drawTowerStackedVertically(height);
+      t = new TowerStackVertically(...tParams);
     } else if (dIndex >= 0.6 && dIndex < 0.7) {
-      this.drawTowerStackedHorizontally(height);
+      t = new TowerStackHorizontally(...tParams);
     } else if (dIndex >= 0.7 && dIndex < 1.0) {
       // empty space
     }
-  }
-
-  drawTree = () => {
-    console.log('+++ drawTree');
-    const color = hslToHex(this.hue, 0.0, 0.0)
-    const material = new LineBasicMaterial({color: color});
-
-    const width = this.rectangle.width() - 0.02;
-    const depth = this.rectangle.height() - 0.02;
-
-    const maxHeight = 3.2;
-    const hIndex = $fx.rand();
-    const height = (hIndex>0.5)
-      ? $fx.rand() * maxHeight + 0.04
-      : width * Math.round($fx.rand() * 4.6);
-
-      console.log(this.rectangle.center().x, this.rectangle.center().y);
-
-      const points = [];
-      let yInit = -this.yDownShift;
-
-      while (condition) {
-        const point = new Vector3(
-          this.rectangle.center().x + $fx.rand() * this.rectangle.width() - this.rectangle.width()/2,
-          yCount,
-          this.rectangle.center().y + $fx.rand() * this.rectangle.height() - this.rectangle.height()/2,
-        )
-        points.push(point);
-        yCount += 0.02;
-      }
-
-      // for (let i = 0; i < 32; i++) {
-      //   const point = new Vector3(
-      //     this.rectangle.center().x + $fx.rand() * this.rectangle.width() - this.rectangle.width()/2,
-      //     yCount,
-      //     this.rectangle.center().y + $fx.rand() * this.rectangle.height() - this.rectangle.height()/2,
-      //   )
-      //   points.push(point);
-      //   yCount += 0.02;
-      // }
-
-    // const points = [
-    //   new Vector3(
-    //     this.rectangle.center().x,
-    //     -this.yDownShift,
-    //     this.rectangle.center().y
-    //   ),
-    //   new Vector3(
-    //     this.rectangle.center().x, 
-    //     -this.yDownShift + height,
-    //     this.rectangle.center().y
-    //   )
-    // ];
-
-    const geometry = new BufferGeometry().setFromPoints(points);
-    const mesh = new Line(geometry, material);
-    // mesh.castShadow = true;
-    // mesh.receiveShadow = true;
-
-    this.scene.add(mesh);
-  }
-
-  drawTowerStackedHorizontally = (height) => {
-    const cIndex = $fx.rand();
-    let color;
-
-    if (cIndex < 0.4) {
-      // white or color
-      color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(this.hue, $fx.rand()*0.6 + 0.3, 0.4);
-    } else if (cIndex > 0.80){
-      // black
-      color = hslToHex(0, 0.0, 0.02);
-    } else {
-      color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
-    }
-
-    const width = this.rectangle.width() - 0.02;
-    const depth = this.rectangle.height() - 0.02;
-    
-    //--
-
-    let material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
-
-    // const nBlocks = $fx.rand() * 12 + 20;
-    const nBlocks = $fx.rand() * 4 + 2;
-    const blockWidth = width/nBlocks;
-
-    const cw = width - blockWidth/4 - 0.02;
-    const cbw = cw / nBlocks;
-
-    const initX = this.rectangle.x1 + 0.02/2 + blockWidth/4;
-    // const initX = this.rectangle.x1 + 0.02/2 + blockWidth/4;
-    // const initX = this.rectangle.x1 + blockWidth/4;
-    const initY = height/2 - this.yDownShift - $fx.rand()*(height/6)
-
-    for (let i = 0; i < nBlocks; i++) {
-      const item = cube(
-        material,
-        {
-          width: blockWidth * 0.5,
-          height,
-          depth
-        },
-        {
-          x: initX + i * cbw,
-          y: initY,
-          z: this.rectangle.center().y
-        },
-        {
-          x: 0,
-          y: 0,
-          z: 0
-        },
-        'none',
-        this.physicsWorld
-      );
-
-      this.scene.add(item.mesh);
-    }
-  }
-
-  drawTowerStackedVertically = (height) => {
-    const cIndex = $fx.rand();
-    let color;
-
-    if (cIndex < 0.4) {
-      // color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(this.hue, 0.3, 0.4); // white or color
-      color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(0, 0.0, $fx.rand()*0.6); // white or gray
-    } else if (cIndex > 0.80){
-      // black
-      color = hslToHex(0, 0.0, 0.02);
-    } else {
-      color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
-    }
-
-    const width = this.rectangle.width() - 0.02;
-    const depth = this.rectangle.height() - 0.02;
-
-    const nBlocks = $fx.rand() * 12 + 20;
-    const blockHeight = height/nBlocks;
-    
-    let material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
-
-    // const blockHI = $fx.rand()*0.8 + 0.2;
-    // const blockHI = $fx.rand()*0.5 + 0.1;
-    const blockHI = 0.5;
-    const initY = -this.yDownShift + blockHeight/2*blockHI - $fx.rand()*(height/6);
-
-    for (let i = 0; i < nBlocks; i++) {
-      const item = cube(
-        material,
-        {
-          width,
-          height: blockHeight * blockHI,
-          depth
-        },
-        {
-          x: this.rectangle.center().x,
-          y: initY + i * blockHeight,
-          z: this.rectangle.center().y
-        },
-        {
-          x: 0,
-          y: 0,
-          z: 0
-        },
-        'none',
-        this.physicsWorld
-      );
-  
-      this.scene.add(item.mesh);
-    }
-  }
-
-  drawTowerPlain = (height) => {
-    // console.log(' - draw');
-
-    const cIndex = $fx.rand();
-    let color;
-
-    if (cIndex < 0.4) {
-      // white or color
-      color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(this.hue, $fx.rand()*0.6 + 0.3, 0.4);
-    } else if (cIndex > 0.80){
-      // black
-      color = hslToHex(0, 0.0, 0.02);
-    } else {
-      color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
-    }
-
-    const width = this.rectangle.width() - 0.02;
-    const depth = this.rectangle.height() - 0.02;
-    
-    //--
-
-    let material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
-
-    const item = cube(
-      material,
-      {
-        width,
-        height,
-        depth
-      },
-      {
-        x: this.rectangle.center().x,
-        y: height/2 - this.yDownShift - $fx.rand()*(height/6),
-        z: this.rectangle.center().y
-      },
-      {
-        x: 0,
-        y: 0,
-        z: 0
-      },
-      'none',
-      this.physicsWorld
-    );
-
-    this.scene.add(item.mesh);
   }
 }

@@ -19,7 +19,7 @@ export class Structure {
   }
 
   start = () => {
-    console.log('Structure::start');
+    // console.log('Structure::start');
 
     // DEFINE SPLIT AND DENSITY
 
