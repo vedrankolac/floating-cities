@@ -27,11 +27,9 @@ export class TowerPlain {
     let color;
 
     if (cIndex < 0.4) {
-      // white or color
-      color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(this.hue, $fx.rand()*0.6 + 0.3, 0.4);
+      color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(this.hue, $fx.rand()*0.6 + 0.3, 0.4); // white or color
     } else if (cIndex > 0.80){
-      // black
-      color = hslToHex(0, 0.0, 0.02);
+      color = hslToHex(0, 0.0, 0.02); // black
     } else {
       color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
     }

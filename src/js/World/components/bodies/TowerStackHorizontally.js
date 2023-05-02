@@ -30,8 +30,7 @@ export class TowerStackHorizontally {
       // color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(this.hue, 0.3, 0.4); // white or color
       color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(0, 0.0, $fx.rand()*0.6); // white or gray
     } else if (cIndex > 0.80){
-      // black
-      color = hslToHex(0, 0.0, 0.02);
+      color = hslToHex(0, 0.0, 0.02); // black
     } else {
       color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
     }
@@ -39,12 +38,9 @@ export class TowerStackHorizontally {
     const width = this.rectangle.width() - 0.02;
     const depth = this.rectangle.height() - 0.02;
     
-    //--
-
     let material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
 
-    // const nBlocks = $fx.rand() * 12 + 20;
-    const nBlocks = $fx.rand() * 4 + 2;
+    const nBlocks = Math.round($fx.rand() * 4 + 3);
     const blockWidth = width/nBlocks;
 
     const cw = width - blockWidth/4 - 0.02;
