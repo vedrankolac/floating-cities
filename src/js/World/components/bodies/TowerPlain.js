@@ -26,11 +26,13 @@ export class TowerPlain {
     const cIndex = $fx.rand();
     let color;
 
+    // color = hslToHex(0, 0.0, 0.6);
+
     if (cIndex < 0.4) {
-      color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.5) : hslToHex(this.hue, $fx.rand()*0.6 + 0.3, 0.4); // white or color
-    } else if (cIndex > 0.80){
-      color = hslToHex(0, 0.0, 0.02); // black
-    } else {
+      color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, $fx.rand()*0.6 + 0.3, 0.4); // white or color
+    } else if (cIndex >= 0.40 && cIndex < 0.70) {
+      color = hslToHex(0, 0.0, 0.0); // black
+    } else if (cIndex >= 0.70 && cIndex < 1.0) {
       color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
     }
 

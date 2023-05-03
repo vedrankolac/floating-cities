@@ -44,14 +44,14 @@ export class Structure {
     const densityIndex1 = (1-splitIndex) * 40;
     const densityIndex2 = splitIndex * 40;
 
-    console.log('densityIndex1', densityIndex1);
-    console.log('densityIndex2', densityIndex2);
+    // console.log('densityIndex1', densityIndex1);
+    // console.log('densityIndex2', densityIndex2);
 
     const densityBase1 = Math.round($fx.rand() * densityIndex1 + 2);
     const densityBase2 = Math.round($fx.rand() * densityIndex2 + 2);
 
-    console.log('densityBase1', densityBase1);
-    console.log('densityBase2', densityBase2);
+    // console.log('densityBase1', densityBase1);
+    // console.log('densityBase2', densityBase2);
 
     // DEFINE LEVELS
 

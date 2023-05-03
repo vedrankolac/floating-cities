@@ -38,10 +38,10 @@ class World {
     }
     this.ppMA = this.ppM.ssao;
 
-    this.colorComposition = colorComposer();
-    this.bgColor = this.colorComposition.bg.color;
-    this.bgHSL = {};
-    this.bgColor.getHSL(this.bgHSL);
+    // this.colorComposition = colorComposer();
+    // this.bgColor = this.colorComposition.bg.color;
+    // this.bgHSL = {};
+    // this.bgColor.getHSL(this.bgHSL);
     this.hue = $fx.rand();
 
     this.renderer = createRenderer(this.postprocessingEnabled, this.xrEnabled);
@@ -67,10 +67,10 @@ class World {
       this.loop.updateComposer(this.composer);
     };
 
-    $fx.features({
-      'Background Color': this.colorComposition.bg.name,
-      'Color Palette': this.colorComposition.name,
-    });
+    // $fx.features({
+    //   'Background Color': this.colorComposition.bg.name,
+    //   'Color Palette': this.colorComposition.name,
+    // });
     
     RAPIER.init().then(() => {
       this.physicsConfig();

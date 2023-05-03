@@ -20,7 +20,6 @@ export class TrainWindows {
       const h = cc.height;
     
       const ccContext = cc.getContext("2d");
-      console.log('windowsColor.getHexString()', windowsColor.getHexString());
       ccContext.fillStyle = '#' + windowsColor.getHexString();
 
       const n = 12;

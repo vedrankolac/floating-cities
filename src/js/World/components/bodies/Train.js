@@ -32,7 +32,7 @@ export class Train {
   }
 
   makeTrack = () => {
-    const roadColor = hslToHex(0, 0.0, $fx.rand()*0.1 + 0.02);
+    const roadColor = hslToHex(0, 0.0, $fx.rand()*0.1 + 0.0);
     const roadMaterial = canvasTextureMaterial({ envMap: this.envMap }, { color: roadColor, roughness: 0.6, metalness: 0.02});
 
     const roadWidth = this.roadWidth + 0.02;
@@ -84,7 +84,7 @@ export class Train {
   }
 
   makeTrains = () => {
-    const trainColor = hslToHex(0, 0.0, $fx.rand()*0.08 + 0.02); // gray
+    const trainColor = hslToHex(0, 0.0, $fx.rand()*0.1 + 0.0); // gray
     const windowsColor = hslToHex(this.hue, 0.1, 0.00);
     const maps = new TrainWindows(trainColor, windowsColor);
     // const maps = null;
