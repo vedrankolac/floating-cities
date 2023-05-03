@@ -1,10 +1,12 @@
 import { hslToHex } from "../../utils/colorUtils";
 import {
-  LineBasicMaterial,
+  Mesh,
   Vector3,
-  BufferGeometry,
-  Line
+  MathUtils,
+  TubeGeometry,
+  LineCurve3
 } from 'three';
+import { canvasTextureMaterial } from "../materials/canvasTextureMaterial";
 
 export class Tree {
   constructor(
@@ -14,7 +16,9 @@ export class Tree {
     rectangle,
     envMap,
     physicsWorld,
-    scene
+    scene,
+    angle,
+    iterationsLimit
   ) {
     this.height = height;
     this.yDownShift = yDownShift;
@@ -23,66 +27,89 @@ export class Tree {
     this.envMap = envMap;
     this.physicsWorld = physicsWorld;
     this.scene = scene;
+    this.angle = angle;
+    this.iterationsLimit = iterationsLimit;
     this.draw();
   }
 
   draw = () => {
-    console.log('+++ drawTree');
-    const color = hslToHex(this.hue, 0.0, 0.0)
-    const material = new LineBasicMaterial({color: color});
+    let yInit = -this.yDownShift;
 
-    const width = this.rectangle.width() - 0.02;
-    const depth = this.rectangle.height() - 0.02;
+    const startPoint = new Vector3(
+      this.rectangle.center().x,
+      yInit,
+      this.rectangle.center().y,
+    );
 
-    const maxHeight = 3.2;
-    const hIndex = $fx.rand();
-    const height = (hIndex>0.5)
-      ? $fx.rand() * maxHeight + 0.04
-      : width * Math.round($fx.rand() * 4.6);
+    const color = hslToHex(0.0, 0.0, 0.0);
+    const material = canvasTextureMaterial({ envMap: null }, { color: color, roughness: 0, metalness: 0.0}, 0.001);
 
-      console.log(this.rectangle.center().x, this.rectangle.center().y);
+    const b = new Branch(
+      startPoint,
+      0,
+      this.iterationsLimit,
+      this.scene,
+      this.rectangle,
+      material,
+      this.angle
+    );
+  }
+}
 
-      const points = [];
-      let yInit = -this.yDownShift;
+class Branch {
+  constructor(
+    startPoint,
+    iterationsCounter,
+    iterationsLimit,
+    scene,
+    rectangle,
+    material,
+    angle
+  ) {
+    this.startPoint = startPoint;
+    this.iterationsCounter = iterationsCounter;
+    this.iterationsLimit = iterationsLimit;
+    this.scene = scene;
+    this.rectangle = rectangle;
+    this.material = material;
+    this.angle = angle;
+    this.draw();
+  }
 
-      while (condition) {
-        const point = new Vector3(
-          this.rectangle.center().x + $fx.rand() * this.rectangle.width() - this.rectangle.width()/2,
-          yCount,
-          this.rectangle.center().y + $fx.rand() * this.rectangle.height() - this.rectangle.height()/2,
-        )
-        points.push(point);
-        yCount += 0.02;
-      }
+  draw = () => {
+    const r = Math.random() * 0.4 + 0.04;
+    const p = MathUtils.degToRad(Math.random() * this.angle - this.angle/2);
+    const e = MathUtils.degToRad(Math.random() * 360);
 
-      // for (let i = 0; i < 32; i++) {
-      //   const point = new Vector3(
-      //     this.rectangle.center().x + $fx.rand() * this.rectangle.width() - this.rectangle.width()/2,
-      //     yCount,
-      //     this.rectangle.center().y + $fx.rand() * this.rectangle.height() - this.rectangle.height()/2,
-      //   )
-      //   points.push(point);
-      //   yCount += 0.02;
-      // }
+    const endPoint = new Vector3();
+    endPoint.setFromSphericalCoords(r, p, e).add(this.startPoint);
 
-    // const points = [
-    //   new Vector3(
-    //     this.rectangle.center().x,
-    //     -this.yDownShift,
-    //     this.rectangle.center().y
-    //   ),
-    //   new Vector3(
-    //     this.rectangle.center().x, 
-    //     -this.yDownShift + height,
-    //     this.rectangle.center().y
-    //   )
-    // ];
-
-    const geometry = new BufferGeometry().setFromPoints(points);
-    const mesh = new Line(geometry, material);
-    // mesh.castShadow = true;
-    // mesh.receiveShadow = true;
-
+    const path = new LineCurve3(this.startPoint, endPoint)
+    const geometry = new TubeGeometry(path, 1, 0.003, 6, false);
+    const mesh = new Mesh( geometry, this.material );
     this.scene.add(mesh);
+
+    this.iterationsCounter += 1;
+    if (this.iterationsCounter < this.iterationsLimit) {
+      const b1 = new Branch(
+        endPoint,
+        this.iterationsCounter,
+        this.iterationsLimit,
+        this.scene,
+        this.rectangle,
+        this.material,
+        this.angle
+      );
+
+      const b2 = new Branch(
+        endPoint,
+        this.iterationsCounter,
+        this.iterationsLimit,
+        this.scene,
+        this.rectangle,
+        this.material,
+        this.angle
+      );
+    }
   }
 }

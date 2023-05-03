@@ -2,6 +2,7 @@ import { Rectangle } from "../../utils/Rectangle";
 import { TowerPlain } from "./TowerPlain";
 import { TowerStackVertically } from "./TowerStackVertically";
 import { TowerStackHorizontally } from "./TowerStackHorizontally";
+import { Tree } from "./Tree";
 
 export class Parcel {
   constructor(
@@ -112,7 +113,12 @@ export class Parcel {
       } else if (dIndex >= 0.6 && dIndex < 0.7) {
         t = new TowerStackHorizontally(...tParams);
       } else if (dIndex >= 0.7 && dIndex < 1.0) {
-        // leave empty space
+        const tIndex = $fx.rand();
+        if (this.rectangle.area() > 0.2) {
+          if (tIndex > 0.1) t = new Tree(...tParams, Math.random()*30 + 30, 6);
+        } else {
+          if (tIndex > 0.6) t = new Tree(...tParams, Math.random()*10 + 20, 4);
+        }
       }
     }
   }
