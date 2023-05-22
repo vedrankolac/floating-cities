@@ -31,7 +31,7 @@ export class Particles {
 
   draw = () => {
     console.log('Particles::draw');
-    const maxNum = $fx.rand()*64 + 32;
+    const maxNum = $fx.rand()*96 + 32;
     for (let i = 0; i < maxNum; i++) {
       const g = new Group();
       g.position.x = -this.width*2 + $fx.rand() * this.width*4;
