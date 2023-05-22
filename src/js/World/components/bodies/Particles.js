@@ -31,7 +31,7 @@ export class Particles {
 
   draw = () => {
     console.log('Particles::draw');
-    const maxNum = $fx.rand()*96 + 32;
+    const maxNum = $fx.rand()*64 + 32;
     for (let i = 0; i < maxNum; i++) {
       const g = new Group();
       g.position.x = -this.width*2 + $fx.rand() * this.width*4;
@@ -50,7 +50,7 @@ export class Particles {
         0,
       );
   
-      const r = 0.028;
+      const r = $fx.rand()*0.014 + 0.04;
       const p = MathUtils.degToRad($fx.rand() * 360);
       const e = MathUtils.degToRad($fx.rand() * 360);
   
@@ -61,7 +61,7 @@ export class Particles {
       const material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0, metalness: 0.0}, 0.00);
   
       const path = new LineCurve3(startPoint, endPoint)
-      const geometry = new TubeGeometry(path, 1, 0.003, 6, false);
+      const geometry = new TubeGeometry(path, 1, 0.006, 6, false);
       const mesh = new Mesh( geometry, material );
       mesh.name = 'particle';
 

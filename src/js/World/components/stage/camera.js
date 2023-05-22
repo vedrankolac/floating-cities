@@ -4,7 +4,7 @@ import { MathUtils } from 'three';
 const createCamera = () => {
   const camera = new PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 0.1, 660 );
 
-  const radius  = 8;
+  const radius  = 10;
 
   // const polar   = MathUtils.degToRad(90-30);
   // const equator = MathUtils.degToRad(45);
