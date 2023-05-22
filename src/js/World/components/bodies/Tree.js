@@ -85,7 +85,7 @@ class Branch {
     endPoint.setFromSphericalCoords(r, p, e).add(this.startPoint);
 
     const path = new LineCurve3(this.startPoint, endPoint)
-    const geometry = new TubeGeometry(path, 1, 0.003, 6, false);
+    const geometry = new TubeGeometry(path, 1, 0.006, 6, false);
     const mesh = new Mesh( geometry, this.material );
     this.scene.add(mesh);
 

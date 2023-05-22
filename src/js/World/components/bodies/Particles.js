@@ -58,7 +58,7 @@ export class Particles {
       endPoint.setFromSphericalCoords(r, p, e).add(startPoint);
   
       const color = hslToHex(0.0, 0.0, 0.0);
-      const material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0, metalness: 0.0}, 0.00);
+      const material = canvasTextureMaterial({ envMap: null }, { color: color, roughness: 0, metalness: 0.0}, 0.00);
   
       const path = new LineCurve3(startPoint, endPoint)
       const geometry = new TubeGeometry(path, 1, 0.006, 6, false);
