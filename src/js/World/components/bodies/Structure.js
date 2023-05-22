@@ -1,6 +1,7 @@
 import { Rectangle } from "../../utils/Rectangle";
 import { Parcel } from "./Parcel";
 import { Train } from "./Train";
+import { Particles } from "./Particles";
 
 export class Structure {
   constructor(
@@ -144,5 +145,8 @@ export class Structure {
     //   this.physicsWorld,
     //   this.envMap
     // );
+
+    // MAKE PARTICLES
+    const particles = new Particles(strWidth, strDepth, b1, 3.2, this.scene, this.loop, this.envMap);
   }
 }

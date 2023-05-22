@@ -11,7 +11,7 @@ class Loop {
     this.orbitControls = orbitControls;
     this.bodies = []
     this.kinematicPositionBasedBodies = []
-    this.updatableBodies = [];
+    this.noPhysicsUpdatables = [];
     this.clock = new Clock();
     this.physicsWorld = undefined;
     this.composer = composer;
@@ -28,7 +28,10 @@ class Loop {
 
   start() {
     this.renderer.setAnimationLoop(() => {
-      if (this.runPhysics) this.tick(); // update physics engine
+      const frameTime = this.clock.getDelta();
+
+      if (this.runPhysics) this.tickPhysics(frameTime); // update physics engine
+      this.tickThree(frameTime); // update pure threejs elements
 
       if ( this.stats !== undefined) {
         this.stats.update(); 
@@ -104,11 +107,10 @@ class Loop {
 
   updatePhysicsObjects = () => {
     // update motor positions
-    for (const object of this.updatableBodies) {
-      object.tick(this.dt);
-    }
+    // for (const object of this.updatableBodies) {
+    //   object.tick(this.dt);
+    // }
 
-    // boundary crossing impulse that kicks body back to the direction of center
     this.bodies.forEach(body => {
       if (body.mesh.name === 'trainZ') {
         const position = body.rigidBody.translation();
@@ -168,9 +170,7 @@ class Loop {
     // }
   }
 
-  tick() {
-    const frameTime = this.clock.getDelta();
-
+  tickPhysics(frameTime) {
     if (this.physicsWorld && this.bodies.length > 0) {
       this.accumulator += frameTime;
 
@@ -201,6 +201,21 @@ class Loop {
             rotation.w
           ));
       });
+    }
+  }
+
+  tickThree(delta) {
+    for (const object of this.noPhysicsUpdatables) {
+      // console.log('object', object.name);
+      const speedTranslation = 0.3;
+      const speedRotation = 0.1;
+      object.position.y += delta * object.speedTranslationY;
+      object.rotation.x += delta * object.speedRotationX;
+      object.rotation.y += delta * object.speedRotationY;
+      object.rotation.z += delta * object.speedRotationZ;
+      if (object.position.y > object.maxY) {
+        object.position.y = object.initY;
+      }
     }
   }
 }

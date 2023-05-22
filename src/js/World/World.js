@@ -12,7 +12,6 @@ import { VrControls } from './system/VrControls.js'
 import { createHandsPhysicsController } from "./system/handsPhysicsController.js"
 import { room as roomPhysicsComposition } from './components/bodies/room.js'
 import { walls } from './components/meshes/walls.js'
-import { colorComposer } from './components/bodies/pendulum/colorComposer.js'
 import { RoomEnvironment } from './components/stage/RoomEnv'
 import { setPrintTools } from './utils/setPrintTools'
 import { postprocessing } from './components/effects/postprocessing'
