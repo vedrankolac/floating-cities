@@ -36,7 +36,7 @@ class World {
       ssgi:   'SSGI',
       ssaogi: 'SSAOGI'
     }
-    this.ppMA = this.ppM.ssao;
+    this.ppMA = this.ppM.n8ao;
 
     // this.colorComposition = colorComposer();
     // this.bgColor = this.colorComposition.bg.color;
@@ -75,7 +75,9 @@ class World {
     window.drawArt = () => {
       console.log('World::drawArt');
       console.log('params', m0, m1, m2, m3, m4);
-      console.log('rparams', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
+      console.log('rparams.c1', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
+      console.log('rparams.c2', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
+      console.log('rparams.c3', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
     }
     
     RAPIER.init().then(() => {
