@@ -12,6 +12,8 @@
     "start": "parcel --https",
     "build": "parcel build --public-url '.' --no-source-maps",
     "deploy": "gh-pages -d build",
+    "copy-params-to-dist": "cp -r static/editartParams.js dist",
+    "copy-params-to-build": "cp -r static/editartParams.js build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

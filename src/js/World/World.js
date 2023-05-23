@@ -71,6 +71,12 @@ class World {
     //   'Background Color': this.colorComposition.bg.name,
     //   'Color Palette': this.colorComposition.name,
     // });
+
+    window.drawArt = () => {
+      console.log('World::drawArt');
+      console.log('params', m0, m1, m2, m3, m4);
+      console.log('rparams', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
+    }
     
     RAPIER.init().then(() => {
       this.physicsConfig();
