@@ -37,7 +37,7 @@ export class Particles {
       g.position.x = -this.width*2 + $fx.rand() * this.width*4;
       g.position.y = - this.y + $fx.rand() * (this.maxHeight + this.maxHeight/2);
       g.position.z = -this.depth*2 + $fx.rand() * this.depth*4;
-      g.speedTranslationY = $fx.rand()*0.08 + 0.06;
+      g.speedTranslationY = $fx.rand()*0.12 + 0.06;
       g.speedRotationX    = $fx.rand()*0.8;
       g.speedRotationY    = $fx.rand()*0.8;
       g.speedRotationZ    = $fx.rand()*0.8;

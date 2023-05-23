@@ -16,6 +16,11 @@
       let alphabet = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
       var fxhash = search.get('fxhash') || "oo" + Array(49).fill(0).map(_=>alphabet[(Math.random()*alphabet.length)|0]).join('')
       // var fxhash = "oo9UX28AMWQKTt3xen1eZfte9TAmQfJa9LVhPLeDjWmc556e1sd"
+
+      // ooHCxv73TfFPJUrKGjQ7h2PtQva6hiNWYA3oK47edxJDxZMKuXe
+      // ooaSHj6BaTJbSGffFPkARxc4LiK9kk5JDC5sXGbsGoonnVVE4kk
+      // ooRzhQMcBQHFmgxkN1Ah8sRsTYH2QUTNE4RFAfGtTfJhSdnfNyG
+
       let b58dec = str=>[...str].reduce((p,c)=>p*alphabet.length+alphabet.indexOf(c)|0, 0)
       let fxhashTrunc = fxhash.slice(2)
       let regex = new RegExp(".{" + ((fxhash.length/4)|0) + "}", 'g')
