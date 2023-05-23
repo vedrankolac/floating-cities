@@ -19,7 +19,7 @@ npm run build
 npm run deploy
 ```
 
-### How to prepare build for fxhash
+### How to prepare build for editArt
 - build 
 - add './' in frot of css and js files
 - use only first js file i.e. -> `<script src="./index.js" defer></script>`
@@ -27,7 +27,7 @@ npm run deploy
 - delete second js file...
 - add editArt script below js file in body tag `<script src="./editartParams.js" defer></script>`
 - rename files to index.js and index.css
-- copy paste fxhash code from their example page `https://github.com/fxhash/fxhash-simple-boilerplate/blob/master/index.html`
+- run build version with python `python -m SimpleHTTPServer 8000` and use it on `https://www.editart.xyz/sandbox`
 
 ### How to inspect in immersive mode
 - Open Oculus Developer Hub (it automatically runs ADB and you can use it over WiFi)
