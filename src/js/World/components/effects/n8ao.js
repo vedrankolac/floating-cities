@@ -27,21 +27,15 @@ export const n8ao = (
   n8aopass.configuration.intensity = 2.2;
   composer.addPass(n8aopass);
 
-
   const smaaEffect = new SMAAEffect({
-		preset: SMAAPreset.HIGH,
-		// edgeDetectionMode: EdgeDetectionMode.COLOR,
-		// predicationMode: PredicationMode.DEPTH
+		preset: SMAAPreset.MEDIUM,
 	});
-	// const edgeDetectionMaterial = smaaEffect.edgeDetectionMaterial; 
-	// edgeDetectionMaterial.edgeDetectionThreshold = 0.01; 
-	// edgeDetectionMaterial.predicationThreshold = 0.002; 
-	// edgeDetectionMaterial.predicationScale = 1;
-
+  const epSmaa = new EffectPass(camera, smaaEffect); 
+  composer.addPass(epSmaa);
 
   let velocityDepthNormalPass = null;
   let motionBlurEffect = null;
-  let ep = null;
+  let epMotionBlur = null;
   if (motionBlur) {
     velocityDepthNormalPass = new VelocityDepthNormalPass(scene, camera)
     composer.addPass(velocityDepthNormalPass)
@@ -53,14 +47,10 @@ export const n8ao = (
         samples: 4
       }
     );
-    ep = new EffectPass(camera, smaaEffect, motionBlurEffect); 
-    composer.addPass(ep);
-  } else {
-    ep = new EffectPass(camera, smaaEffect);
-    composer.addPass(ep);
+    epMotionBlur = new EffectPass(camera, motionBlurEffect); 
+    composer.addPass(epMotionBlur);
   }
   
-
   // const nc = n8aopass.configuration;
   // const gui = new GUI();
   // gui.add(nc, "aoSamples", 1.0, 64.0, 1.0);
