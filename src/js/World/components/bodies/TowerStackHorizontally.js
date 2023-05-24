@@ -23,18 +23,18 @@ export class TowerStackHorizontally {
   }
 
   draw = () => {
-    const cIndex = $fx.rand();
+    const cIndex = randomM2();
     let color;
 
     // color = hslToHex(0, 0.0, 0.0); // black
 
     if (cIndex < 0.4) {
-      // color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, $fx.rand()*0.6 + 0.3, 0.4); // white or color
-      color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(0, 0.0, $fx.rand()*0.6); // white or gray
+      // color = (Math.random() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, Math.random()*0.6 + 0.3, 0.4); // white or color
+      color = (randomM2() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(0, 0.0, randomM2()*0.6); // white or gray
     } else if (cIndex >= 0.40 && cIndex < 0.70) {
       color = hslToHex(0, 0.0, 0.0); // black
     } else if (cIndex >= 0.70 && cIndex < 1.0) {
-      color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
+      color = hslToHex(0, 0.0, randomM2()*0.6); // gray
     }
 
     const width = this.rectangle.width() - 0.02;
@@ -42,14 +42,14 @@ export class TowerStackHorizontally {
     
     let material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
 
-    const nBlocks = Math.floor($fx.rand() * 6 + 3);
+    const nBlocks = Math.floor(Math.random() * 6 + 3);
     const blockWidth = width/nBlocks;
 
     const cw = width + blockWidth/4 + 0.02/2;
     const cbw = cw / nBlocks;
 
     const initX = this.rectangle.x1 + 0.02/2 + blockWidth/4;
-    const initY = this.height/2 - this.yDownShift - $fx.rand()*(this.height/6)
+    const initY = this.height/2 - this.yDownShift - Math.random()*(this.height/6)
 
     for (let i = 0; i < nBlocks; i++) {
       const item = cube(

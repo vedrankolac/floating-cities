@@ -30,16 +30,16 @@ export class Particles {
   }
 
   draw = () => {
-    const maxNum = $fx.rand()*64 + 32;
+    const maxNum = Math.random()*64 + 32;
     for (let i = 0; i < maxNum; i++) {
       const g = new Group();
-      g.position.x = -this.width*2 + $fx.rand() * this.width*4;
-      g.position.y = - this.y + $fx.rand() * (this.maxHeight + this.maxHeight/2);
-      g.position.z = -this.depth*2 + $fx.rand() * this.depth*4;
-      g.speedTranslationY = $fx.rand()*0.12 + 0.06;
-      g.speedRotationX    = $fx.rand()*0.8;
-      g.speedRotationY    = $fx.rand()*0.8;
-      g.speedRotationZ    = $fx.rand()*0.8;
+      g.position.x = -this.width*2 + Math.random() * this.width*4;
+      g.position.y = - this.y + Math.random() * (this.maxHeight + this.maxHeight/2);
+      g.position.z = -this.depth*2 + Math.random() * this.depth*4;
+      g.speedTranslationY = Math.random()*0.12 + 0.06;
+      g.speedRotationX    = Math.random()*0.8;
+      g.speedRotationY    = Math.random()*0.8;
+      g.speedRotationZ    = Math.random()*0.8;
       g.maxY  = - this.y + (this.maxHeight + this.maxHeight/2);
       g.initY = - this.y;
 
@@ -49,9 +49,9 @@ export class Particles {
         0,
       );
   
-      const r = $fx.rand()*0.014 + 0.04;
-      const p = MathUtils.degToRad($fx.rand() * 360);
-      const e = MathUtils.degToRad($fx.rand() * 360);
+      const r = Math.random()*0.014 + 0.04;
+      const p = MathUtils.degToRad(Math.random() * 360);
+      const e = MathUtils.degToRad(Math.random() * 360);
   
       const endPoint = new Vector3();
       endPoint.setFromSphericalCoords(r, p, e).add(startPoint);

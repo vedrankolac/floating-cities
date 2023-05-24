@@ -5,7 +5,7 @@ export const shuffle = array => {
   while (currentIndex != 0) {
 
     // Pick a remaining element.
-    randomIndex = Math.floor($fx.rand() * currentIndex);
+    randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
     // And swap it with the current element.

@@ -22,8 +22,6 @@ import { Structure } from './components/bodies/Structure.js';
 
 class World {
   constructor() {
-    console.log('fxhash:   ', fxhash);
-
     this.gravity = 0;
     this.dt = 1/120;
 
@@ -42,7 +40,7 @@ class World {
     // this.bgColor = this.colorComposition.bg.color;
     // this.bgHSL = {};
     // this.bgColor.getHSL(this.bgHSL);
-    this.hue = $fx.rand();
+    this.hue = randomM2();
 
     this.renderer = createRenderer(this.postprocessingEnabled, this.xrEnabled);
     this.scene    = createScene(this.hue);
@@ -77,6 +75,8 @@ class World {
       console.log('rparams.c2', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
       console.log('rparams.c3', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
     }
+
+    drawArt();
     
     RAPIER.init().then(() => {
       this.physicsConfig();

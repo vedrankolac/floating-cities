@@ -25,6 +25,7 @@ npm run deploy
 - use only first js file i.e. -> `<script src="./index.js" defer></script>`
 - remember to remove type='module' !!! in front of first script
 - delete second js file...
+- remove editart-snippet
 - add editArt script below js file in body tag `<script src="./editartParams.js" defer></script>`
 - rename files to index.js and index.css
 - run build version with python `python -m SimpleHTTPServer 8000` and use it on `https://www.editart.xyz/sandbox`

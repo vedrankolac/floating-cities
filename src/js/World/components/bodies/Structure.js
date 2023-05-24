@@ -28,14 +28,14 @@ export class Structure {
     // const strDepth = 0.2;
     // const strWidth = 2.0;
     // const strDepth = 1.2;
-    const strWidth = $fx.rand() * 1.4 + 0.6;
-    const strDepth = $fx.rand() * 0.6 + 0.6;
+    const strWidth = Math.random() * 1.4 + 0.6;
+    const strDepth = Math.random() * 0.6 + 0.6;
     
     // const roadWidth = 0.16;
-    const roadWidth = $fx.rand() * 0.04 + 0.16;
+    const roadWidth = Math.random() * 0.04 + 0.16;
 
     // split on no less than 30% of width
-    const splitIndex = $fx.rand() * 0.7 + 0.15;
+    const splitIndex = Math.random() * 0.7 + 0.15;
     // const splitIndex = 0.10;
     const split_x = -strWidth + splitIndex * strWidth * 2;
 
@@ -48,8 +48,8 @@ export class Structure {
     // console.log('densityIndex1', densityIndex1);
     // console.log('densityIndex2', densityIndex2);
 
-    const densityBase1 = Math.round($fx.rand() * densityIndex1 + 2);
-    const densityBase2 = Math.round($fx.rand() * densityIndex2 + 2);
+    const densityBase1 = Math.round(Math.random() * densityIndex1 + 2);
+    const densityBase2 = Math.round(Math.random() * densityIndex2 + 2);
 
     // console.log('densityBase1', densityBase1);
     // console.log('densityBase2', densityBase2);
@@ -57,9 +57,9 @@ export class Structure {
     // DEFINE LEVELS
 
     const b1 = 1.52;
-    const b2 = $fx.rand() * (1.52-0.8) +  0.8;
+    const b2 = Math.random() * (1.52-0.8) +  0.8;
 
-    const bIndex = $fx.rand();
+    const bIndex = Math.random();
 
     let yDownShiftBase1 = null;
     let yDownShiftBase2 = null;

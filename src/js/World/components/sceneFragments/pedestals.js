@@ -13,13 +13,13 @@ export const pedestals = (
   const color = colorComposition.bg.color;
   const material = defaultColorMattPlastic(color, 1, envMap);
 
-  // const n = Math.round($fx.rand());
+  // const n = Math.round(Math.random());
   const n = 0;
 
   for (let i = 0; i <= n; i++) {
-    const w = $fx.rand() * 16 + 8;
-    const d = $fx.rand() * 3 + 0.3;
-    const h  = $fx.rand() * 1.2 + 0.2;
+    const w = Math.random() * 16 + 8;
+    const d = Math.random() * 3 + 0.3;
+    const h  = Math.random() * 1.2 + 0.2;
     const size = {width: w, height: h, depth: d}
     let translation = null;
 

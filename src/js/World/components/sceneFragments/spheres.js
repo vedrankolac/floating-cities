@@ -15,7 +15,7 @@ const spheres = (
   const spreadWidth = 20;
   const {
     min = 0.02,
-    sizeRange = $fx.rand()/12,
+    sizeRange = Math.random()/12,
     n = 8,
     y = 3,
     yRange = 6
@@ -26,14 +26,14 @@ const spheres = (
       radius: sizeRange + min
     }
     const translation = {
-      x: $fx.rand() * spreadWidth - spreadWidth/2,
-      y: $fx.rand() * yRange + y,
-      z: $fx.rand() * spreadWidth - spreadWidth/2
+      x: Math.random() * spreadWidth - spreadWidth/2,
+      y: Math.random() * yRange + y,
+      z: Math.random() * spreadWidth - spreadWidth/2
     }
     const rotation = {
-      x: $fx.rand(),
-      y: $fx.rand(),
-      z: $fx.rand()
+      x: Math.random(),
+      y: Math.random(),
+      z: Math.random()
     }
     const sphereItem = sphere(colorMaterial, size, translation, rotation, physicsWorld);
     scene.add(sphereItem.mesh);

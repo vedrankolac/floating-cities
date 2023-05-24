@@ -55,24 +55,24 @@ class RndDotsFloor {
 			const cnl = 0.35;
 			const nnl = 0.5;
 
-			const darkSpotTreshold           = $fx.rand() * 0.1;
-    	const brightSpotTreshold         = $fx.rand() * 0.001;
+			const darkSpotTreshold           = Math.random() * 0.1;
+    	const brightSpotTreshold         = Math.random() * 0.001;
 
 			while (i < n) {
 				let iN = i;
 				
 				// add background noise
-        const rnd = $fx.rand()
+        const rnd = Math.random()
         let noiseLevel  = 1 - (rnd * cnl);
         let nNoiseLevel = 1 - (rnd * nnl);
 
         // dark px
-        let td = $fx.rand();
-        const blackORGrayscale = Math.round($fx.rand());
+        let td = Math.random();
+        const blackORGrayscale = Math.round(Math.random());
         if (td < darkSpotTreshold) {
-          // noiseLevel = blackORGrayscale ? $fx.rand() * 1 : 0;
-          noiseLevel = $fx.rand() * 1;
-          nNoiseLevel = $fx.rand() * 0.4;
+          // noiseLevel = blackORGrayscale ? Math.random() * 1 : 0;
+          noiseLevel = Math.random() * 1;
+          nNoiseLevel = Math.random() * 0.4;
         }
 
         let r = color.r * noiseLevel;
@@ -80,11 +80,11 @@ class RndDotsFloor {
         let b = color.b * noiseLevel;
 
         // bright px
-        const tb = $fx.rand();
-        const whiteORGrayscale = Math.round($fx.rand());
+        const tb = Math.random();
+        const whiteORGrayscale = Math.round(Math.random());
         if (tb < brightSpotTreshold) {
-          // noiseLevel = whiteORGrayscale ? $fx.rand() * 0.75 : 0.9;
-          noiseLevel = $fx.rand() * 1;
+          // noiseLevel = whiteORGrayscale ? Math.random() * 0.75 : 0.9;
+          noiseLevel = Math.random() * 1;
           r = mapNumber(noiseLevel, 0, 1, color.r, 1);
           g = mapNumber(noiseLevel, 0, 1, color.g, 1);
           b = mapNumber(noiseLevel, 0, 1, color.b, 1);
@@ -108,21 +108,21 @@ class RndDotsFloor {
 
 		const spread = mapNumber(bgHSL.l, 0, 1, 12, 400);
 		const start  = mapNumber(bgHSL.l, 0, 1, 12, 100);
-		const n = $fx.rand() * spread + start;
+		const n = Math.random() * spread + start;
 
 		for ( let i = 0; i < n; i ++ ) {
-			const x = $fx.rand() * width;
-			const y = $fx.rand() * height;
-			const r = $fx.rand() * 3;
+			const x = Math.random() * width;
+			const y = Math.random() * height;
+			const r = Math.random() * 3;
   
-			const cRGB = $fx.rand() * mapNumber(bgHSL.l, 0, 1, 255, 0);
+			const cRGB = Math.random() * mapNumber(bgHSL.l, 0, 1, 255, 0);
 
       colorCanvasContext.fillStyle = `rgb(${cRGB}, ${cRGB}, ${cRGB})`;
 			colorCanvasContext.beginPath();
 			colorCanvasContext.arc( x, y, r, 0, Math.PI * 2 );
 			colorCanvasContext.fill();
 			
-			const rRGB = $fx.rand() * 224 + 32;
+			const rRGB = Math.random() * 224 + 32;
       roughnessCanvasContext.fillStyle = `rgb(${rRGB}, ${rRGB}, ${rRGB})`;
 			roughnessCanvasContext.beginPath();
 			roughnessCanvasContext.arc( x, y, r, 0, Math.PI * 2 );

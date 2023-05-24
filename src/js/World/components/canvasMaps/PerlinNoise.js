@@ -19,11 +19,11 @@ class PerlinNoise {
 
     const perlin2D = new Perlin({
       dimensions: 2,
-      seed: Math.round($fx.rand()),
+      seed: Math.round(Math.random()),
       wavelength: 2,
       persistence: 0.1
     });
-    const resolution = Math.round($fx.rand() * 32 + 32); // from 32 t0 64
+    const resolution = Math.round(Math.random() * 32 + 32); // from 32 t0 64
     // console.log('perlin.r: ', resolution);
     const imageData = perlinCanvasContext.getImageData(0, 0, width, height);
     let dataIndex = 0;

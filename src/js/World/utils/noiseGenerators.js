@@ -7,7 +7,7 @@ const randomNoiseWithLevel = (canvas, level = 256, x = 0, y = 0, alpha = 255) =>
   const n = pixels.length;
   let i = 0;
   while (i < n) {
-      pixels[i++] = pixels[i++] = pixels[i++] = ($fx.rand() * level) | 0;
+      pixels[i++] = pixels[i++] = pixels[i++] = (Math.random() * level) | 0;
       pixels[i++] = alpha;
   }
   g.putImageData(imageData, x, y);

@@ -23,17 +23,17 @@ export class TowerPlain {
   }
 
   draw = () => {
-    const cIndex = $fx.rand();
+    const cIndex = randomM2();
     let color;
 
     // color = hslToHex(0, 0.0, 0.6);
 
     if (cIndex < 0.4) {
-      color = ($fx.rand() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, $fx.rand()*0.6 + 0.3, 0.4); // white or color
+      color = (randomM2() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, randomM2()*0.6 + 0.3, 0.4); // white or color
     } else if (cIndex >= 0.40 && cIndex < 0.70) {
       color = hslToHex(0, 0.0, 0.0); // black
     } else if (cIndex >= 0.70 && cIndex < 1.0) {
-      color = hslToHex(0, 0.0, $fx.rand()*0.6); // gray
+      color = hslToHex(0, 0.0, randomM2()*0.6); // gray
     }
 
     const width = this.rectangle.width() - 0.02;
@@ -50,7 +50,7 @@ export class TowerPlain {
       },
       {
         x: this.rectangle.center().x,
-        y: this.height/2 - this.yDownShift - $fx.rand()*(this.height/6),
+        y: this.height/2 - this.yDownShift - Math.random()*(this.height/6),
         z: this.rectangle.center().y
       },
       {

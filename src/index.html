@@ -10,219 +10,123 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,400&display=swap" rel="stylesheet"> -->
     <script>
-      const randomSeedEditArt = 'vvHCxv73TfFPJUrKGjQ7h2PtQva6hiNWYA3oK47edxJDxZMKuXe'
+      const randomSeedEditArt = 'vedrrranTfFPJUrKGjQ7h2PtQva6hiNWYA3oK47edxJDxZMKuXe'
     </script>
-    <script id="fxhash-snippet">
-      //---- do not edit the following code (you can indent as you wish)
-      let search = new URLSearchParams(window.location.search)
-      let alphabet = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
-      var fxhash = search.get('fxhash') || "oo" + Array(49).fill(0).map(_=>alphabet[(Math.random()*alphabet.length)|0]).join('')
-      // var fxhash = "oo7sDRfDKeMKquiVZC5WWvrpsTgt7JHMVJyBwQMoa7uAjRaPGS9"
+    <script id="editart-snippet">
+      parent.postMessage({ editArtTemplateVersion: 1 }, "*");
 
-      // ooHCxv73TfFPJUrKGjQ7h2PtQva6hiNWYA3oK47edxJDxZMKuXe
-      // ooaSHj6BaTJbSGffFPkARxc4LiK9kk5JDC5sXGbsGoonnVVE4kk
-      // ooRzhQMcBQHFmgxkN1Ah8sRsTYH2QUTNE4RFAfGtTfJhSdnfNyG
-      // oooXUVtjsum3Q1Uy7u7Fu5itM1e4Dd2kPV3VtMAYo2jj7ZLCZV6
-      // ooPhPf9wDpgS7VnRbDDqHJzTuQQ3Y3DndsC43e4diDx9NuD8Sos
-      // ooEkLV4Cw2rJt2RkoZS8FPcNM73dvjkBrRc8uH3s3cBEngH8m9V
-
-      let b58dec = str=>[...str].reduce((p,c)=>p*alphabet.length+alphabet.indexOf(c)|0, 0)
-      let fxhashTrunc = fxhash.slice(2)
-      let regex = new RegExp(".{" + ((fxhash.length/4)|0) + "}", 'g')
-      let hashes = fxhashTrunc.match(regex).map(h => b58dec(h))
-      let sfc32 = (a, b, c, d) => {
-        return () => {
-          a |= 0; b |= 0; c |= 0; d |= 0
-          var t = (a + b | 0) + d | 0
-          d = d + 1 | 0
-          a = b ^ b >>> 9
-          b = c + (c << 3) | 0
-          c = c << 21 | c >>> 11
-          c = c + t | 0
-          return (t >>> 0) / 4294967296
-        }
-      }
-      var fxrand = sfc32(...hashes)
-      // true if preview mode active, false otherwise
-      // you can append preview=1 to the URL to simulate preview active
-      var isFxpreview = search.get('preview') === "1"
-      // call this method to trigger the preview
-      function fxpreview() {
-        console.log("fxhash: TRIGGER PREVIEW")
+      window.capturePreview = false;
+      function triggerPreview() {
+          if(!window.capturePreview) console.log('Trigger preview')
+          window.capturePreview = true;
       }
 
-      //
-      // NEW: v2 of the fxhash SDK lol
-      //
-      // get the byte params from the URL
-      let fxparams = search.get('fxparams')
-      fxparams = fxparams ? fxparams.replace("0x", "") : fxparams
+      let m0 = 0.5;
+      let m1 = 0.5;
+      let m2 = 0.5;
+      let m3 = 0.5;
+      let m4 = 0.5;
 
-      // the parameter processor, used to parse fxparams
-      const processors = {
-        number: {
-          deserialize: (input) => {
-            const view = new DataView(new ArrayBuffer(8))
-            for (let i = 0; i < 8; i++) {
-              view.setUint8(i, parseInt(input.substring(i * 2, i * 2 + 2), 16))
-            }
-            return view.getFloat64(0)
-          },
-          bytesLength: () => 8,
-        },
-        boolean: {
-          // if value is "00" -> 0 -> false, otherwise we consider it's 1
-          deserialize: (input) => {
-            return input === "00" ? false : true
-          },
-          bytesLength: () => 1,
-        },
-        color: {
-          deserialize: (input) => input,
-          bytesLength: () => 4,
-          transform: (input) => {
-            const r = parseInt(input.slice(0,2), 16)
-            const g = parseInt(input.slice(2,4), 16)
-            const b = parseInt(input.slice(4,6), 16)
-            const a = parseInt(input.slice(6,8), 16)
-            return {
-              hex: {
-                rgb: '#' + input.slice(0,6),
-                rgba: '#' + input,
-              },
-              obj: {
-                rgb: { r, g, b},
-                rgba: { r, g, b, a},
-              },
-              arr: {
-                rgb: [r,g,b],
-                rgba: [r,g,b,a],
-              }
-            }
-          },
-        },
-        string: {
-          deserialize: (input) => {
-            const hx = input.match(/.{1,4}/g) || []
-            let rtn = ""
-            for (let i = 0; i < hx.length; i++) {
-              const int = parseInt(hx[i], 16)
-              if (int === 0) break
-              rtn += String.fromCharCode(int)
-            }
-            return rtn
-          },
-          bytesLength: () => 64 * 2,
-        },
-        select: {
-          deserialize: (input, definition) => {
-            return definition.options.options[parseInt(input, 16)] || definition.default
-          },
-          bytesLength: () => 1,
-        }
+      let randomM0;
+      let randomM1;
+      let randomM2;
+      let randomM3;
+      let randomM4;
+
+      const queryString = window.location.search;
+      console.log(queryString);
+      if (queryString) {
+          getParams(queryString);
       }
+      triggerDraw();
 
-      // takes the parameters as bytes and outputs an object with the
-      // deserialized parameters, identified by their id in an object
-      const deserializeParams = (bytes, definition) => {
-        const params = {}
-        for (const def of definition) {
-          // if we don't have any parameters defined in the URL, set the 
-          // default value and move on
-          if (!bytes) {
-            params[def.id] = def.default
-            continue
+      function truncate(i) {
+          return Math.max(Math.min(i, 0.99999999), 0);
+      }
+      function getParam(urlParams, p) {
+          const param = urlParams.get(p);
+          if (param) {
+              return truncate(parseFloat(param));
           }
-          const processor = processors[def.type]
-          // extract the length from the bytes & shift the initial bytes string
-          const valueBytes = bytes.substring(0, processor.bytesLength() * 2)
-          bytes = bytes.substring(processor.bytesLength() * 2)
-          // deserialize the bytes into the params
-          params[def.id] = processor.deserialize(valueBytes, def)
-          // todo: make sure the value is correct based on constraints
-        }
-        return params
+          return null;
       }
 
-      const transformParamValues = (values, definitions) => {
-        const paramValues = {}
-        for (const def of definitions) {
-          const processor = processors[def.type]
-          const value = values[def.id]
-          // deserialize the bytes into the params
-          paramValues[def.id] = processor.transform ? processor.transform(value) : value;
-        }
-        return paramValues; 
+      function getParams(queryString) {
+          const urlParams = new URLSearchParams(queryString);
+          m0 = getParam(urlParams, "m0");
+          m1 = getParam(urlParams, "m1");
+          m2 = getParam(urlParams, "m2");
+          m3 = getParam(urlParams, "m3");
+          m4 = getParam(urlParams, "m4");
+      }
+      window.addEventListener("message", (e) => {
+          var data = e.data;
+          if (data.hasOwnProperty("editartQueryString")) {
+              getParams(data["editartQueryString"]);
+              triggerDraw();
+          }
+      });
+
+      function triggerDraw() {
+          seedRandomness();
+          drawArt();
+          parent.postMessage("editArtSketchLoaded", "*");
       }
 
-      window.$fx = {
-        // where params def & features will be stored
-        _params: undefined,
-        _features: undefined,
-        // where the parameter values are stored
-        _paramValues: {},
+      window.addEventListener("resize", (e) => triggerDraw());
 
-        hash: fxhash,
-        rand: fxrand,
-        preview: fxpreview,
-        isPreview: isFxpreview,
-        params: function(definition) {
-          // todo: maybe do some validation on the dev side ?
-          // or maybe not ?
-          this._params = definition
-          this._rawValues = deserializeParams(fxparams, definition)
-          this._paramValues = transformParamValues(this._rawValues, definition)
-        },
-        features: function(features) {
-          this._features = features
-        },
-        getFeature: function(id) {
-          return this._features[id]
-        },
-        getFeatures: function() {
-          return this._features
-        },
-        getParam: function(id) {
-          return this._paramValues[id]
-        },
-        getParams: function() {
-          return this._paramValues
-        },
-        getRawParam: function(id) {
-          return this._rawValues[id]
-        },
-        getRawParams: function() {
-          return this._rawValues
-        },
-        getDefinitions: function() {
-          return this._params
-        }
+      function getRNG(num) {
+          return sfc32(...cyrb128(randomSeedEditArt + num.toString()));
       }
-      window.addEventListener("message", (event) => {
-        if (event.data === "fxhash_getHash") {
-          parent.postMessage({
-            id: "fxhash_getHash",
-            data: window.$fx.hash
-          }, "*")
-        }
-        
-        if (event.data === "fxhash_getFeatures") {
-          parent.postMessage({
-            id: "fxhash_getFeatures",
-            data: window.$fx.getFeatures()
-          }, "*")
-        }
 
-        if (event.data === "fxhash_getParams") {
-          parent.postMessage({
-            id: "fxhash_getParams",
-            data: window.$fx.getDefinitions()
-          }, "*")
-        }
-      })
-      // END NEW
+      function seedRandomness() {
+          randomM0 = getRNG(m0);
+          randomM1 = getRNG(m1);
+          randomM2 = getRNG(m2);
+          randomM3 = getRNG(m3);
+          randomM4 = getRNG(m4);
+      }
 
-      //---- /do not edit the following code
+      function cyrb128(str) {
+          let h1 = 1779033703,
+              h2 = 3144134277,
+              h3 = 1013904242,
+              h4 = 2773480762;
+          for (let i = 0, k; i < str.length; i++) {
+              k = str.charCodeAt(i);
+              h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
+              h2 = h3 ^ Math.imul(h2 ^ k, 2869860233);
+              h3 = h4 ^ Math.imul(h3 ^ k, 951274213);
+              h4 = h1 ^ Math.imul(h4 ^ k, 2716044179);
+          }
+          h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067);
+          h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
+          h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
+          h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
+          return [
+              (h1 ^ h2 ^ h3 ^ h4) >>> 0,
+              (h2 ^ h1) >>> 0,
+              (h3 ^ h1) >>> 0,
+              (h4 ^ h1) >>> 0,
+          ];
+      }
+
+      function sfc32(a, b, c, d) {
+          return function () {
+              a >>>= 0;
+              b >>>= 0;
+              c >>>= 0;
+              d >>>= 0;
+              var t = (a + b) | 0;
+              a = b ^ (b >>> 9);
+              b = (c + (c << 3)) | 0;
+              c = (c << 21) | (c >>> 11);
+              d = (d + 1) | 0;
+              t = (t + d) | 0;
+              c = (c + t) | 0;
+              return (t >>> 0) / 4294967296;
+          };
+      }
     </script>
     <link rel="stylesheet" href="css/styles.scss" />
   </head>

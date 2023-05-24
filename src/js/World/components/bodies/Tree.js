@@ -77,9 +77,9 @@ class Branch {
   }
 
   draw = () => {
-    const r = $fx.rand() * 0.4 + 0.04;
-    const p = MathUtils.degToRad($fx.rand() * this.angle - this.angle/2);
-    const e = MathUtils.degToRad($fx.rand() * 360);
+    const r = Math.random() * 0.4 + 0.04;
+    const p = MathUtils.degToRad(Math.random() * this.angle - this.angle/2);
+    const e = MathUtils.degToRad(Math.random() * 360);
 
     const endPoint = new Vector3();
     endPoint.setFromSphericalCoords(r, p, e).add(this.startPoint);
