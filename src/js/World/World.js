@@ -6,7 +6,7 @@ import { Vector3, PMREMGenerator, EquirectangularReflectionMapping } from "three
 import { Loop } from './system/Loop.js'
 import { createRenderer } from './system/renderer.js'
 import { createScene } from './components/stage/scene.js'
-import { createCamera, createDolly } from './components/stage/camera.js'
+import { createCamera, createDolly, updateCamera } from './components/stage/camera.js'
 import { createLights } from './components/stage/lights.js'
 import { VrControls } from './system/VrControls.js'
 import { createHandsPhysicsController } from "./system/handsPhysicsController.js"
@@ -67,13 +67,11 @@ class World {
       this.loop.updateComposer(this.composer);
     };
 
-    // $fx.features({
-    //   'Background Color': this.colorComposition.bg.name,
-    //   'Color Palette': this.colorComposition.name,
-    // });
-
     window.drawArt = () => {
       console.log('World::drawArt');
+
+      updateCamera(this.camera);
+
       console.log('params', m0, m1, m2, m3, m4);
       console.log('rparams.c1', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
       console.log('rparams.c2', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
