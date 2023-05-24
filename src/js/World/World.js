@@ -5,7 +5,7 @@ import { stats } from './utils/stats'
 import { Vector3, PMREMGenerator, EquirectangularReflectionMapping } from "three"
 import { Loop } from './system/Loop.js'
 import { createRenderer } from './system/renderer.js'
-import { createScene } from './components/stage/scene.js'
+import { createScene, setFog } from './components/stage/scene.js'
 import { createCamera, createDolly, updateCamera } from './components/stage/camera.js'
 import { createLights } from './components/stage/lights.js'
 import { VrControls } from './system/VrControls.js'
@@ -22,12 +22,22 @@ import { Structure } from './components/bodies/Structure.js';
 
 class World {
   constructor() {
+    this.floorSize = 600;
+    
+    this.physicsInitiated = false;
+    this.triedToCallDrawArtWithoutPhisycsInit = false;
     this.gravity = 0;
     this.dt = 1/120;
 
     this.xrEnabled = false;
     this.postprocessingEnabled = true;
     this.printToolsEnabled = true;
+
+    this.renderer = createRenderer(this.postprocessingEnabled, this.xrEnabled);
+    this.scene    = createScene();
+    this.camera   = createCamera();
+    this.lights   = createLights(this.scene);
+
     this.ppM = {
       ssao:   'SSAO',
       n8ao:   'N8AO',
@@ -35,28 +45,17 @@ class World {
       ssaogi: 'SSAOGI'
     }
     this.ppMA = this.ppM.n8ao;
-
-    // this.colorComposition = colorComposer();
-    // this.bgColor = this.colorComposition.bg.color;
-    // this.bgHSL = {};
-    // this.bgColor.getHSL(this.bgHSL);
-    this.hue = randomM2();
-
-    this.renderer = createRenderer(this.postprocessingEnabled, this.xrEnabled);
-    this.scene    = createScene(this.hue);
-    this.camera   = createCamera();
-    this.lights   = createLights(this.scene);
+    this.composer = this.postprocessingEnabled ? postprocessing(this.camera, this.scene, this.renderer, this.ppMA) : null;
 
     this.stats = stats(true);
     this.orbitControls = orbitControls(this.camera, this.renderer.domElement);
-    this.composer = this.postprocessingEnabled ? postprocessing(this.camera, this.scene, this.renderer, this.ppMA) : null;
+
     this.loop = new Loop(this.camera, this.scene, this.renderer, this.composer, this.stats, this.orbitControls, this.postprocessingEnabled, this.gravity, this.dt);
 
     this.dolly = createDolly(this.camera, this.scene);
     this.vrControls = this.xrEnabled ? new VrControls(this.renderer, this.dolly, this.camera) : null;
     this.xrEnabled ? this.loop.updatableBodies.push(this.vrControls) : null;
 
-    this.floorSize = 600;
     this.printTools = this.printToolsEnabled ? setPrintTools(this.renderer, this.composer, this.postprocessingEnabled, this.scene, this.camera) : null;
 
     this.resizer = new Resizer(this.camera, this.renderer);
@@ -65,50 +64,49 @@ class World {
       this.loop.updateComposer(this.composer);
     };
 
+    const pmremGenerator = new PMREMGenerator(this.renderer);
+    this.envMap = pmremGenerator.fromScene(new RoomEnvironment(), 0.001).texture;
+
     window.drawArt = () => {
-      console.log('World::drawArt');
+      console.log('World::drawArt', this.physicsInitiated);
 
-      updateCamera(this.camera);
-
-      console.log('params', m0, m1, m2, m3, m4);
-      console.log('rparams.c1', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
-      console.log('rparams.c2', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
-      console.log('rparams.c3', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
+      if (this.physicsInitiated) {
+        updateCamera(this.camera);
+        this.buildScene();
+      } else {
+        this.triedToCallDrawArtWithoutPhisycsInit = true;
+        // will be called once when rapier is loaded and initiated
+      }
     }
-
-    drawArt();
     
     RAPIER.init().then(() => {
       this.physicsConfig();
-      this.buildScene();
+      if (this.triedToCallDrawArtWithoutPhisycsInit) {
+        drawArt();
+      }
     });
+
+    // remove when making build version
+    drawArt();
   }
 
   physicsConfig() {
+    console.log('World::physicsConfig');
     const engineGravity = new Vector3(0.0, -this.gravity, 0.0);
     this.physicsWorld = new RWorld(engineGravity);
     this.physicsWorld.timestep = this.dt;
     this.loop.setPhysics(this.physicsWorld);
     this.room = roomPhysicsComposition(this.physicsWorld, this.floorSize, false);
     this.handsPhysicsController = this.xrEnabled ? createHandsPhysicsController(this.scene, this.loop, this.physicsWorld, this.vrControls) : null;
+    this.physicsInitiated = true;
   }
 
   buildScene() {
-    const pmremGenerator = new PMREMGenerator(this.renderer);
-    const envMap = pmremGenerator.fromScene(new RoomEnvironment(), 0.001).texture;
-
-    // envMap.mapping = EquirectangularReflectionMapping;
-    // this.scene.environment = envMap;
-    // this.scene.background = this.bgColor;
-
-    // this.materialTester      = materialTester(this.scene, envMap);
-    // this.lightTester         = lightTester(this.scene, envMap);
-
-    this.structure = new Structure(this.scene, this.loop, this.physicsWorld, envMap, this.hue);    
+    console.log('World::buildScene');
+    this.hue = randomM2();
+    setFog(this.hue, this.scene)
+    this.structure = new Structure(this.scene, this.loop, this.physicsWorld, this.envMap, this.hue);    
     this.walls     = walls    (this.scene, this.hue, this.floorSize, this.bgHSL, this.bgColor);
-    
-    // this.orbitControls.target = this.pendulum.handleB.mesh.position;
-    // this.orbitControls.target = this.pachinko.position;
   }
 
   start() {
