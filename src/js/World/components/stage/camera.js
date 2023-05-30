@@ -4,26 +4,10 @@ import { mapNumber } from '../../utils/numUtils';
 
 const createCamera = () => {
   const camera = new PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 0.1, 660 );
-
-  const radius  = 10;
-
-  const n = mapNumber(Math.random(), 0, 1, 1, 10)
-  const nexp = Math.pow(n, 3)
-  const nmap = mapNumber(nexp, 1, 1000, 90, 30)
-  const polar   = MathUtils.degToRad(nmap);
-
-  const equator = MathUtils.degToRad((mapNumber(Math.random(), 0, 1, 0.5, -0.5) + 0.12) * 360);
-
-  const cameraVector = new Vector3();
-  cameraVector.setFromSphericalCoords(radius, polar, equator);
-  camera.position.x = cameraVector.x;
-  camera.position.y = cameraVector.y;
-  camera.position.z = cameraVector.z;
-
   return camera;
 }
 
-const updateCamera = (camera) => {
+const rndPosCamera = (camera) => {
   const radius  = 10;
 
   const n = mapNumber(m1, 0, 1, 1, 10)
@@ -52,5 +36,5 @@ const createDolly = (camera, scene) => {
 export {
   createCamera,
   createDolly,
-  updateCamera
+  rndPosCamera
 };

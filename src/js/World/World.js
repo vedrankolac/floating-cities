@@ -6,13 +6,14 @@ import { Vector3, PMREMGenerator, EquirectangularReflectionMapping } from "three
 import { Loop } from './system/Loop.js'
 import { createRenderer } from './system/renderer.js'
 import { createScene, setFog } from './components/stage/scene.js'
-import { createCamera, createDolly, updateCamera } from './components/stage/camera.js'
+import { createCamera, createDolly, rndPosCamera } from './components/stage/camera.js'
 import { createLights } from './components/stage/lights.js'
 import { VrControls } from './system/VrControls.js'
 import { createHandsPhysicsController } from "./system/handsPhysicsController.js"
 import { room as roomPhysicsComposition } from './components/bodies/room.js'
 import { walls } from './components/meshes/walls.js'
 import { RoomEnvironment } from './components/stage/RoomEnv'
+import { createEnvMapFromScene } from './components/stage/createEnvMapFromScene'
 import { setPrintTools } from './utils/setPrintTools'
 import { postprocessing } from './components/effects/postprocessing'
 import { materialTester } from './utils/materialTester'
@@ -22,12 +23,40 @@ import { Structure } from './components/bodies/Structure.js';
 
 class World {
   constructor() {
-    this.floorSize = 600;
+    this.setAndRunThreejs();
     
+    // function called from EditArt platform
+    window.drawArt = () => {
+      console.log('World::drawArt', this.physicsInitiated);
+
+      if (this.physicsInitiated) {
+        rndPosCamera(this.camera);
+        this.buildGame();
+      } else {
+        this.triedToCallDrawArtWithoutPhisycsInit = true;
+        // will be called once when rapier is loaded and initiated
+      }
+    }
+    
+    // load Rapier WASM and init it
+    RAPIER.init().then(() => {
+      this.physicsConfig();
+      if (this.triedToCallDrawArtWithoutPhisycsInit) {
+        drawArt();
+      }
+    });
+
+    // remove when making build version, should be called from EditArt platform
+    drawArt();
+  }
+
+  setAndRunThreejs() {
+    console.log('World::setAndRunThreejs');
     this.physicsInitiated = false;
     this.triedToCallDrawArtWithoutPhisycsInit = false;
     this.gravity = 0;
     this.dt = 1/120;
+    this.floorSize = 600;
 
     this.xrEnabled = false;
     this.postprocessingEnabled = true;
@@ -36,7 +65,9 @@ class World {
     this.renderer = createRenderer(this.postprocessingEnabled, this.xrEnabled);
     this.scene    = createScene();
     this.camera   = createCamera();
+    rndPosCamera(this.camera);
     this.lights   = createLights(this.scene);
+    this.envMap   = createEnvMapFromScene(this.renderer);
 
     this.ppM = {
       ssao:   'SSAO',
@@ -63,31 +94,6 @@ class World {
       this.composer = this.postprocessingEnabled ? postprocessing(this.camera, this.scene, this.renderer, this.ppMA) : null;
       this.loop.updateComposer(this.composer);
     };
-
-    const pmremGenerator = new PMREMGenerator(this.renderer);
-    this.envMap = pmremGenerator.fromScene(new RoomEnvironment(), 0.001).texture;
-
-    window.drawArt = () => {
-      console.log('World::drawArt', this.physicsInitiated);
-
-      if (this.physicsInitiated) {
-        updateCamera(this.camera);
-        this.buildScene();
-      } else {
-        this.triedToCallDrawArtWithoutPhisycsInit = true;
-        // will be called once when rapier is loaded and initiated
-      }
-    }
-    
-    RAPIER.init().then(() => {
-      this.physicsConfig();
-      if (this.triedToCallDrawArtWithoutPhisycsInit) {
-        drawArt();
-      }
-    });
-
-    // remove when making build version
-    drawArt();
   }
 
   physicsConfig() {
@@ -101,12 +107,14 @@ class World {
     this.physicsInitiated = true;
   }
 
-  buildScene() {
-    console.log('World::buildScene');
+  buildGame() {
+    console.log('World::buildGame');
+
     this.hue = randomM2();
-    setFog(this.hue, this.scene)
+    setFog(this.hue, this.scene);
+
     this.structure = new Structure(this.scene, this.loop, this.physicsWorld, this.envMap, this.hue);    
-    this.walls     = walls    (this.scene, this.hue, this.floorSize, this.bgHSL, this.bgColor);
+    this.walls     = walls(this.scene, this.hue, this.floorSize, this.bgHSL, this.bgColor);
   }
 
   start() {

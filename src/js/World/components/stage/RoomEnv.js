@@ -6,7 +6,7 @@
 	BackSide,
 	BoxGeometry,
 	Mesh,
- MeshBasicMaterial,
+ 	MeshBasicMaterial,
 	MeshStandardMaterial,
 	PointLight,
 	Scene,
