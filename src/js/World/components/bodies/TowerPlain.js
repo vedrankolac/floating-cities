@@ -1,6 +1,6 @@
 import { hslToHex } from "../../utils/colorUtils";
 import { canvasTextureMaterial } from "../materials/canvasTextureMaterial";
-import { cube } from "./cube";
+import { Cube } from "./highlevel/Cube";
 
 export class TowerPlain {
   constructor(
@@ -19,30 +19,30 @@ export class TowerPlain {
     this.envMap = envMap;
     this.physicsWorld = physicsWorld;
     this.scene = scene;
-    this.draw();
+
+    this.create();
   }
 
-  draw = () => {
+  create = () => {
     const cIndex = randomM2();
-    let color;
 
     // color = hslToHex(0, 0.0, 0.6);
 
     if (cIndex < 0.4) {
-      color = (randomM2() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, randomM2()*0.6 + 0.3, 0.4); // white or color
+      this.color = (randomM2() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, randomM2()*0.6 + 0.3, 0.4); // white or color
     } else if (cIndex >= 0.40 && cIndex < 0.70) {
-      color = hslToHex(0, 0.0, 0.0); // black
+      this.color = hslToHex(0, 0.0, 0.0); // black
     } else if (cIndex >= 0.70 && cIndex < 1.0) {
-      color = hslToHex(0, 0.0, randomM2()*0.6); // gray
+      this.color = hslToHex(0, 0.0, randomM2()*0.6); // gray
     }
 
     const width = this.rectangle.width() - 0.02;
     const depth = this.rectangle.height() - 0.02;
 
-    let material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
+    this.material = canvasTextureMaterial({ envMap: this.envMap }, { color: this.color, roughness: 0.6, metalness: 0.02});
 
-    const item = cube(
-      material,
+    this.cube = new Cube(
+      this.material,
       {
         width,
         height: this.height,
@@ -62,6 +62,13 @@ export class TowerPlain {
       this.physicsWorld
     );
 
-    this.scene.add(item.mesh);
+
+    this.scene.add(this.cube.mesh);
+  }
+
+  destroy = () => {
+    this.material.dispose();
+    this.scene.remove(this.cube.mesh);
+    this.cube.destroy();
   }
 }

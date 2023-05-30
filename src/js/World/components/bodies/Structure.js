@@ -16,11 +16,13 @@ export class Structure {
     this.physicsWorld = physicsWorld;
     this.envMap = envMap;
     this.hue = hue;
-    this.start();
   }
 
-  start = () => {
-    // console.log('Structure::start');
+  create = () => {
+    this.parcels = [];
+    this.trains = [];
+
+    console.log('Structure::create');
 
     // DEFINE SPLIT AND DENSITY
 
@@ -82,7 +84,8 @@ export class Structure {
       this.scene,
       this.loop,
       this.physicsWorld,
-      this.envMap
+      this.envMap,
+      this.parcels
     );
     const base1Area = rectangleBase1.width() * rectangleBase1.height();
     base1.split(0, 8, base1Area, 1.2);
@@ -95,10 +98,14 @@ export class Structure {
       this.scene,
       this.loop,
       this.physicsWorld,
-      this.envMap
+      this.envMap,
+      this.parcels
     );
     const base2Area = rectangleBase2.width() * rectangleBase2.height();
     base2.split(0, 8, base2Area, 1.2);
+
+    this.parcels.push(base1);
+    this.parcels.push(base2);
 
     // MAKE TRAINS
 
@@ -133,6 +140,9 @@ export class Structure {
       this.envMap
     );
 
+    this.trains.push(trainA);
+    this.trains.push(trainB);
+
     // const trainC = new Train(
     //   roadWidth,
     //   0,
@@ -147,6 +157,27 @@ export class Structure {
     // );
 
     // MAKE PARTICLES
-    const particles = new Particles(strWidth, strDepth, b1, 3.2, this.scene, this.loop, this.envMap);
+    this.particles = new Particles(strWidth, strDepth, b1, 3.2, this.scene, this.loop, this.envMap);
+  }
+
+  destroy = () => {
+    console.log('Structure::destroy');
+
+    // destroy all parcels
+    for (let i = 0; i < this.parcels.length; i++) {
+      let parcel = this.parcels[i];
+      parcel.destroy();
+      parcel = null;
+    }
+
+    this.particles.destroy();
+    this.particles = null;
+
+    // destroy all trains
+    for (let j = 0; j < this.trains.length; j++) {
+      let train = this.trains[j];
+      train.destroy();
+      train = null;
+    }
   }
 }

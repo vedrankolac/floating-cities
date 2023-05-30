@@ -1,6 +1,6 @@
 import { hslToHex } from "../../utils/colorUtils";
 import { canvasTextureMaterial } from "../materials/canvasTextureMaterial";
-import { cube } from "./cube";
+import { Cube } from "./highlevel/Cube";
 
 export class TowerStackHorizontally {
   constructor(
@@ -19,10 +19,12 @@ export class TowerStackHorizontally {
     this.envMap = envMap;
     this.physicsWorld = physicsWorld;
     this.scene = scene;
-    this.draw();
+
+    this.cubes = [];
+    this.create();
   }
 
-  draw = () => {
+  create = () => {
     const cIndex = randomM2();
     let color;
 
@@ -30,17 +32,17 @@ export class TowerStackHorizontally {
 
     if (cIndex < 0.4) {
       // color = (Math.random() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, Math.random()*0.6 + 0.3, 0.4); // white or color
-      color = (randomM2() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(0, 0.0, randomM2()*0.6); // white or gray
+      this.color = (randomM2() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(0, 0.0, randomM2()*0.6); // white or gray
     } else if (cIndex >= 0.40 && cIndex < 0.70) {
-      color = hslToHex(0, 0.0, 0.0); // black
+      this.color = hslToHex(0, 0.0, 0.0); // black
     } else if (cIndex >= 0.70 && cIndex < 1.0) {
-      color = hslToHex(0, 0.0, randomM2()*0.6); // gray
+      this.color = hslToHex(0, 0.0, randomM2()*0.6); // gray
     }
 
     const width = this.rectangle.width() - 0.02;
     const depth = this.rectangle.height() - 0.02;
     
-    let material = canvasTextureMaterial({ envMap: this.envMap }, { color: color, roughness: 0.6, metalness: 0.02});
+    this.material = canvasTextureMaterial({ envMap: this.envMap }, { color: this.color, roughness: 0.6, metalness: 0.02});
 
     const nBlocks = Math.floor(Math.random() * 6 + 3);
     const blockWidth = width/nBlocks;
@@ -52,8 +54,8 @@ export class TowerStackHorizontally {
     const initY = this.height/2 - this.yDownShift - Math.random()*(this.height/6)
 
     for (let i = 0; i < nBlocks; i++) {
-      const item = cube(
-        material,
+      const cube = new Cube(
+        this.material,
         {
           width: blockWidth * 0.5,
           height: this.height,
@@ -73,7 +75,18 @@ export class TowerStackHorizontally {
         this.physicsWorld
       );
 
-      this.scene.add(item.mesh);
+      this.cubes.push(cube);
+      this.scene.add(cube.mesh);
+    }
+  }
+
+  destroy = () => {
+    this.material.dispose();
+
+    for (let i = 0; i < this.cubes.length; i++) {
+      const cube = this.cubes[i];
+      this.scene.remove(cube.mesh);
+      cube.destroy(); 
     }
   }
 }

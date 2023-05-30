@@ -26,6 +26,8 @@ export class Particles {
     this.scene = scene;
     this.loop = loop;
     this.envMap = envMap;
+
+    this.items = [];
     this.draw();
   }
 
@@ -66,8 +68,31 @@ export class Particles {
 
       g.add(mesh);
 
+      this.items.push({
+        material,
+        geometry,
+        mesh,
+        path,
+        g
+      })
+
       this.scene.add(g);
       this.loop.noPhysicsUpdatables.push(g);
     }
+  }
+
+  destroy = () => {
+    for (let i = 0; i < this.items.length; i++) {
+      const element = this.items[i];
+
+      element.material.dispose();
+      element.geometry.dispose();
+      this.scene.remove(element.g);
+      element.geometry = null;
+      element.mesh = null;
+      element.path = null;
+      element.g = null;
+    }
+    this.loop.noPhysicsUpdatables = [];
   }
 }

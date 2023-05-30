@@ -1,6 +1,6 @@
 import { hslToHex } from "../../utils/colorUtils";
 import { canvasTextureMaterial } from "../materials/canvasTextureMaterial";
-import { cube } from "./cube";
+import { Cube } from "./highlevel/Cube";
 import { TrainWindows } from "../canvasMaps/TrainWindows";
 
 export class Train {
@@ -33,7 +33,7 @@ export class Train {
 
   makeTrack = () => {
     const roadColor = hslToHex(0, 0.0, Math.random()*0.1 + 0.0);
-    const roadMaterial = canvasTextureMaterial({ envMap: this.envMap }, { color: roadColor, roughness: 0.6, metalness: 0.02});
+    this.roadMaterial = canvasTextureMaterial({ envMap: this.envMap }, { color: roadColor, roughness: 0.6, metalness: 0.02});
 
     const roadWidth = this.roadWidth + 0.02;
     const roadHeight = 0.01;
@@ -71,22 +71,22 @@ export class Train {
       }
     }
 
-    const road = cube(
-      roadMaterial,
+    this.road = new Cube(
+      this.roadMaterial,
       size,
       translation,
       rotation,
       'none',
       this.physicsWorld
     );
-    this.scene.add(road.mesh);
+    this.scene.add(this.road.mesh);
     // this.loop.bodies.push(road);
   }
 
   makeTrains = () => {
     const trainColor = hslToHex(0, 0.0, Math.random()*0.1 + 0.0); // gray
     const windowsColor = hslToHex(this.hue, 0.1, 0.00);
-    const maps = new TrainWindows(trainColor, windowsColor);
+    this.maps = new TrainWindows(trainColor, windowsColor);
     // const maps = null;
 
     let trainName;
@@ -96,25 +96,25 @@ export class Train {
       trainName = 'trainX';
     }
 
-    let trainMaterial;
+    this.trainMaterial;
 
     if (this.orientation === 'z') {
-      trainMaterial = [
-        canvasTextureMaterial({ ...maps, envMap: this.envMap }, { color: null, roughness: 0.6, metalness: 0.02}),
-        canvasTextureMaterial({ ...maps, envMap: this.envMap }, { color: null, roughness: 0.6, metalness: 0.02}),
+      this.trainMaterial = [
+        canvasTextureMaterial({ ...this.maps, envMap: this.envMap }, { color: null, roughness: 0.6, metalness: 0.02}),
+        canvasTextureMaterial({ ...this.maps, envMap: this.envMap }, { color: null, roughness: 0.6, metalness: 0.02}),
         canvasTextureMaterial({ envMap: this.envMap }, { color: trainColor, roughness: 0.6, metalness: 0.02}),
         canvasTextureMaterial({ envMap: this.envMap }, { color: trainColor, roughness: 0.6, metalness: 0.02}),
         canvasTextureMaterial({ envMap: this.envMap }, { color: trainColor, roughness: 0.6, metalness: 0.02}),
         canvasTextureMaterial({ envMap: this.envMap }, { color: trainColor, roughness: 0.6, metalness: 0.02})
       ];
     } else if (this.orientation === 'x') {
-      trainMaterial = [
+      this.trainMaterial = [
         canvasTextureMaterial({ envMap: this.envMap }, { color: trainColor, roughness: 0.6, metalness: 0.02}),
         canvasTextureMaterial({ envMap: this.envMap }, { color: trainColor, roughness: 0.6, metalness: 0.02}),
         canvasTextureMaterial({ envMap: this.envMap }, { color: trainColor, roughness: 0.6, metalness: 0.02}),
         canvasTextureMaterial({ envMap: this.envMap }, { color: trainColor, roughness: 0.6, metalness: 0.02}),
-        canvasTextureMaterial({ ...maps, envMap: this.envMap }, { color: null, roughness: 0.6, metalness: 0.02}),
-        canvasTextureMaterial({ ...maps, envMap: this.envMap }, { color: null, roughness: 0.6, metalness: 0.02})
+        canvasTextureMaterial({ ...this.maps, envMap: this.envMap }, { color: null, roughness: 0.6, metalness: 0.02}),
+        canvasTextureMaterial({ ...this.maps, envMap: this.envMap }, { color: null, roughness: 0.6, metalness: 0.02})
       ];
     }
 
@@ -156,8 +156,8 @@ export class Train {
       }
     }
 
-    const trainA = cube(
-      trainMaterial,
+    this.trainA = new Cube(
+      this.trainMaterial,
       size,
       translation,
       rotation,
@@ -165,8 +165,8 @@ export class Train {
       this.physicsWorld,
       trainName
     );
-    this.scene.add(trainA.mesh);
-    this.loop.bodies.push(trainA);
+    this.scene.add(this.trainA.mesh);
+    this.loop.bodies.push(this.trainA);
 
     // -- B
 
@@ -194,8 +194,8 @@ export class Train {
       }
     }
 
-    const trainB = cube(
-      trainMaterial,
+    this.trainB = new Cube(
+      this.trainMaterial,
       size,
       translation,
       rotation,
@@ -203,8 +203,8 @@ export class Train {
       this.physicsWorld,
       trainName
     );
-    this.scene.add(trainB.mesh);
-    this.loop.bodies.push(trainB);
+    this.scene.add(this.trainB.mesh);
+    this.loop.bodies.push(this.trainB);
 
     // -- velocity
 
@@ -212,27 +212,48 @@ export class Train {
     const velocityB = Math.random() * 6 + 8;
 
     if (this.orientation === 'z') {
-      trainB.rigidBody.setLinvel({
+      this.trainB.rigidBody.setLinvel({
         x: 0,
         y: 0,
         z: velocityA * ((Math.random() > 0.5) ? 1 : -1)
       }, true);
-      trainA.rigidBody.setLinvel({
+      this.trainA.rigidBody.setLinvel({
         x: 0,
         y: 0,
         z: velocityB * ((Math.random() > 0.5) ? 1 : -1)
       }, true);
     } else if (this.orientation === 'x') {
-      trainB.rigidBody.setLinvel({
+      this.trainB.rigidBody.setLinvel({
         x: velocityA * ((Math.random() > 0.5) ? 1 : -1),
         y: 0,
         z: 0
       }, true);
-      trainA.rigidBody.setLinvel({
+      this.trainA.rigidBody.setLinvel({
         x: velocityB * ((Math.random() > 0.5) ? 1 : -1),
         y: 0,
         z: 0
       }, true);
     }
+  }
+
+  destroy = () => {
+    // road
+    this.roadMaterial.dispose();
+    this.scene.remove(this.road.mesh);
+    this.road.destroy();
+
+    // trains
+    this.maps.colorMap.dispose();
+
+    for (let i = 0; i < this.trainMaterial.length; i++) {
+      const material = this.trainMaterial[i];
+      material.dispose(); 
+    }
+    this.loop.bodies = [];
+    this.scene.remove(this.trainA.mesh);
+    this.scene.remove(this.trainB.mesh);
+
+    this.trainA.destroy();
+    this.trainB.destroy();
   }
 }

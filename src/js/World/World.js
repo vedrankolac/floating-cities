@@ -107,15 +107,22 @@ class World {
   buildGame() {
     console.log('World::buildGame');
 
-    console.log(m0, m1, m2, m3, m4);
-    console.log(randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
+    console.log('params', m0, m1, m2, m3, m4);
+    console.log('rparams', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
 
     rndPosCamera(this.camera);
 
     this.hue = randomM2();
+    console.log('this.hue', this.hue);
     setFog(this.hue, this.scene);
 
-    this.structure = new Structure(this.scene, this.loop, this.physicsWorld, this.envMap, this.hue);
+    if (this.structure) {
+      this.structure.destroy();
+      this.structure.create();
+    } else {
+      this.structure = new Structure(this.scene, this.loop, this.physicsWorld, this.envMap, this.hue);
+      this.structure.create();
+    }
 
     if (this.environment) {
       this.environment.destroy();
@@ -125,7 +132,9 @@ class World {
       this.environment.create();
     }
 
-    console.log('info', this.renderer.info);
+    // console.log('info', this.renderer.info);
+    // this.structure.destroy();
+    // console.log('info', this.renderer.info);
   }
 
   start() {

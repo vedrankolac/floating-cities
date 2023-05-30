@@ -25,6 +25,7 @@ const cube = (
     heightSegments,
     depthSegments
   );
+  
   const mesh = new Mesh( geometry, material );
   mesh.position.x = translation.x;
   mesh.position.y = translation.y;
@@ -36,16 +37,16 @@ const cube = (
   }
 
   let rigidBodyDesc = null;
-  if (rigidType === 'dynamic') {
-    rigidBodyDesc = RigidBodyDesc.dynamic();
-  } else if (rigidType === 'fixed') {
-    rigidBodyDesc = RigidBodyDesc.fixed();
-  }
-
   let rigidBody = null;
   let collider = null;
 
   if (rigidType !== 'none') {
+    if (rigidType === 'dynamic') {
+      rigidBodyDesc = RigidBodyDesc.dynamic();
+    } else if (rigidType === 'fixed') {
+      rigidBodyDesc = RigidBodyDesc.fixed();
+    }
+
     rigidBodyDesc.setTranslation(translation.x, translation.y, translation.z);
     const q = new Quaternion().setFromEuler(
       new Euler( rotation.x, rotation.y, rotation.z, 'XYZ' )
@@ -59,9 +60,10 @@ const cube = (
   }
 
   return {
-    mesh: mesh,
-    collider: collider,
-    rigidBody: rigidBody
+    geometry,
+    mesh,
+    collider,
+    rigidBody
   };
 }
 

@@ -13,7 +13,8 @@ export class Parcel {
     scene,
     loop,
     physicsWorld,
-    envMap
+    envMap,
+    parcels
   ) {
     this.rectangle = rectangle;
     this.density = density;
@@ -23,16 +24,17 @@ export class Parcel {
     this.loop = loop;
     this.physicsWorld = physicsWorld;
     this.envMap = envMap;
-    this.tree = false;
+    this.parcels = parcels;
   }
 
   split = (depth, limit, baseArea) => {
     if (depth === limit) {
       const tower = new Parcel(
         new Rectangle(this.rectangle.x1, this.rectangle.y1, this.rectangle.x2, this.rectangle.y2),
-        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap
+        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap, this.parcels
       );
       tower.draw();
+      this.parcels.push(tower);
       return;
     }
 
@@ -46,23 +48,26 @@ export class Parcel {
       const split_x = this.rectangle.x1 + splitIndex * this.rectangle.width();
       tower_1 = new Parcel(
         new Rectangle(this.rectangle.x1, this.rectangle.y1, split_x, this.rectangle.y2),
-        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap
+        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap, this.parcels
       );
       tower_2 = new Parcel(
         new Rectangle(split_x, this.rectangle.y1, this.rectangle.x2, this.rectangle.y2),
-        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap
+        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap, this.parcels
       );
     } else {
       const split_y = this.rectangle.y1 + splitIndex * this.rectangle.height();
       tower_1 = new Parcel(
         new Rectangle(this.rectangle.x1, this.rectangle.y1, this.rectangle.x2, split_y),
-        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap
+        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap, this.parcels
       );
       tower_2 = new Parcel(
         new Rectangle(this.rectangle.x1, split_y, this.rectangle.x2, this.rectangle.y2),
-        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap
+        this.density, this.hue, this.yDownShift, this.scene, this.loop, this.physicsWorld, this.envMap, this.parcels
       );
     }
+
+    this.parcels.push(tower_1);
+    this.parcels.push(tower_2);
 
     if (tower_1.rectangle.area() * this.density > baseArea) {
       tower_1.split(depth + 1, limit, baseArea);
@@ -99,27 +104,34 @@ export class Parcel {
       this.scene
     ]
 
-    let t = null;
+    this.building = null;
 
     // if small area and great hight - draw plain tower
     if ((height > maxHeight/3) && (this.rectangle.area() < 0.04)) {
-       t = new TowerPlain(...tParams);
+      this.building = new TowerPlain(...tParams);
     } else {
       const dIndex = Math.random();
       if (dIndex < 0.45) {
-        t = new TowerPlain(...tParams);
+        this.building = new TowerPlain(...tParams);
       } else if (dIndex >= 0.45 && dIndex < 0.6) {
-        t = new TowerStackVertically(...tParams);
+        this.building = new TowerStackVertically(...tParams);
       } else if (dIndex >= 0.6 && dIndex < 0.7) {
-        t = new TowerStackHorizontally(...tParams);
+        this.building = new TowerStackHorizontally(...tParams);
       } else if (dIndex >= 0.7 && dIndex < 1.0) {
         const tIndex = Math.random();
         if (this.rectangle.area() > 0.2) {
-          if (tIndex > 0.1) t = new Tree(...tParams, Math.random()*30 + 30, 6);
+          if (tIndex > 0.1) this.building = new Tree(...tParams, Math.random()*30 + 30, 6);
         } else {
-          if (tIndex > 0.6) t = new Tree(...tParams, Math.random()*10 + 20, 4);
+          if (tIndex > 0.6) this.building = new Tree(...tParams, Math.random()*10 + 20, 4);
         }
       }
+    }
+  }
+
+  destroy = () => {
+    console.log('Parcel::destroy');
+    if (this.building) {
+      this.building.destroy(); 
     }
   }
 }
