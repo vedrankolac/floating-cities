@@ -15,8 +15,6 @@ const stats = isVisible => {
       } else {
         s.dom.style.display = "none";
       }
-    } else {
-      console.log('no stats initiated');
     }
   }
 

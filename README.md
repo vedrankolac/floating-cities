@@ -22,12 +22,12 @@ npm run deploy
 ### How to prepare build for editArt
 - build 
 - make sure that drawArt is not called in World class
-- add './' in frot of css and js files
-- use only first js file i.e. -> `<script src="./index.js" defer></script>`
-- remember to remove type='module' !!! in front of first script
-- delete second js file...
 - remove editart-snippet
+- use only first js file i.e. -> `<script src="./index.js" defer></script>`
+- delete second js file...
+- remember to remove type='module' !!! in front of first script
 - add editArt script below js file in body tag `<script src="./editartParams.js" defer></script>`
+- add './' in frot of css and js files
 - rename files to index.js and index.css
 - run build version with python `python -m SimpleHTTPServer 8000` and use it on `https://www.editart.xyz/sandbox`
 

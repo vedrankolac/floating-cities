@@ -22,8 +22,9 @@ class Loop {
     this.accumulator = 0;
     this.stepCounter = 0;
     this.engineInitStepDone = false;
-    document.addEventListener('keypress', this.togglePhysicsEngine);
+    document.addEventListener('keypress', this.keypress);
     document.addEventListener('visibilitychange', e => this.handleVisibilityChange(e));
+    console.log('info         ', this.renderer.info);
   }
 
   start() {
@@ -57,7 +58,7 @@ class Loop {
     this.physicsWorld = physicsWorld;
   }
 
-  togglePhysicsEngine = (e) => {
+  keypress = (e) => {
     if (e.code === 'KeyR') {
       if (this.runPhysics === true) {
         this.clock.stop();
@@ -66,6 +67,10 @@ class Loop {
         this.clock.start();
         this.runPhysics = true;
       }
+    }
+
+    if (e.code === 'KeyI') {
+      console.log('info', this.renderer.info);
     }
   }
 

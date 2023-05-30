@@ -2,7 +2,7 @@ import RAPIER from '@dimforge/rapier3d-compat'
 import { World as RWorld } from '@dimforge/rapier3d-compat'
 import { orbitControls } from './utils/orbitControls'
 import { stats } from './utils/stats'
-import { Vector3, PMREMGenerator, EquirectangularReflectionMapping } from "three"
+import { Vector3 } from "three"
 import { Loop } from './system/Loop.js'
 import { createRenderer } from './system/renderer.js'
 import { createScene, setFog } from './components/stage/scene.js'
@@ -11,8 +11,7 @@ import { createLights } from './components/stage/lights.js'
 import { VrControls } from './system/VrControls.js'
 import { createHandsPhysicsController } from "./system/handsPhysicsController.js"
 import { room as roomPhysicsComposition } from './components/bodies/room.js'
-import { walls } from './components/meshes/walls.js'
-import { RoomEnvironment } from './components/stage/RoomEnv'
+import { Environment } from './components/bodies/environment/Environment'
 import { createEnvMapFromScene } from './components/stage/createEnvMapFromScene'
 import { setPrintTools } from './utils/setPrintTools'
 import { postprocessing } from './components/effects/postprocessing'
@@ -30,7 +29,6 @@ class World {
       console.log('World::drawArt', this.physicsInitiated);
 
       if (this.physicsInitiated) {
-        rndPosCamera(this.camera);
         this.buildGame();
       } else {
         this.triedToCallDrawArtWithoutPhisycsInit = true;
@@ -65,7 +63,6 @@ class World {
     this.renderer = createRenderer(this.postprocessingEnabled, this.xrEnabled);
     this.scene    = createScene();
     this.camera   = createCamera();
-    rndPosCamera(this.camera);
     this.lights   = createLights(this.scene);
     this.envMap   = createEnvMapFromScene(this.renderer);
 
@@ -110,11 +107,25 @@ class World {
   buildGame() {
     console.log('World::buildGame');
 
+    console.log(m0, m1, m2, m3, m4);
+    console.log(randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
+
+    rndPosCamera(this.camera);
+
     this.hue = randomM2();
     setFog(this.hue, this.scene);
 
-    this.structure = new Structure(this.scene, this.loop, this.physicsWorld, this.envMap, this.hue);    
-    this.walls     = walls(this.scene, this.hue, this.floorSize, this.bgHSL, this.bgColor);
+    this.structure = new Structure(this.scene, this.loop, this.physicsWorld, this.envMap, this.hue);
+
+    if (this.environment) {
+      this.environment.destroy();
+      this.environment.create();
+    } else {
+      this.environment = new Environment(this.scene, this.hue, this.floorSize);
+      this.environment.create();
+    }
+
+    console.log('info', this.renderer.info);
   }
 
   start() {
