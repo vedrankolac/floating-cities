@@ -1,5 +1,5 @@
 {
-  "name": "delirious",
+  "name": "floating-cities",
   "source": "src/index.html",
   "targets": {
     "default": {
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/birdlaketree/delirious.git"
+    "url": "git+https://github.com/vedrankolac/floating-cities.git"
   },
   "keywords": [
     "javascript",
@@ -30,9 +30,9 @@
   "author": "vedran.kolac@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/birdlaketree/delirious/issues"
+    "url": "https://github.com/vedrankolac/floating-cities/issues"
   },
-  "homepage": "https://birdlaketree.github.io/delirious/",
+  "homepage": "https://vedrankolac.github.io/floating-cities/",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.3.2",
     "buffer": "^6.0.3",

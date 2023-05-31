@@ -1,4 +1,4 @@
-## delirious
+## Floating Cities
 Boilerplate for a fast start with three.js materials in rapier physics engine on Oculus Quest 2 VR headset.
 - only tested on Oculus Quest 2
 - movement is controlled with joystick
@@ -8,9 +8,6 @@ Boilerplate for a fast start with three.js materials in rapier physics engine on
 npm i
 npm start
 ````
-
-#### GitHub Page
-https://vedrankolac.github.io/gravity/
 
 ### How to deploy for github pages
 ```bash
