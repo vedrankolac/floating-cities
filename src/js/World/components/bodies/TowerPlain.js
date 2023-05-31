@@ -26,8 +26,6 @@ export class TowerPlain {
   create = () => {
     const cIndex = randomM2();
 
-    // color = hslToHex(0, 0.0, 0.6);
-
     if (cIndex < 0.4) {
       this.color = (randomM2() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, randomM2()*0.6 + 0.3, 0.4); // white or color
     } else if (cIndex >= 0.40 && cIndex < 0.70) {
@@ -50,7 +48,7 @@ export class TowerPlain {
       },
       {
         x: this.rectangle.center().x,
-        y: this.height/2 - this.yDownShift - Math.random()*(this.height/6),
+        y: this.height/2 - this.yDownShift - randomM3()*(this.height/6),
         z: this.rectangle.center().y
       },
       {

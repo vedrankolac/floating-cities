@@ -18,9 +18,9 @@ const createLights = scene => {
   spot.decay = 0.8;
   spot.angle = Math.PI/3;
   spot.position.set(
-    Math.random() * 2 + 1,
+    randomM3() * 2 + 1,
     6,
-    Math.random() * 2 + 1,
+    randomM3() * 2 + 1,
   );
   spot.castShadow = true;
   spot.map = map.colorMap;

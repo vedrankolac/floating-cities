@@ -94,9 +94,9 @@ class Branch {
   }
 
   create = () => {
-    const r = Math.random() * 0.4 + 0.04;
-    const p = MathUtils.degToRad(Math.random() * this.angle - this.angle/2);
-    const e = MathUtils.degToRad(Math.random() * 360);
+    const r = randomM3() * 0.4 + 0.04;
+    const p = MathUtils.degToRad(randomM3() * this.angle - this.angle/2);
+    const e = MathUtils.degToRad(randomM3() * 360);
 
     const endPoint = new Vector3();
     endPoint.setFromSphericalCoords(r, p, e).add(this.startPoint);

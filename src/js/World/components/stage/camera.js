@@ -11,8 +11,8 @@ const rndPosCamera = (camera) => {
   const radius  = 10;
 
   const n = mapNumber(m1, 0, 1, 1, 10)
-  const nexp = Math.pow(n, 3)
-  const nmap = mapNumber(nexp, 1, 1000, 90, 30)
+  const nexp = Math.pow(n, 2)
+  const nmap = mapNumber(nexp, 1, 100, 120, 10)
   const polar   = MathUtils.degToRad(nmap);
 
   const equator = MathUtils.degToRad((mapNumber(m0, 0, 1, 0.5, -0.5) + 0.12) * 360);

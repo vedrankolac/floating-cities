@@ -24,7 +24,6 @@ class Loop {
     this.engineInitStepDone = false;
     document.addEventListener('keypress', this.keypress);
     document.addEventListener('visibilitychange', e => this.handleVisibilityChange(e));
-    console.log('info         ', this.renderer.info);
   }
 
   start() {
@@ -124,7 +123,7 @@ class Loop {
           body.rigidBody.setLinvel({
             x: 0,
             y: 0,
-            z: Math.random() * 6 + 8
+            z: randomM3() * 6 + 8
           }, true);
         }
         if (body.rigidBody.translation().z < -20) {
@@ -132,7 +131,7 @@ class Loop {
           body.rigidBody.setLinvel({
             x: 0,
             y: 0,
-            z: -Math.random() * 6 + 8
+            z: -randomM3() * 6 + 8
           }, true);
         }
       }
@@ -141,7 +140,7 @@ class Loop {
         if (body.rigidBody.translation().x > 20) {
           body.rigidBody.setTranslation({ x: -20, y: position.y, z: position.z }, true);
           body.rigidBody.setLinvel({
-            x: Math.random() * 6 + 8,
+            x: randomM3() * 6 + 8,
             y: 0,
             z: 0,
           }, true);
@@ -149,7 +148,7 @@ class Loop {
         if (body.rigidBody.translation().x < -20) {
           body.rigidBody.setTranslation({ x: 20, y: position.y, z: position.z }, true);
           body.rigidBody.setLinvel({
-            x: -Math.random() * 6 + 8,
+            x: -randomM3() * 6 + 8,
             y: 0,
             z: 0,
           }, true);

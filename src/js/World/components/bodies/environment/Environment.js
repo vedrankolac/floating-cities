@@ -4,11 +4,9 @@ import { hslToHex } from '../../../utils/colorUtils';
 export class Environment {
   constructor(
     scene,
-    hue,
     size
     ) {
       this.scene = scene;
-      this.hue = hue;
       this.size = size;
 
       this.plastic = {
@@ -25,7 +23,8 @@ export class Environment {
       }
   }
 
-  create = () => {
+  create = (hue) => {
+    this.hue = hue;
     this.dome.color = hslToHex(this.hue, 0.1, 0.6);
     this.dome.material = new MeshStandardMaterial({
       envMapIntensity: 0,

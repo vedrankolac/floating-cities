@@ -2,6 +2,7 @@ import { Rectangle } from "../../utils/Rectangle";
 import { Parcel } from "./Parcel";
 import { Train } from "./Train";
 import { Particles } from "./Particles";
+import { mapNumber } from "../../utils/numUtils";
 
 export class Structure {
   constructor(
@@ -9,20 +10,19 @@ export class Structure {
     loop,
     physicsWorld,
     envMap,
-    hue
   ) {
+    console.log('');
+    console.log('Structure');
     this.scene = scene;
     this.loop = loop;
     this.physicsWorld = physicsWorld;
     this.envMap = envMap;
-    this.hue = hue;
   }
 
-  create = () => {
+  create = (hue) => {
+    this.hue = hue;
     this.parcels = [];
     this.trains = [];
-
-    console.log('Structure::create');
 
     // DEFINE SPLIT AND DENSITY
 
@@ -30,14 +30,14 @@ export class Structure {
     // const strDepth = 0.2;
     // const strWidth = 2.0;
     // const strDepth = 1.2;
-    const strWidth = Math.random() * 1.4 + 0.6;
-    const strDepth = Math.random() * 0.6 + 0.6;
+    const strWidth = randomM3() * 1.4 + 0.6;
+    const strDepth = randomM3() * 0.6 + 0.6;
     
     // const roadWidth = 0.16;
-    const roadWidth = Math.random() * 0.04 + 0.16;
+    const roadWidth = randomM3() * 0.04 + 0.16;
 
     // split on no less than 30% of width
-    const splitIndex = Math.random() * 0.7 + 0.15;
+    const splitIndex = randomM3() * 0.7 + 0.15;
     // const splitIndex = 0.10;
     const split_x = -strWidth + splitIndex * strWidth * 2;
 
@@ -50,18 +50,21 @@ export class Structure {
     // console.log('densityIndex1', densityIndex1);
     // console.log('densityIndex2', densityIndex2);
 
-    const densityBase1 = Math.round(Math.random() * densityIndex1 + 2);
-    const densityBase2 = Math.round(Math.random() * densityIndex2 + 2);
+    const densityBase1 = Math.round(randomM3() * densityIndex1 + 2);
+    const densityBase2 = Math.round(randomM3() * densityIndex2 + 2);
 
-    // console.log('densityBase1', densityBase1);
-    // console.log('densityBase2', densityBase2);
+    // const densityBase1 = Math.round(Math.random() * densityIndex1 + 2);
+    // const densityBase2 = Math.round(Math.random() * densityIndex2 + 2);
+
+    console.log('Structure::create::densityBase1', densityBase1);
+    console.log('Structure::create::densityBase2', densityBase2);
 
     // DEFINE LEVELS
 
     const b1 = 1.52;
-    const b2 = Math.random() * (1.52-0.8) +  0.8;
+    const b2 = randomM3() * (1.52-0.8) +  0.8;
 
-    const bIndex = Math.random();
+    const bIndex = randomM3();
 
     let yDownShiftBase1 = null;
     let yDownShiftBase2 = null;
@@ -76,6 +79,10 @@ export class Structure {
 
     // MAKE PARCELS
 
+    // const depthLimit = 8;
+    const depthLimit = Math.round(mapNumber(m3, 0, 1, 2, 8));
+    console.log('Structure::create::depthLimit', depthLimit);
+
     const base1 = new Parcel(
       rectangleBase1,
       densityBase1,
@@ -88,12 +95,12 @@ export class Structure {
       this.parcels
     );
     const base1Area = rectangleBase1.width() * rectangleBase1.height();
-    base1.split(0, 8, base1Area, 1.2);
+    base1.split(0, depthLimit, base1Area);
     
     const base2 = new Parcel(
       rectangleBase2,
       densityBase2,
-      this.hue + 0.7,
+      this.hue + randomM2() * 0.7,
       yDownShiftBase2,
       this.scene,
       this.loop,
@@ -102,7 +109,7 @@ export class Structure {
       this.parcels
     );
     const base2Area = rectangleBase2.width() * rectangleBase2.height();
-    base2.split(0, 8, base2Area, 1.2);
+    base2.split(0, depthLimit, base2Area);
 
     this.parcels.push(base1);
     this.parcels.push(base2);

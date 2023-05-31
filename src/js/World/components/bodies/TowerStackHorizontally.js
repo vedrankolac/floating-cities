@@ -31,7 +31,7 @@ export class TowerStackHorizontally {
     // color = hslToHex(0, 0.0, 0.0); // black
 
     if (cIndex < 0.4) {
-      // color = (Math.random() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, Math.random()*0.6 + 0.3, 0.4); // white or color
+      // color = (randomM2() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, randomM2()*0.6 + 0.3, 0.4); // white or color
       this.color = (randomM2() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(0, 0.0, randomM2()*0.6); // white or gray
     } else if (cIndex >= 0.40 && cIndex < 0.70) {
       this.color = hslToHex(0, 0.0, 0.0); // black
@@ -44,14 +44,14 @@ export class TowerStackHorizontally {
     
     this.material = canvasTextureMaterial({ envMap: this.envMap }, { color: this.color, roughness: 0.6, metalness: 0.02});
 
-    const nBlocks = Math.floor(Math.random() * 6 + 3);
+    const nBlocks = Math.floor(randomM3() * 6 + 3);
     const blockWidth = width/nBlocks;
 
     const cw = width + blockWidth/4 + 0.02/2;
     const cbw = cw / nBlocks;
 
     const initX = this.rectangle.x1 + 0.02/2 + blockWidth/4;
-    const initY = this.height/2 - this.yDownShift - Math.random()*(this.height/6)
+    const initY = this.height/2 - this.yDownShift - randomM3()*(this.height/6)
 
     for (let i = 0; i < nBlocks; i++) {
       const cube = new Cube(

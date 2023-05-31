@@ -10,7 +10,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,400&display=swap" rel="stylesheet"> -->
     <script>
-      const randomSeedEditArt = 'vedrrranTfFPJUrKGjQ7h2PtQva6hiNWYA3oK47edxJDxZMKuXe'
+      let search = new URLSearchParams(window.location.search)
+      let alphabet = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
+      let b58dec = (str) =>
+        [...str].reduce(
+          (p, c) => (p * alphabet.length + alphabet.indexOf(c)) | 0,
+          0
+        )
+      // make fxrand from hash
+      let hash =
+        search.get("fxhash") ||
+        "vedrrran" +
+          Array(49)
+            .fill(0)
+            .map((_) => alphabet[(Math.random() * alphabet.length) | 0])
+            .join("")
+      const randomSeedEditArt = hash;
+      // const randomSeedEditArt = 'vedrrranfnTYQxRPuzJhWwdUMDP9yTehpwyaX4PXVViYRMZdinqG9qvFz';
+      console.log('randomSeedEditArt', randomSeedEditArt);
     </script>
     <script id="editart-snippet">
       parent.postMessage({ editArtTemplateVersion: 1 }, "*");

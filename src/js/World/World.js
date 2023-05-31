@@ -22,6 +22,9 @@ import { Structure } from './components/bodies/Structure.js';
 
 class World {
   constructor() {
+    console.log('');
+    console.log('World');
+
     this.setAndRunThreejs();
     
     // function called from EditArt platform
@@ -45,7 +48,7 @@ class World {
     });
 
     // remove when making build version, should be called from EditArt platform
-    drawArt();
+    // drawArt();
   }
 
   setAndRunThreejs() {
@@ -106,30 +109,29 @@ class World {
 
   buildGame() {
     console.log('World::buildGame');
-
-    console.log('params', m0, m1, m2, m3, m4);
-    console.log('rparams', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
+    console.log('World::buildGame::params', m0, m1, m2, m3, m4);
+    console.log('World::buildGame::rparams', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
 
     rndPosCamera(this.camera);
 
-    this.hue = randomM2();
-    console.log('this.hue', this.hue);
+    this.hue = m2;
+    console.log('World::buildGame::this.hue', this.hue);
     setFog(this.hue, this.scene);
 
     if (this.structure) {
       this.structure.destroy();
-      this.structure.create();
+      this.structure.create(this.hue);
     } else {
-      this.structure = new Structure(this.scene, this.loop, this.physicsWorld, this.envMap, this.hue);
-      this.structure.create();
+      this.structure = new Structure(this.scene, this.loop, this.physicsWorld, this.envMap);
+      this.structure.create(this.hue);
     }
 
     if (this.environment) {
       this.environment.destroy();
-      this.environment.create();
+      this.environment.create(this.hue);
     } else {
-      this.environment = new Environment(this.scene, this.hue, this.floorSize);
-      this.environment.create();
+      this.environment = new Environment(this.scene, this.floorSize);
+      this.environment.create(this.hue);
     }
 
     // console.log('info', this.renderer.info);
