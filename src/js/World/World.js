@@ -7,7 +7,7 @@ import { Loop } from './system/Loop.js'
 import { createRenderer } from './system/renderer.js'
 import { createScene, setFog } from './components/stage/scene.js'
 import { createCamera, createDolly, rndPosCamera } from './components/stage/camera.js'
-import { createLights } from './components/stage/lights.js'
+import { createLights, rndPosSpot } from './components/stage/lights.js'
 import { VrControls } from './system/VrControls.js'
 import { createHandsPhysicsController } from "./system/handsPhysicsController.js"
 import { room as roomPhysicsComposition } from './components/bodies/room.js'
@@ -48,7 +48,7 @@ class World {
     });
 
     // remove when making build version, should be called from EditArt platform
-    // drawArt();
+    drawArt();
   }
 
   setAndRunThreejs() {
@@ -113,6 +113,7 @@ class World {
     console.log('World::buildGame::rparams', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
 
     rndPosCamera(this.camera);
+    rndPosSpot(this.lights.spot);
 
     this.hue = m2;
     console.log('World::buildGame::this.hue', this.hue);
