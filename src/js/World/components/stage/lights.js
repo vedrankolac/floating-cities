@@ -6,7 +6,7 @@ import {
 } from 'three';
 import { PerlinNoise } from '../canvasMaps/PerlinNoise';
 
-const createLights = scene => {
+export const createLights = scene => {
   let map = new PerlinNoise();
   
   // mobile phone optimisation
@@ -17,11 +17,11 @@ const createLights = scene => {
   spot.penumbra = 1;
   spot.decay = 0.8;
   spot.angle = Math.PI/3;
-  spot.position.set(
-    randomM3() * 2 + 1,
-    6,
-    randomM3() * 2 + 1,
-  );
+  // spot.position.set(
+  //   Math.random() * 2 + 1,
+  //   6,
+  //   Math.random() * 2 + 1,
+  // );
   spot.castShadow = true;
   spot.map = map.colorMap;
   spot.shadow.focus = 1;
@@ -47,6 +47,16 @@ const createLights = scene => {
     gui.add(spot, 'angle', 0.0, 2 );
     gui.add(ambient, 'intensity', 0.0, 20.0 );
   }
+
+  return {
+    spot
+  }
 }
 
-export { createLights };
+export const rndPosSpot = spot => {
+  spot.position.set(
+    randomM3() * 2 + 1,
+    6,
+    randomM3() * 2 + 1,
+  );
+}
