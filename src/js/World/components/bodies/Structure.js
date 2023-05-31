@@ -96,11 +96,15 @@ export class Structure {
     );
     const base1Area = rectangleBase1.width() * rectangleBase1.height();
     base1.split(0, depthLimit, base1Area);
+
+    const h2Index = randomM2();
+    const h2Shift = (h2Index > 0.5) ? 0.25 : -0.3
+    console.log('h2Shift', h2Shift);
     
     const base2 = new Parcel(
       rectangleBase2,
       densityBase2,
-      this.hue + randomM2() * 0.7,
+      this.hue + h2Shift,
       yDownShiftBase2,
       this.scene,
       this.loop,

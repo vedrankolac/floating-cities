@@ -78,7 +78,7 @@ class World {
     this.ppMA = this.ppM.n8ao;
     this.composer = this.postprocessingEnabled ? postprocessing(this.camera, this.scene, this.renderer, this.ppMA) : null;
 
-    this.stats = stats(true);
+    this.stats = stats(false);
     this.orbitControls = orbitControls(this.camera, this.renderer.domElement);
 
     this.loop = new Loop(this.camera, this.scene, this.renderer, this.composer, this.stats, this.orbitControls, this.postprocessingEnabled, this.gravity, this.dt);

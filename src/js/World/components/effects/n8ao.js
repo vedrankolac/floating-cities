@@ -51,14 +51,14 @@ export const n8ao = (
     composer.addPass(epMotionBlur);
   }
   
-  const nc = n8aopass.configuration;
-  const gui = new GUI();
-  gui.add(nc, "aoSamples", 1.0, 64.0, 1.0);
-  gui.add(nc, "denoiseSamples", 1.0, 8.0, 1.0);
-  gui.add(nc, "denoiseRadius", 0.0, 50.0, 0.01);
-  gui.add(nc, "aoRadius", 1.0, 5.0, 0.01);
-  gui.add(nc, "distanceFalloff", 0.0, 3.0, 0.01);
-  gui.add(nc, "intensity", 0.0, 10.0, 0.01);
+  // const nc = n8aopass.configuration;
+  // const gui = new GUI();
+  // gui.add(nc, "aoSamples", 1.0, 64.0, 1.0);
+  // gui.add(nc, "denoiseSamples", 1.0, 8.0, 1.0);
+  // gui.add(nc, "denoiseRadius", 0.0, 50.0, 0.01);
+  // gui.add(nc, "aoRadius", 1.0, 5.0, 0.01);
+  // gui.add(nc, "distanceFalloff", 0.0, 3.0, 0.01);
+  // gui.add(nc, "intensity", 0.0, 10.0, 0.01);
   // gui.add(nc, "renderMode", ["Combined", "AO", "No AO", "Split", "Split AO"]);
   
   return composer;
