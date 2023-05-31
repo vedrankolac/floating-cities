@@ -116,7 +116,8 @@ class World {
     rndPosSpot(this.lights.spot);
 
     this.hue = m2;
-    console.log('World::buildGame::this.hue', this.hue);
+    // console.log('World::buildGame::this.hue', this.hue);
+    
     setFog(this.hue, this.scene);
 
     if (this.structure) {

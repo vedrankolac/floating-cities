@@ -11,8 +11,8 @@ export class Structure {
     physicsWorld,
     envMap,
   ) {
-    console.log('');
-    console.log('Structure');
+    // console.log('');
+    // console.log('Structure');
     this.scene = scene;
     this.loop = loop;
     this.physicsWorld = physicsWorld;
@@ -56,8 +56,8 @@ export class Structure {
     // const densityBase1 = Math.round(Math.random() * densityIndex1 + 2);
     // const densityBase2 = Math.round(Math.random() * densityIndex2 + 2);
 
-    console.log('Structure::create::densityBase1', densityBase1);
-    console.log('Structure::create::densityBase2', densityBase2);
+    // console.log('Structure::create::densityBase1', densityBase1);
+    // console.log('Structure::create::densityBase2', densityBase2);
 
     // DEFINE LEVELS
 
@@ -81,7 +81,7 @@ export class Structure {
 
     // const depthLimit = 8;
     const depthLimit = Math.round(mapNumber(m3, 0, 1, 2, 8));
-    console.log('Structure::create::depthLimit', depthLimit);
+    // console.log('Structure::create::depthLimit', depthLimit);
 
     const base1 = new Parcel(
       rectangleBase1,
@@ -99,7 +99,6 @@ export class Structure {
 
     const h2Index = randomM2();
     const h2Shift = (h2Index > 0.5) ? 0.25 : -0.3
-    console.log('h2Shift', h2Shift);
     
     const base2 = new Parcel(
       rectangleBase2,
