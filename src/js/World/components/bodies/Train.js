@@ -32,12 +32,12 @@ export class Train {
   }
 
   makeTrack = () => {
-    const roadColor = hslToHex(0, 0.0, randomM3()*0.1 + 0.0);
+    const roadColor = hslToHex(0, 0.0, randomM0()*0.1 + 0.0);
     this.roadMaterial = canvasTextureMaterial({ envMap: this.envMap }, { color: roadColor, roughness: 0.6, metalness: 0.02});
 
     const roadWidth = this.roadWidth + 0.02;
     const roadHeight = 0.01;
-    const roadLength = randomM3() * 1 + 3;
+    const roadLength = randomM0() * 1 + 3;
 
     let size;
     let translation;
@@ -84,7 +84,7 @@ export class Train {
   }
 
   makeTrains = () => {
-    const trainColor = hslToHex(0, 0.0, randomM3()*0.1 + 0.0); // gray
+    const trainColor = hslToHex(0, 0.0, randomM0()*0.1 + 0.0); // gray
     const windowsColor = hslToHex(this.hue, 0.1, 0.00);
     this.maps = new TrainWindows(trainColor, windowsColor);
     // const maps = null;
@@ -141,7 +141,7 @@ export class Train {
       translation = {
         x: this.xPos - trainWidth/2 - 0.01,
         y: -this.yBase + trainHeight/2 + 0.02,
-        z: randomM3() * 30 - 15
+        z: randomM0() * 30 - 15
       }
     } else if (this.orientation === 'x') {
       size = {
@@ -150,7 +150,7 @@ export class Train {
         depth:  trainWidth
       }
       translation = {
-        x: randomM3() * 30 - 15,
+        x: randomM0() * 30 - 15,
         y: -this.yBase + trainHeight/2 + 0.02,
         z: this.zPos - trainWidth/2 - 0.01
       }
@@ -179,7 +179,7 @@ export class Train {
       translation = {
         x: this.xPos + trainWidth/2 + 0.01,
         y: -this.yBase + trainHeight/2 + 0.02,
-        z: randomM3() * 30 - 15
+        z: randomM0() * 30 - 15
       }
     } else if (this.orientation === 'x') {
       size = {
@@ -188,7 +188,7 @@ export class Train {
         depth:  trainWidth
       }
       translation = {
-        x: randomM3() * 30 - 15,
+        x: randomM0() * 30 - 15,
         y: -this.yBase + trainHeight/2 + 0.02,
         z: this.zPos + trainWidth/2 + 0.01,
       }
@@ -208,28 +208,28 @@ export class Train {
 
     // -- velocity
 
-    const velocityA = randomM3() * 6 + 8;
-    const velocityB = randomM3() * 6 + 8;
+    const velocityA = randomM0() * 6 + 8;
+    const velocityB = randomM0() * 6 + 8;
 
     if (this.orientation === 'z') {
       this.trainB.rigidBody.setLinvel({
         x: 0,
         y: 0,
-        z: velocityA * ((randomM3() > 0.5) ? 1 : -1)
+        z: velocityA * ((randomM0() > 0.5) ? 1 : -1)
       }, true);
       this.trainA.rigidBody.setLinvel({
         x: 0,
         y: 0,
-        z: velocityB * ((randomM3() > 0.5) ? 1 : -1)
+        z: velocityB * ((randomM0() > 0.5) ? 1 : -1)
       }, true);
     } else if (this.orientation === 'x') {
       this.trainB.rigidBody.setLinvel({
-        x: velocityA * ((randomM3() > 0.5) ? 1 : -1),
+        x: velocityA * ((randomM0() > 0.5) ? 1 : -1),
         y: 0,
         z: 0
       }, true);
       this.trainA.rigidBody.setLinvel({
-        x: velocityB * ((randomM3() > 0.5) ? 1 : -1),
+        x: velocityB * ((randomM0() > 0.5) ? 1 : -1),
         y: 0,
         z: 0
       }, true);

@@ -13,10 +13,10 @@ export const createLights = scene => {
   // setting lower mapSize makes it much faster on iPhone 12 Pro Max
   // const spot = new SpotLight(0xffffff, 840);
 
-  const spot = new SpotLight(0xffffff, 16);
+  const spot = new SpotLight(0xffffff, 24);
   spot.penumbra = 1;
   spot.decay = 0.8;
-  spot.angle = Math.PI/3;
+  spot.angle = Math.PI/1.6;
   // spot.position.set(
   //   Math.random() * 2 + 1,
   //   6,
@@ -33,7 +33,7 @@ export const createLights = scene => {
   spot.target.updateMatrixWorld();
   // scene.add(new SpotLightHelper(spot));
 
-  const ambient = new AmbientLight(0xffffff, 5.0); // soft white light
+  const ambient = new AmbientLight(0xffffff, 3.0); // soft white light
   scene.add(ambient);
 
   const showGui = false;
@@ -55,8 +55,8 @@ export const createLights = scene => {
 
 export const rndPosSpot = spot => {
   spot.position.set(
-    randomM3() * 2 + 1,
+    randomM0() * 2 + 1,
     6,
-    randomM3() * 2 + 1,
+    randomM0() * 2 + 1,
   );
 }

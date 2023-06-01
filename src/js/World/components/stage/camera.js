@@ -8,14 +8,17 @@ const createCamera = () => {
 }
 
 const rndPosCamera = (camera) => {
-  const radius  = 10;
+  const r = mapNumber(1-m4, 0, 1, 10, 1)
+  const rexp = Math.pow(r, 2)
+  const rmap = mapNumber(rexp, 1, 100, 12, 6)
+  const radius  = rmap
 
-  const n = mapNumber(m1, 0, 1, 1, 10)
-  const nexp = Math.pow(n, 2)
-  const nmap = mapNumber(nexp, 1, 100, 120, 10)
-  const polar   = MathUtils.degToRad(nmap);
+  const p = mapNumber(m3, 0, 1, 1, 10)
+  const pexp = Math.pow(p, 2)
+  const pmap = mapNumber(pexp, 1, 100, 120, 10)
+  const polar   = MathUtils.degToRad(pmap);
 
-  const equator = MathUtils.degToRad((mapNumber(m0, 0, 1, 0.5, -0.5) + 0.12) * 360);
+  const equator = MathUtils.degToRad((mapNumber(m2, 0, 1, 0.5, -0.5) + 0.12) * 360);
 
   const cameraVector = new Vector3();
   cameraVector.setFromSphericalCoords(radius, polar, equator);

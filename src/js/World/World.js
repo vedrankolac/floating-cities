@@ -112,10 +112,12 @@ class World {
     console.log('World::buildGame::params', m0, m1, m2, m3, m4);
     console.log('World::buildGame::rparams', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
 
+    this.orbitControls.reset();
     rndPosCamera(this.camera);
     rndPosSpot(this.lights.spot);
 
-    this.hue = m2;
+    // this.hue = m1;
+    this.hue = randomM1();
     // console.log('World::buildGame::this.hue', this.hue);
     
     setFog(this.hue, this.scene);

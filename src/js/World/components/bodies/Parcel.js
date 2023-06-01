@@ -42,7 +42,7 @@ export class Parcel {
     let tower_2;
 
     // split on at least 10% of the length/width of the space
-    const splitIndex = randomM3() * 0.7 + 0.15;
+    const splitIndex = randomM0() * 0.7 + 0.15;
 
     if (this.rectangle.width() > this.rectangle.height()) {
       const split_x = this.rectangle.x1 + splitIndex * this.rectangle.width();
@@ -88,11 +88,11 @@ export class Parcel {
 
   draw = () => {
     // const maxHeight = 3.2;
-    const maxHeight = m4 * 2.2 + 1;
-    const hIndex = randomM4();
+    const maxHeight = 3.2;
+    const hIndex = randomM0();
     let height = (hIndex>0.5)
-      ? randomM4() * maxHeight + 0.04
-      : this.rectangle.width() * Math.round(randomM4() * 5);
+      ? randomM0() * maxHeight + 0.04
+      : this.rectangle.width() * Math.round(randomM0() * 5);
     if (height > maxHeight) height = maxHeight;
 
     const tParams = [
@@ -111,7 +111,7 @@ export class Parcel {
     if ((height > maxHeight/3) && (this.rectangle.area() < 0.04)) {
       this.building = new TowerPlain(...tParams);
     } else {
-      const dIndex = randomM3();
+      const dIndex = randomM0();
       if (dIndex < 0.45) {
         this.building = new TowerPlain(...tParams);
       } else if (dIndex >= 0.45 && dIndex < 0.6) {
@@ -119,11 +119,11 @@ export class Parcel {
       } else if (dIndex >= 0.6 && dIndex < 0.7) {
         this.building = new TowerStackHorizontally(...tParams);
       } else if (dIndex >= 0.7 && dIndex < 1.0) {
-        const tIndex = randomM3();
+        const tIndex = randomM0();
         if (this.rectangle.area() > 0.2) {
-          if (tIndex > 0.1) this.building = new Tree(...tParams, randomM3()*30 + 30, 6);
+          if (tIndex > 0.1) this.building = new Tree(...tParams, randomM0()*30 + 30, 6);
         } else {
-          if (tIndex > 0.6) this.building = new Tree(...tParams, randomM3()*10 + 20, 4);
+          if (tIndex > 0.6) this.building = new Tree(...tParams, randomM0()*10 + 20, 4);
         }
       }
     }

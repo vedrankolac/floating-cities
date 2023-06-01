@@ -24,14 +24,15 @@ export class TowerPlain {
   }
 
   create = () => {
-    const cIndex = randomM2();
+    const cIndex = randomM1();
 
     if (cIndex < 0.4) {
-      this.color = (randomM2() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, randomM2()*0.6 + 0.3, 0.4); // white or color
+      // this.color = (randomM1() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, randomM1()*0.6 + 0.3, 0.3); // white or color
+      this.color = (randomM1() > 0.5) ? hslToHex(0, 0.0, 0.6) : hslToHex(this.hue, randomM1()*0.3 + 0.3, 0.6); // white or color
     } else if (cIndex >= 0.40 && cIndex < 0.70) {
       this.color = hslToHex(0, 0.0, 0.0); // black
     } else if (cIndex >= 0.70 && cIndex < 1.0) {
-      this.color = hslToHex(0, 0.0, randomM2()*0.6); // gray
+      this.color = hslToHex(0, 0.0, randomM1()*0.6); // gray
     }
 
     const width = this.rectangle.width() - 0.02;
@@ -48,7 +49,7 @@ export class TowerPlain {
       },
       {
         x: this.rectangle.center().x,
-        y: this.height/2 - this.yDownShift - randomM3()*(this.height/6),
+        y: this.height/2 - this.yDownShift - randomM0()*(this.height/6),
         z: this.rectangle.center().y
       },
       {
