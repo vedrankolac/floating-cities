@@ -103,7 +103,7 @@ class Loop {
     img.src = imgData;
 
     const link = document.createElement('a');
-    link.download = 'crash_' + fxhash + '.png';
+    link.download = 'floating-cities_' + randomSeedEditArt + '.png';
     link.href = imgData;
     link.click();
     link.delete;
@@ -163,15 +163,16 @@ class Loop {
       this.engineInitStepDone = true;
     }
 
-    // if (this.stepCounter <= 400) {
-    //   if (this.stepCounter === 400) {
-    //     // this.prepareForCapture();
-    //     // this.saveAsPng();
-    //     // location.reload();
-    //     $fx.preview();
-    //   }
-    //   ++ this.stepCounter;
-    // }
+    if (this.stepCounter <= 10) {
+      if (this.stepCounter === 10) {
+        this.prepareForCapture();
+        // this.saveAsPng();
+        // location.reload();
+        // $fx.preview();
+        triggerPreview();
+      }
+      ++ this.stepCounter;
+    }
   }
 
   tickPhysics(frameTime) {
