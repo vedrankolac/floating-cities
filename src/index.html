@@ -10,23 +10,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,400&display=swap" rel="stylesheet"> -->
     <script>
-      // let search = new URLSearchParams(window.location.search)
-      // let alphabet = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
-      // let b58dec = (str) =>
-      //   [...str].reduce(
-      //     (p, c) => (p * alphabet.length + alphabet.indexOf(c)) | 0,
-      //     0
-      //   )
-      // let hash =
-      //   search.get("fxhash") ||
-      //   "vedrrran" +
-      //     Array(49)
-      //       .fill(0)
-      //       .map((_) => alphabet[(Math.random() * alphabet.length) | 0])
-      //       .join("")
-      // const randomSeedEditArt = hash;
+      let search = new URLSearchParams(window.location.search)
+      let alphabet = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
+      let b58dec = (str) =>
+        [...str].reduce(
+          (p, c) => (p * alphabet.length + alphabet.indexOf(c)) | 0,
+          0
+        )
+      let hash =
+        search.get("fxhash") ||
+        "vedrrran" +
+          Array(49)
+            .fill(0)
+            .map((_) => alphabet[(Math.random() * alphabet.length) | 0])
+            .join("")
+      const randomSeedEditArt = hash;
 
-      const randomSeedEditArt = 'vedrrranRwJ4qyBnfduWih1hy5i3WkoVSKusEgP7yuHvNbHvh4gxjKf2p'
+    //   const randomSeedEditArt = 'vedrrranRwJ4qyBnfduWih1hy5i3WkoVSKusEgP7yuHvNbHvh4gxjKf2p'
 
       console.log('');
       console.log('randomSeedEditArt', randomSeedEditArt);

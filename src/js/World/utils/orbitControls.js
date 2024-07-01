@@ -7,8 +7,8 @@ const orbitControls = (camera, domElement) => {
   // oc.maxDistance = 40;
   // oc.minDistance = 3;
   // oc.dampingFactor = 100;
-  // oc.autoRotate = true;
-  oc.autoRotateSpeed = 0.6;
+  oc.autoRotate = true;
+  oc.autoRotateSpeed = 1.0;
   oc.enablePan = true;
   return oc;
 }

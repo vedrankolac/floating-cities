@@ -14,24 +14,24 @@ export const createLights = scene => {
   // setting lower mapSize makes it much faster on iPhone 12 Pro Max
   // const spot = new SpotLight(0xffffff, 840);
 
-  // const spot = new SpotLight(0xffffff, 24);
-  // spot.penumbra = 1;
-  // spot.decay = 0.8;
-  // spot.angle = Math.PI/1.6;
-  // // spot.position.set(
-  // //   Math.random() * 2 + 1,
-  // //   6,
-  // //   Math.random() * 2 + 1,
-  // // );
-  // spot.castShadow = true;
-  // spot.map = map.colorMap;
-  // spot.shadow.focus = 1;
-  // spot.shadow.mapSize.width = 4096;
-  // spot.shadow.mapSize.height = 4096;
-  // scene.add(spot);
-  // map.colorMap = null;
-  // spot.target.position.set(0, 0, 0);
-  // spot.target.updateMatrixWorld();
+  const spot = new SpotLight(0xffffff, 24);
+  spot.penumbra = 1;
+  spot.decay = 0.8;
+  spot.angle = Math.PI/1.6;
+  // spot.position.set(
+  //   Math.random() * 2 + 1,
+  //   6,
+  //   Math.random() * 2 + 1,
+  // );
+  spot.castShadow = true;
+  spot.map = map.colorMap;
+  spot.shadow.focus = 1;
+  spot.shadow.mapSize.width = 4096;
+  spot.shadow.mapSize.height = 4096;
+  scene.add(spot);
+  map.colorMap = null;
+  spot.target.position.set(0, 0, 0);
+  spot.target.updateMatrixWorld();
   // scene.add(new SpotLightHelper(spot));
 
   const ambient = new AmbientLight(0xffffff, 3.0); // soft white light
@@ -50,9 +50,9 @@ export const createLights = scene => {
   // }
 
   // hack for getting the same random seed
-  const spot = {
-    position: new Vector3()
-  }
+  // const spot = {
+  //   position: new Vector3()
+  // }
 
   return {
     spot
