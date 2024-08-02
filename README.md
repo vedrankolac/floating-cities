@@ -1,5 +1,12 @@
 ## Floating Cities
-Boilerplate for a fast start with three.js materials in rapier physics engine on Oculus Quest 2 VR headset.
+A study in composition with recursions.
+Homage to ideas of Italo Calvino.
+
+Published as NFT series in collaboration with EditArt [EditArt](https://www.editart.xyz/series/KT1WUVXSJoTu3N9sJMDhLz7T1Zjk1KwuGdhV)
+
+### Boilerplate
+
+Built with my Boilerplate for a fast start with three.js materials in rapier physics engine on Oculus Quest 2 VR headset.
 - only tested on Oculus Quest 2
 - movement is controlled with joystick
 
