@@ -113,6 +113,7 @@ class World {
     console.log('World::buildGame::rparams', randomM0(), randomM1(), randomM2(), randomM3(), randomM4());
 
     this.orbitControls.reset();
+    this.orbitControls.autoRotate = true
     rndPosCamera(this.camera);
     rndPosSpot(this.lights.spot);
 
